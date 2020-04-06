@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "HelloWorld",
+    "name": "GerenciamentoDeAtivos",
     "slug": "GerenciamentoDeAtivos",
     "platforms": [
       "ios",
@@ -9,9 +9,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/imgs/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/assets/imgs/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
