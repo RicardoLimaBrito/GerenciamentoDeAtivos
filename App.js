@@ -1,13 +1,12 @@
 import React from 'react';
-import {View} from 'react-native'
 
-import TelaLogin from './src/scenes/telaLogin'
+import TelaAtualizarTabela from './src/scenes/telaAtualizarTabela'
 
 export default function App() {
   return (
-    <View>
-      <TelaLogin />
-    </View>
+    <>
+      <TelaAtualizarTabela />
+    </>
   );
 }
 
