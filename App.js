@@ -1,11 +1,11 @@
 import React from 'react';
 
-import TelaAtualizarTabela from './src/scenes/telaAtualizarTabela'
+import {Route} from './src/routes'
 
 export default function App() {
   return (
     <>
-      <TelaAtualizarTabela />
+      <Route />
     </>
   );
 }

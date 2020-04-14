@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
+import { Actions } from 'react-native-router-flux';
 
 
 export default function TelaAtualizarTabela() {
@@ -17,19 +18,19 @@ export default function TelaAtualizarTabela() {
         />
       </View>
 
-      <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
+      <Text style={Styles.titulo}>{"Atualizando tabelas"}</Text>
 
       <View style={Styles.botaoContainer}>
-      <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>atualizarTabelaEquipamentos()}>
+      <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Equipamentos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>atualizarSalasELabs()}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Salas e Labs</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>atualizarReservas()}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Reservas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>retornar()}>
+        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.push('telaSGP')}>
           <Text style={Styles.textoBotaoSair}>Retornar</Text>
         </TouchableOpacity>
       </View>

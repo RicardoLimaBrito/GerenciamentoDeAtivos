@@ -1,11 +1,26 @@
-import React, {Component, useState} from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 
 export default function TelaLogin() {
-  const [login, setLogin] = useState('');
-  const [senha, setSenha] = useState('');
+  const [usuario, setUsuario] = useState({matricula: '', senha: ''})
+
+  function metodoLogin(){
+    const {matricula, senha} = usuario
+    if(matricula == '2020' && senha == '1234'){
+      Actions.replace('telaAluno')
+      return Alert.alert('Informação', 'Bem - vindo, aluno')
+    }else if(matricula == '730547996' && senha == '1234'){
+      Actions.replace('telaProfessor')
+      return Alert.alert('Informação', 'Bem - vindo, professor')
+    }else if(matricula == '000' && senha == '1234'){
+      Actions.replace('telaSGP')
+      return Alert.alert('Informação', 'Bem - vindo, SGP')
+    }else{
+      return Alert.alert('Informação', 'Usuário não identificado')
+    }
+  }
 
   return (
     <View style={Styles.containerPrincipal}>
@@ -19,25 +34,28 @@ export default function TelaLogin() {
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
-          placeholder="  Login"
-          onChangeText={login => setLogin(login)}
-          defaultValue={login}
+          placeholder="  Matricula"
+          onChangeText={matricula => setUsuario({...usuario, matricula: matricula})}
+          autoCapitalize={'none'}
+          keyboardType={'numeric'}
         />
       </View>
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
           placeholder="  Senha"
-          onChangeText={senha => setSenha(senha)}
-          defaultValue={senha}
+          onChangeText={senha => setUsuario({...usuario, senha: senha})}
+          autoCapitalize={'none'}
+          keyboardType={'numeric'}
+          secureTextEntry={true}
         />
       </View>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesBotaoAcessar} onPress={()=>Actions.Register}>
+        <TouchableOpacity style={Styles.botoesBotaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>ACESSAR</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>esqueceuASenha()}>
+        <TouchableOpacity onPress={()=>Actions.push('telaResetarSenha')}>
           <Text style={Styles.textoBotaoEsqueceuASenha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>

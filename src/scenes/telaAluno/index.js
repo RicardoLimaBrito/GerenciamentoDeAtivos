@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 
+import { Actions } from 'react-native-router-flux';
 
 export default function TelaAluno() {
   return (
@@ -23,10 +24,10 @@ export default function TelaAluno() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>irParaTelaDePesquisarSalar()}>
           <Text style={Styles.textoBotoesSuperiores}>Pesquisar Salas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>irParaTelaDeChat()}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>sair()}>
+        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
           <Text style={Styles.textoBotaoSair}>Sair</Text>
         </TouchableOpacity>
       </View>

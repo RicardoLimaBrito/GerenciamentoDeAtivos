@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
+import { Actions } from 'react-native-router-flux';
 
 
 export default function TelaSGP() {
@@ -20,16 +21,16 @@ export default function TelaSGP() {
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>irParaTelaDePesquisarSalar()}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaAtualizarTabela')}>
           <Text style={Styles.textoBotoesSuperiores}>Atualizar tabelas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>irParaTelaDeReservarEquipamento()}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Reservar equipamento</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>irParaTelaDeChat()}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>sair()}>
+        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
           <Text style={Styles.textoBotaoSair}>Sair</Text>
         </TouchableOpacity>
       </View>
