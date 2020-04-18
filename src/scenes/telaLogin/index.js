@@ -8,7 +8,9 @@ export default function TelaLogin() {
 
   function metodoLogin(){
     const {matricula, senha} = usuario
-    if(matricula == '2020' && senha == '1234'){
+    if(matricula=='' && senha==''){
+      return Alert.alert('Informação', 'Digite os dados, por favor')
+    }else if(matricula == '2020' && senha == '1234'){
       Actions.replace('telaAluno')
       return Alert.alert('Informação', 'Bem - vindo, aluno')
     }else if(matricula == '730547996' && senha == '1234'){
@@ -34,7 +36,7 @@ export default function TelaLogin() {
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
-          placeholder="  Matricula"
+          placeholder="Matricula"
           onChangeText={matricula => setUsuario({...usuario, matricula: matricula})}
           autoCapitalize={'none'}
           keyboardType={'numeric'}
@@ -43,7 +45,7 @@ export default function TelaLogin() {
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
-          placeholder="  Senha"
+          placeholder="Senha"
           onChangeText={senha => setUsuario({...usuario, senha: senha})}
           autoCapitalize={'none'}
           keyboardType={'numeric'}
@@ -52,10 +54,13 @@ export default function TelaLogin() {
       </View>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesBotaoAcessar} onPress={()=>metodoLogin()}>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>null}>
+          <Text style={Styles.textoBotaoCadastrar}>CADASTRAR - SE</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>ACESSAR</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>Actions.push('telaResetarSenha')}>
+        <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>Actions.push('telaResetarSenha')}>
           <Text style={Styles.textoBotaoEsqueceuASenha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
@@ -85,7 +90,11 @@ const Styles = StyleSheet.create({
   },
   botaoContainer: {
     flex: 2,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
   },
   redimensionarLogo: {
       width: 120,
@@ -99,13 +108,18 @@ const Styles = StyleSheet.create({
   },
   containerDosDados: {
     margin: 10,
-    borderWidth: 1,
+    borderBottomWidth: 2,
     width: 300,
     borderColor: '#e0ebeb',
     borderRadius: 10,
   },
   textoBotaoAcessar: {
-    fontSize: 18,
+    fontSize: 15,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  textoBotaoCadastrar: {
+    fontSize: 15,
     color: 'white',
     fontWeight: 'bold',
   },
@@ -114,14 +128,26 @@ const Styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
   },
-  botoesBotaoAcessar: {
-    width: 320,
+  botaoCadastrar: {
+    width: 160,
     height: 50,
     backgroundColor: '#acd54a',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    margin: 15,
+    margin: 5,
+  },
+  botaoAcessar: {
+    width: 160,
+    height: 50,
+    backgroundColor: '#002566',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    margin: 5,
+  },
+  botaoEsqueceuASenha: {
+    margin: 10,
   },
 });
 
