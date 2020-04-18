@@ -16,7 +16,7 @@ export default function TelaResetarSenha() {
   
       <Text style={Styles.titulo}>{"Reiniciar senha"}</Text>
 
-      <Text style={Styles.textoCorpo}>{"Lhe enviaremos um email com mais informações sobre como redefinir sua senha"}</Text>
+      <Text style={Styles.textoCorpo}>{"Você receberá um email para redefinir sua senha"}</Text>
 
       <View style={Styles.containerDosDados}>
         <TextInput
