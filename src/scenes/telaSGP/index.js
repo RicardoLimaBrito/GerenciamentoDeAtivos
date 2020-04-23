@@ -76,12 +76,12 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   textoBotoesSuperiores: {
-    fontSize: 30,
+    fontSize: 20,
     color: '#02246c',
     fontWeight: 'bold',
   },
   textoBotaoSair: {
-    fontSize: 30,
+    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
   },

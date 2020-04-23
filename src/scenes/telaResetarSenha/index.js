@@ -28,8 +28,11 @@ export default function TelaResetarSenha() {
       </View>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesBotaoAcessar} onPress={()=>null}>
-          <Text style={Styles.textoBotaoAcessar}>ACESSAR</Text>
+        <TouchableOpacity style={Styles.botaoVoltar} onPress={()=>Actions.push('telaLogin')}>
+          <Text style={Styles.textoBotaoVoltar}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={Styles.botaoEnviar} onPress={()=>null}>
+          <Text style={Styles.textoBotaoEnviar}>Enviar email</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -51,7 +54,11 @@ const Styles = StyleSheet.create({
   },
   botaoContainer: {
     flex: 2,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
   },
   redimensionarLogo: {
       width: 120,
@@ -76,24 +83,33 @@ const Styles = StyleSheet.create({
     borderColor: '#e0ebeb',
     borderRadius: 10,
   },
-  textoBotaoAcessar: {
-    fontSize: 18,
+  textoBotaoVoltar: {
+    fontSize: 15,
     color: 'white',
     fontWeight: 'bold',
   },
-  textoBotaoEsqueceuASenha: {
+  textoBotaoEnviar: {
     fontSize: 15,
-    color: 'blue',
-    textDecorationLine: 'underline',
+    color: 'white',
+    fontWeight: 'bold',
   },
-  botoesBotaoAcessar: {
-    width: 320,
+  botaoVoltar: {
+    width: 160,
+    height: 50,
+    backgroundColor: '#acd54a',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    margin: 5,
+  },
+  botaoEnviar: {
+    width: 160,
     height: 50,
     backgroundColor: '#002566',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    margin: 15,
+    margin: 5,
   },
 });
 

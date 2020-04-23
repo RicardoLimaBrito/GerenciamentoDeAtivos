@@ -13,10 +13,10 @@ export default function TelaLogin() {
     }else if(matricula == '2020' && senha == '1234'){
       Actions.replace('telaAluno')
       return Alert.alert('Informação', 'Bem - vindo, aluno')
-    }else if(matricula == '730547996' && senha == '1234'){
+    }else if(matricula == '6060' && senha == '1234'){
       Actions.replace('telaProfessor')
       return Alert.alert('Informação', 'Bem - vindo, professor')
-    }else if(matricula == '000' && senha == '1234'){
+    }else if(matricula == '0000' && senha == '1234'){
       Actions.replace('telaSGP')
       return Alert.alert('Informação', 'Bem - vindo, SGP')
     }else{
