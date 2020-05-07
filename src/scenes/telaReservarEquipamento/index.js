@@ -8,16 +8,17 @@ import { Actions } from 'react-native-router-flux';
 export default function TelaReservarEquipamento(){
     const [reserva, setReserva] = useState({
         dataRetirada: '',
-        datashow: false,
-        notebook: false,
-        filtroDeLinha: false,
+        adaptadorMacbook: false,
         adaptadorVGA: false,
+        caixaDeSom: false,
+        datashow: false,
+        filtroDeLinha: false,
         mouse: false,
+        notebook: false
     })
     
     function alterarValor(nome) {
         setReserva({ ...reserva, [nome]: !reserva[nome] })
-        console.log(reserva)
     }
 
     return(
@@ -28,6 +29,7 @@ export default function TelaReservarEquipamento(){
             />
             <View style={Styles.containerDosDados}>
                 <TextInputMask
+                    placeholder={'DD/MM/AAAA'}
                     type={'datetime'}
                     options={{
                         format: 'DD/MM/YYYY'
@@ -38,75 +40,85 @@ export default function TelaReservarEquipamento(){
                     keyboardType={"number-pad"}
                 />
             </View>
-            <ScrollView>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
-                    <List.Item
-                        titleStyle={{ color: '#000000' }}
-                        descriptionStyle={{ color: '#f3f3f3' }}
-                        title='Datashow'
-                        description=''
-                        left={(props) => (
-                            <Switch
-                            {...props}
-                            value={reserva.datashow}
-                            onValueChange={() => alterarValor('datashow')}
-                            />
-                        )}
-                    />
-                    <List.Item
-                        titleStyle={{ color: '#000000' }}
-                        descriptionStyle={{ color: '#f3f3f3' }}
-                        title='Notebook'
-                        description=''
-                        left={(props) => (
-                            <Switch
-                            {...props}
-                            value={reserva.notebook}
-                            onValueChange={(input) => alterarValor('notebook', input)}
-                            />
-                        )}
-                    />
-                    <List.Item
-                        titleStyle={{ color: '#000000' }}
-                        descriptionStyle={{ color: '#f3f3f3' }}
-                        title='Filtro de linha'
-                        description=''
-                        left={(props) => (
-                            <Switch
-                            {...props}
-                            value={reserva.filtroDeLinha}
-                            onValueChange={(input) => alterarValor('filtroDeLinha', input)}
-                            />
-                        )}
-                    />
-                    <List.Item
-                        titleStyle={{ color: '#000000' }}
-                        descriptionStyle={{ color: '#f3f3f3' }}
-                        title='Adaptador VGA'
-                        description=''
-                        left={(props) => (
-                            <Switch
-                            {...props}
-                            value={reserva.adaptadorVGA}
-                            onValueChange={(input) => alterarValor('adaptadorVGA', input)}
-                            />
-                        )}
-                    />
-                    <List.Item
-                        titleStyle={{ color: '#000000' }}
-                        descriptionStyle={{ color: '#f3f3f3' }}
-                        title='Mouse'
-                        description=''
-                        left={(props) => (
-                            <Switch
-                            {...props}
-                            value={reserva.mouse}
-                            onValueChange={(input) => alterarValor('mouse', input)}
-                            />
-                        )}
-                    />
-                </View>
-            </ScrollView>
+            <View style={{ustifyContent: 'center', width: '100%'}}>
+                <List.Item
+                    titleStyle={{ color: '#000000' }}
+                    title='Adaptador Macbook'
+                    left={(props) => (
+                        <Switch
+                        {...props}
+                        value={reserva.adaptadorMacbook}
+                        onValueChange={(input) => alterarValor('adaptadorMacbook', input)}
+                        />
+                    )}
+                />
+                <List.Item
+                    titleStyle={{ color: '#000000' }}
+                    title='Adaptador VGA'
+                    left={(props) => (
+                        <Switch
+                        {...props}
+                        value={reserva.adaptadorVGA}
+                        onValueChange={(input) => alterarValor('adaptadorVGA', input)}
+                        />
+                    )}
+                />
+                <List.Item
+                    titleStyle={{ color: '#000000' }}
+                    title='Caixa de som'
+                    left={(props) => (
+                        <Switch
+                        {...props}
+                        value={reserva.caixaDeSom}
+                        onValueChange={(input) => alterarValor('caixaDeSom', input)}
+                        />
+                    )}
+                />
+                <List.Item
+                    titleStyle={{ color: '#000000' }}
+                    title='Datashow'
+                    left={(props) => (
+                        <Switch
+                        {...props}
+                        value={reserva.datashow}
+                        onValueChange={() => alterarValor('datashow')}
+                        />
+                    )}
+                />
+                <List.Item
+                    titleStyle={{ color: '#000000' }}
+                    title='Filtro de linha'
+                    left={(props) => (
+                        <Switch
+                        {...props}
+                        value={reserva.filtroDeLinha}
+                        onValueChange={(input) => alterarValor('filtroDeLinha', input)}
+                        />
+                    )}
+                />
+                <List.Item
+                    titleStyle={{ color: '#000000' }}
+                    title='Mouse'
+                    left={(props) => (
+                        <Switch
+                        {...props}
+                        value={reserva.mouse}
+                        onValueChange={(input) => alterarValor('mouse', input)}
+                        />
+                    )}
+                />
+                <List.Item
+                    titleStyle={{ color: '#000000' }}
+                    title='Notebook'
+                    left={(props) => (
+                        <Switch
+                        {...props}
+                        value={reserva.notebook}
+                        onValueChange={(input) => alterarValor('notebook', input)}
+                        />
+                    )}
+                />
+            </View>
             <View style={Styles.botaoContainer}>
                 <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaProfessor')}>
                 <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
