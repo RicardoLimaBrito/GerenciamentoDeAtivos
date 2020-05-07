@@ -9,6 +9,24 @@ npm-debug.*
 *.orig.*
 web-build/
 web-report/
+Backups/
+Cache/
+CachedData/
+CachedExtensions/
+Code Cache/
+Cookies
+Cookies-journal
+GPUCache/
+Network Persistent State
+Session Storage/
+TransportSecurity
+User/
+languagepacks.json
+logs/
+machineid
+package-lock.json
+rapid_render.json
+storage.json
 
 # macOS
 .DS_Store

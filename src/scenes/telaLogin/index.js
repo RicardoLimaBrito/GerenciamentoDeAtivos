@@ -9,19 +9,18 @@ export default function TelaLogin() {
   function metodoLogin(){
     const {matricula, senha} = usuario
     if(matricula=='' && senha==''){
-      return Alert.alert('Informação', 'Digite os dados, por favor')
+      Alert.alert('Informação', 'Digite os dados, por favor')
     }else if(matricula == '2020' && senha == '1234'){
       Actions.replace('telaAluno')
-      return Alert.alert('Informação', 'Bem - vindo, aluno')
+      return null
     }else if(matricula == '6060' && senha == '1234'){
       Actions.replace('telaProfessor')
-      return Alert.alert('Informação', 'Bem - vindo, professor')
     }else if(matricula == '0000' && senha == '1234'){
       Actions.replace('telaSGP')
-      return Alert.alert('Informação', 'Bem - vindo, SGP')
     }else{
-      return Alert.alert('Informação', 'Usuário não identificado')
+      Alert.alert('Informação', 'Usuário não identificado')
     }
+    return null
   }
 
   return (
@@ -40,6 +39,7 @@ export default function TelaLogin() {
           onChangeText={matricula => setUsuario({...usuario, matricula: matricula})}
           autoCapitalize={'none'}
           keyboardType={'numeric'}
+          
         />
       </View>
       <View style={Styles.containerDosDados}>

@@ -22,13 +22,13 @@ export default function TelaProfessor() {
 
       <View style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Pesquisar Salas</Text>
+          <Text style={Styles.textoBotoesSuperiores}>Visualizar minhas salas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaReservarEquipamento')}>
           <Text style={Styles.textoBotoesSuperiores}>Reservar equipamento</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
+          <Text style={Styles.textoBotoesSuperiores}>Chat online</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
           <Text style={Styles.textoBotaoSair}>Sair</Text>

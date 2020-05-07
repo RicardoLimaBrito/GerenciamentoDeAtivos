@@ -136,7 +136,7 @@ const Styles = StyleSheet.create({
   botaoCadastrar: {
     width: 160,
     height: 50,
-    backgroundColor: '#acd54a',
+    backgroundColor: '#002566',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
@@ -145,7 +145,7 @@ const Styles = StyleSheet.create({
   botaoAcessar: {
     width: 160,
     height: 50,
-    backgroundColor: '#002566',
+    backgroundColor: '#acd54a',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,

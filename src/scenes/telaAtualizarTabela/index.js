@@ -18,17 +18,14 @@ export default function TelaAtualizarTabela() {
         />
       </View>
 
-      <Text style={Styles.titulo}>{"Atualizando tabelas"}</Text>
+      <Text style={Styles.titulo}>{"Verificar reservas"}</Text>
 
       <View style={Styles.botaoContainer}>
       <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Equipamentos</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Salas e Labs</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Reservas</Text>
+          <Text style={Styles.textoBotoesSuperiores}>Salas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.push('telaSGP')}>
           <Text style={Styles.textoBotaoSair}>Retornar</Text>
@@ -76,12 +73,12 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   textoBotoesSuperiores: {
-    fontSize: 30,
+    fontSize: 20,
     color: '#02246c',
     fontWeight: 'bold',
   },
   textoBotaoSair: {
-    fontSize: 30,
+    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
   },

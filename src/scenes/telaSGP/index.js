@@ -22,13 +22,10 @@ export default function TelaSGP() {
 
       <View style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaAtualizarTabela')}>
-          <Text style={Styles.textoBotoesSuperiores}>Atualizar tabelas</Text>
+          <Text style={Styles.textoBotoesSuperiores}>Verificar reservas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Reservar equipamento</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
+          <Text style={Styles.textoBotoesSuperiores}>Chat online</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
           <Text style={Styles.textoBotaoSair}>Sair</Text>

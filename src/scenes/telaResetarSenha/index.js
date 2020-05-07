@@ -21,7 +21,7 @@ export default function TelaResetarSenha() {
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
-          placeholder="  Email"
+          placeholder="Email"
           onChangeText={email => setEmail(email)}
           defaultValue={email}
         />
@@ -77,8 +77,8 @@ const Styles = StyleSheet.create({
     margin: 15,
   },
   containerDosDados: {
-    margin: 10,
-    borderWidth: 1,
+    margin: 15,
+    borderBottomWidth: 2,
     width: 300,
     borderColor: '#e0ebeb',
     borderRadius: 10,
