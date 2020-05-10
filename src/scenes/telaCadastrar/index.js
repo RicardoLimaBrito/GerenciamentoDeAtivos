@@ -1,11 +1,40 @@
 import React, {useState} from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
+import axios from 'axios';
+
 
 export default function TelaCadastrar() {
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
   const [usuario, setUsuario] = useState({matricula: '', nome: '', email: '', senha: ''})
+  const [loading, setLoading] = useState(false)
+
+  function inserirNovoUsuario() {
+    if(usuario.matricula!='' || usuario.nome!='' || usuario.email!='' || usuario.senha!=''){
+      if(usuario.senha==confirmacaoSenha){
+        setLoading(true)
+        axios.post('https://gerenciamentodeativosestacio.firebaseio.com/usuarios', {
+          matricula: usuario.matricula,
+          nome: usuario.nome,
+          email: usuario.email,
+          senha: usuario.senha
+        })
+        .then((res) => {
+          setDadosCovid(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+          Alert.alert('Falha no sistema', 'Erro ao carregar as informações.')
+        })
+        .finally(() => setLoading(false))
+      }else{
+        Alert.alert('Atenção', 'As senhas digitadas não são as mesmas.')
+      }
+    }else{
+      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
+    }
+  }
 
   return (
     <View style={Styles.containerPrincipal}>
@@ -32,7 +61,6 @@ export default function TelaCadastrar() {
           onChangeText={nome => setUsuario({...usuario, nome: nome})}
           autoCapitalize={'none'}
           keyboardType={'default'}
-          secureTextEntry={true}
         />
       </View>
       <View style={Styles.containerDosDados}>
@@ -42,7 +70,6 @@ export default function TelaCadastrar() {
           onChangeText={email => setUsuario({...usuario, email: email})}
           autoCapitalize={'none'}
           keyboardType={'default'}
-          secureTextEntry={true}
         />
       </View>
       <View style={Styles.containerDosDados}>
@@ -70,9 +97,10 @@ export default function TelaCadastrar() {
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaLogin')}>
           <Text style={Styles.textoBotaoCadastrar}>JÁ TEM LOGIN?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovoUsuario()}>
           <Text style={Styles.textoBotaoAcessar}>CADASTRAR</Text>
         </TouchableOpacity>
+        <ActivityIndicator animating={loading} size="large" color="#0000ff" />
       </View>
 
     </View>
