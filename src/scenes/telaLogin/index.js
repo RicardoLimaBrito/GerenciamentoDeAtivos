@@ -11,9 +11,13 @@ export default function TelaLogin() {
   function login() {
     if(usuario.matricula!='' || usuario.senha!=''){
         setLoading(true)
-        axios.get(`https://gerenciamentodeativosestacio.firebaseio.com/usuarios?matricula=${usuario.matricula}&&senha=${usuario.senha}`)
+        axios.get(`https://gerenciamentodeativosestacio.firebaseio.com/usuarios.json?matricula=${usuario.matricula}&&senha=${usuario.senha}`)
         .then((res) => {
-          setUsuario(res.data)
+          if (res.data) {
+            const datalist = Object.entries(res.data).map((e) => {
+              return { ...e[1], id: e[0] }
+            })
+          } else setData([])
           metodoLogin()
         })
         .catch((err) => {
