@@ -2,33 +2,10 @@ import React, {useState} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
-import axios from 'axios'
 
 export default function TelaLogin() {
   const [usuario, setUsuario] = useState({matricula: '', senha: ''})
   const [loading, setLoading] = useState(false)
-
-  function login() {
-    if(usuario.matricula!='' || usuario.senha!=''){
-        setLoading(true)
-        axios.get(`https://gerenciamentodeativosestacio.firebaseio.com/usuarios.json?matricula=${usuario.matricula}&&senha=${usuario.senha}`)
-        .then((res) => {
-          if (res.data) {
-            const datalist = Object.entries(res.data).map((e) => {
-              return { ...e[1], id: e[0] }
-            })
-          } else setData([])
-          metodoLogin()
-        })
-        .catch((err) => {
-          console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao carregar as informações.')
-        })
-        .finally(() => setLoading(false))
-    }else{
-      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
-    }
-  }
 
   function metodoLogin(){
     const {matricula, senha} = usuario
@@ -78,10 +55,10 @@ export default function TelaLogin() {
       </View>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaCadastrar')}>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaCadastrarColaborador')}>
           <Text style={Styles.textoBotaoCadastrar}>CADASTRAR - SE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>login()}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>ACESSAR</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>Actions.push('telaResetarSenha')}>

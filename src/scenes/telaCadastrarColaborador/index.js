@@ -6,10 +6,10 @@ import axios from 'axios';
 import { Dropdown } from 'react-native-material-dropdown';
 
 
-export default function TelaCadastrar() {
+export default function TelaCadastrarColaborador() {
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
   const [usuario, setUsuario] = useState({tipoDeColaborador: 'Aluno', matricula: '', nome: '', email: '', senha: ''})
-  const [dadosDoDropDown] = useState(['Alnuo', 'Professor', 'SGP'])
+  const [dadosDoDropDown] = useState(['Aluno', 'Professor', 'SGP'])
   const [loading, setLoading] = useState(false)
 
   function inserirNovoUsuario() {

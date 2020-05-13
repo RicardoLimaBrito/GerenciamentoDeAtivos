@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 
 
-export default function TelaAtualizarTabela() {
+export default function TelaVerificarReservas() {
   return (
     <View style={Styles.containerPrincipal}>
       <View style={Styles.imagemContainer}>
@@ -21,7 +21,7 @@ export default function TelaAtualizarTabela() {
       <Text style={Styles.titulo}>{"Verificar reservas"}</Text>
 
       <View style={Styles.botaoContainer}>
-      <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Equipamentos</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>

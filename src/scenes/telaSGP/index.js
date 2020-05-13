@@ -21,7 +21,10 @@ export default function TelaSGP() {
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaAtualizarTabela')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaConfigurarSalas')}>
+          <Text style={Styles.textoBotoesSuperiores}>Configurar salas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaVerificarReservas')}>
           <Text style={Styles.textoBotoesSuperiores}>Verificar reservas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
