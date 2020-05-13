@@ -6,7 +6,7 @@ import axios from 'axios'
 
 
 export default function TelaConfigurarSalas() {
-  const [buscarSala, setBuscarSala] = useState('')
+  const [buscarSala, setBuscarSala] = useState(null)
   const [dados, setDados] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -23,6 +23,31 @@ export default function TelaConfigurarSalas() {
         } else{
           setDados([])
           Alert.alert('Falha ao carregar', 'Nenhuma sala foi inserida.')
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        Alert.alert('Falha no sistema', 'Erro ao carregar as informações.')
+      })
+      .finally(() => setLoading(false))
+  }
+
+  function getSalasByBloco() {
+    setLoading(true)
+    axios
+      .get(`https://gerenciamentodeativosestacio.firebaseio.com/salas.json?bloco='${buscarSala}'`)
+      .then((res) => {
+        if (res.data) {
+          const datalist = Object.entries(res.data).map((e) => {
+            return { ...e[1], id: e[0] }
+          })
+          setDados([])
+          setDados(datalist)
+          setBuscarSala(null)
+          console.log(dados)
+        } else{
+          setDados([])
+          Alert.alert('Falha ao carregar', 'Nenhuma sala foi achada.')
         }
       })
       .catch((err) => {
@@ -62,14 +87,20 @@ export default function TelaConfigurarSalas() {
               maxLength={1}
             />
           </View>
-          <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaCadastrarSalas')}>
-            <Text style={Styles.textoBotoesSuperiores}>Pesquisar</Text>
+          <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>getSalasByBloco()}>
+              <Image
+                style={Styles.imagens}
+                source={{
+                uri: 'https://images.vexels.com/media/users/3/128198/isolated/preview/f7d19e11011fb8ddfe0d533909dc8ace---cone-de-acampamento-de-lupa-by-vexels.png'
+                }}
+              />
           </TouchableOpacity>
           <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaCadastrarSalas')}>
             <Text style={Styles.textoBotoesSuperiores}>Adicionar</Text>
+            <Text style={Styles.textoBotoesSuperiores}>salas</Text>
           </TouchableOpacity>
-          {loading && <ActivityIndicator size="large" color="#0000ff" />}
         </View>
+        {loading && <ActivityIndicator size="large" color="#0000ff" />}
         <FlatList
           data={dados}
           renderItem={({ item }) => (
@@ -163,6 +194,10 @@ const Styles = StyleSheet.create({
   botaoContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  imagens: {
+    width: 70,
+    height: 70,
   },
   redimensionarLogo: {
       width: 120,
