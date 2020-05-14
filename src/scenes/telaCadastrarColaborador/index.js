@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
@@ -8,49 +8,65 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 export default function TelaCadastrarColaborador() {
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
-  const [usuario, setUsuario] = useState({tipoDeColaborador: 'Aluno', matricula: '', nome: '', email: '', senha: ''})
-  const [dadosDoDropDown] = useState(['Aluno', 'Professor', 'SGP'])
+  const [usuario, setUsuario] = useState({tipoDeColaborador: '', matricula: '', nome: '', email: '', senha: ''})
   const [loading, setLoading] = useState(false)
 
-  function inserirNovoUsuario() {
-    if(usuario.matricula!='' || usuario.nome!='' || usuario.email!='' || usuario.senha!=''){
-      if(usuario.senha==confirmacaoSenha){
-        setLoading(true)
-        axios.post('https://gerenciamentodeativosestacio.firebaseio.com/usuarios.json', {
-          matricula: usuario.matricula,
-          tipoDeColaborador: usuario.tipoDeColaborador,
-          nome: usuario.nome,
-          email: usuario.email,
-          senha: usuario.senha
-        })
-        .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetudao com sucesso, anote, sua matrícula é ${usuario.matricula}`)
-          Actions.push('telaLogin')
-        })
-        .catch((err) => {
-          console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
-        })
-        .finally(() => setLoading(false))
-      }else{
-        Alert.alert('Atenção', 'As senhas digitadas não são as mesmas.')
-      }
-    }else{
+  async function inserirNovoUsuario() {
+    if(usuario.matricula=='' && usuario.nome=='' && usuario.email=='' && usuario.senha=='' && usuario.tipoDeColaborador=='' ){
       Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
+    }else{
+      if(usuario.tipoDeColaborador<0 || usuario.tipoDeColaborador>2){
+        Alert.alert('Atenção', 'Preencha o tipo de colaborador corretamente.')
+      }else{
+        await verificarTipoDeColaborador()
+        await criarNovaMatricula()
+        if(usuario.senha==confirmacaoSenha){
+          await metodoInserir()
+        }else{
+          Alert.alert('Atenção', 'As senhas digitadas não são as mesmas.')
+        }
+      }
     }
   }
 
-  function criarNovaMatricula(){
-    let matricula
-    do{
-      matricula = Math.floor(Math.random() * 99999999) + 1 ;
-    }while(matricula.length<8)
-    setUsuario({...usuario, matricula: matricula})
+  function verificarTipoDeColaborador(){
+    if(usuario.tipoDeColaborador==0){
+      setUsuario({...usuario, tipoDeColaborador: 'Aluno'})
+    }else if(usuario.tipoDeColaborador==1){
+      setUsuario({...usuario, tipoDeColaborador: 'Professor'})
+    }else{
+      setUsuario({...usuario, tipoDeColaborador: 'SGP'})
+    }
   }
 
-  useEffect(() => {
-    criarNovaMatricula()
-  }, [])
+  function metodoInserir(){
+    setLoading(true)
+      axios.post('https://gerenciamentodeativosestacio.firebaseio.com/usuarios.json', {
+        matricula: usuario.matricula,
+        tipoDeColaborador: usuario.tipoDeColaborador,
+        nome: usuario.nome,
+        email: usuario.email,
+        senha: usuario.senha
+      })
+      .then((res) => {
+        Alert.alert('Sucesso', `Cadastro efetudao com sucesso, anote, sua matrícula é ${usuario.matricula}`)
+        Actions.push('telaLogin')
+      })
+      .catch((err) => {
+        console.log(err)
+        Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
+      })
+      .finally(() => setLoading(false))
+  }
+
+  function criarNovaMatricula(){
+    let matricula = ''
+      do{
+        matricula = Math.floor(Math.random() * 99999999) + 1 ;
+      }while(matricula.length<8)
+    setUsuario({...usuario, matricula: matricula})
+    return null
+  }
 
   return (
     <View style={Styles.containerPrincipal}>
@@ -60,11 +76,14 @@ export default function TelaCadastrarColaborador() {
       />
       <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
       
-      <View style={Styles.containerDoDropDown}>
-        <Dropdown
-          label='Tipo de colaborador'
-          data={dadosDoDropDown}
-          onChangeText={tipoDeColaborador => setUsuario({...usuario, tipoDeColaborador: tipoDeColaborador})}
+      <View style={Styles.containerDosDados}>
+        <TextInput
+          style={{height: 40}}
+          value={usuario.tipoDeColaborador}
+          placeholder="Tipo (0= Aluno, 1= Professor, 2= SGP)"
+          onChangeText={texto => setUsuario({...usuario, tipoDeColaborador: texto})}
+          keyboardType={'number-pad'}
+          maxLength={1}
         />
       </View>
       <View style={Styles.containerDosDados}>
@@ -72,7 +91,7 @@ export default function TelaCadastrarColaborador() {
           style={{height: 40}}
           value={usuario.nome}
           placeholder="Digite seu nome"
-          onChangeText={nome => setUsuario({...usuario, nome: nome})}
+          onChangeText={texto => setUsuario({...usuario, nome: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
         />
@@ -82,7 +101,7 @@ export default function TelaCadastrarColaborador() {
           style={{height: 40}}
           value={usuario.email}
           placeholder="Digite seu email"
-          onChangeText={email => setUsuario({...usuario, email: email})}
+          onChangeText={texto => setUsuario({...usuario, email: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
         />
@@ -92,7 +111,7 @@ export default function TelaCadastrarColaborador() {
           style={{height: 40}}
           value={usuario.senha}
           placeholder="Digite sua senha"
-          onChangeText={senha => setUsuario({...usuario, senha: senha})}
+          onChangeText={texto => setUsuario({...usuario, senha: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
           secureTextEntry={true}
@@ -103,7 +122,7 @@ export default function TelaCadastrarColaborador() {
           style={{height: 40}}
           value={confirmacaoSenha}
           placeholder="Confirme sua senha"
-          onChangeText={confirmacaoSenha => setConfirmacaoSenha(confirmacaoSenha)}
+          onChangeText={texto => setConfirmacaoSenha(texto)}
           autoCapitalize={'none'}
           keyboardType={'default'}
           secureTextEntry={true}
@@ -167,11 +186,6 @@ const Styles = StyleSheet.create({
     width: 300,
     borderColor: '#e0ebeb',
     borderRadius: 10,
-    alignSelf: 'center',
-  },
-  containerDoDropDown: {
-    margin: 10,
-    width: 300,
     alignSelf: 'center',
   },
   textoBotaoAcessar: {

@@ -128,6 +128,7 @@ export default function TelaConfigurarSalas() {
               </Text>
             </View>
           )}
+          keyExtractor={(item, index) => toString(index)}
         />
       </View>
       <View>
