@@ -82,15 +82,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   imagemContainer: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
-  },
-  containerTitulo: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   botaoContainer: {
     flexWrap: 'wrap',

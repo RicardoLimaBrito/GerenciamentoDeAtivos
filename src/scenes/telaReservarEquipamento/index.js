@@ -147,12 +147,11 @@ const Styles = StyleSheet.create({
         borderRadius: 10,
     },
     botaoContainer: {
-        flex: 2,
         flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 8,
+        margin: 8,
     },
     redimensionarLogo: {
         width: 120,

@@ -48,17 +48,14 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   imagemContainer: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
   },
   botaoContainer: {
-    flex: 2,
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    margin: 8,
   },
   redimensionarLogo: {
       width: 120,

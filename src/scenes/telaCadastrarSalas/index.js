@@ -127,28 +127,21 @@ export default function TelaCadastrarSalas() {
 const Styles = StyleSheet.create({
   containerPrincipal: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
   imagemContainer: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
-  },
-  containerTitulo: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   botaoContainer: {
-    flex: 2,
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    padding: 8,
+    margin: 8,
   },
   redimensionarLogo: {
       width: 120,

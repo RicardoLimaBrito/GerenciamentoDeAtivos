@@ -45,8 +45,8 @@ export default function TelaCadastrarColaborador() {
         senha: usuario.senha
       })
       .then((res) => {
-        Alert.alert('Sucesso', `Cadastro efetudao com sucesso, anote, sua matrícula é ${usuario.matricula}`)
-        Actions.push('telaLogin')
+        Alert.alert('Sucesso', 'Cadastro efetudao com sucesso')
+        Actions.replace('telaLogin')
       })
       .catch((err) => {
         console.log(err)
@@ -149,12 +149,12 @@ export default function TelaCadastrarColaborador() {
 const Styles = StyleSheet.create({
   containerPrincipal: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
   imagemContainer: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
   },
   containerMatricula: {
@@ -174,7 +174,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    padding: 8,
+    margin: 8,
   },
   redimensionarLogo: {
       width: 120,

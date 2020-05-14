@@ -45,21 +45,14 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   imagemContainer: {
-    flex: 1,
     paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  containerTitulo: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   botaoContainer: {
-    flex: 3,
     alignItems: 'center',
+    margin: 8,
   },
   redimensionarLogo: {
       width: 120,

@@ -21,8 +21,8 @@ export default function TelaAluno() {
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>irParaTelaDePesquisarSalar()}>
-          <Text style={Styles.textoBotoesSuperiores}>Pesquisar Salas</Text>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
+          <Text style={Styles.textoBotoesSuperiores}>Ver minhas disciplinas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
@@ -45,21 +45,18 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   imagemContainer: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
   containerTitulo: {
-    flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   botaoContainer: {
-    flex: 3,
     alignItems: 'center',
+    margin: 15,
   },
   redimensionarLogo: {
       width: 120,
