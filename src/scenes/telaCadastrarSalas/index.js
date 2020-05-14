@@ -11,8 +11,19 @@ export default function TelaCadastrarSalas() {
   const [loading, setLoading] = useState(false)
 
   function inserirNovoUsuario() {
-    if(sala.numAndar!='' || sala.numAndar!='' || sala.numSala!='' || sala.orientacao!='' || sala.orientacao>=0 || sala.orientacao<=1 || sala.periodo!=''){
-        setLoading(true)
+    if(sala.numAndar=='' || sala.numAndar=='' || sala.numSala=='' || sala.orientacao=='' || sala.periodo!=''){
+      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
+    }else{
+      if(sala.orientacao>=0 || sala.orientacao<=1){
+        Alert.alert('Atenção', 'Digite um 0 ou 1, de acordo com exemplo.')
+      }else{
+        metodoInserir()
+      }
+    }
+  }
+
+  function metodoInserir(){
+    setLoading(true)
         axios.post('https://gerenciamentodeativosestacio.firebaseio.com/salas.json', {
           bloco: sala.bloco,
           numAndar: sala.numAndar,
@@ -30,9 +41,6 @@ export default function TelaCadastrarSalas() {
           Alert.alert('Falha no sistema', 'Erro ao inserir nova sala.')
         })
         .finally(() => setLoading(false))
-    }else{
-      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
-    }
   }
 
   function limparCampos(){

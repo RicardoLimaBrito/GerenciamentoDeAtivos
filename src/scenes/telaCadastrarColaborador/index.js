@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
@@ -12,14 +12,12 @@ export default function TelaCadastrarColaborador() {
   const [loading, setLoading] = useState(false)
 
   async function inserirNovoUsuario() {
-    if(usuario.matricula=='' && usuario.nome=='' && usuario.email=='' && usuario.senha=='' && usuario.tipoDeColaborador=='' ){
+    if(usuario.matricula=='' || usuario.nome=='' || usuario.email=='' || usuario.senha=='' || usuario.tipoDeColaborador=='' ){
       Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
     }else{
       if(usuario.tipoDeColaborador<0 || usuario.tipoDeColaborador>2){
         Alert.alert('Atenção', 'Preencha o tipo de colaborador corretamente.')
       }else{
-        await verificarTipoDeColaborador()
-        await criarNovaMatricula()
         if(usuario.senha==confirmacaoSenha){
           await metodoInserir()
         }else{
@@ -29,19 +27,17 @@ export default function TelaCadastrarColaborador() {
     }
   }
 
-  function verificarTipoDeColaborador(){
-    if(usuario.tipoDeColaborador==0){
-      setUsuario({...usuario, tipoDeColaborador: 'Aluno'})
-    }else if(usuario.tipoDeColaborador==1){
-      setUsuario({...usuario, tipoDeColaborador: 'Professor'})
-    }else{
-      setUsuario({...usuario, tipoDeColaborador: 'SGP'})
-    }
-  }
-
   function metodoInserir(){
     setLoading(true)
-      axios.post('https://gerenciamentodeativosestacio.firebaseio.com/usuarios.json', {
+    let url
+      if(usuario.tipoDeColaborador==0){
+        url = 'https://gerenciamentodeativosestacio.firebaseio.com/alunos.json'
+      }else if(usuario.tipoDeColaborador==1){
+        url = 'https://gerenciamentodeativosestacio.firebaseio.com/professores.json'
+      }else{
+        url = 'https://gerenciamentodeativosestacio.firebaseio.com/sgp.json'
+      }
+      axios.post(`${url}`, {
         matricula: usuario.matricula,
         tipoDeColaborador: usuario.tipoDeColaborador,
         nome: usuario.nome,
@@ -56,7 +52,10 @@ export default function TelaCadastrarColaborador() {
         console.log(err)
         Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
       })
-      .finally(() => setLoading(false))
+      .finally(() => {
+        setLoading(false)
+        criarNovaMatricula()
+      })
   }
 
   function criarNovaMatricula(){
@@ -65,8 +64,12 @@ export default function TelaCadastrarColaborador() {
         matricula = Math.floor(Math.random() * 99999999) + 1 ;
       }while(matricula.length<8)
     setUsuario({...usuario, matricula: matricula})
-    return null
   }
+
+  useEffect(() => {
+    criarNovaMatricula()
+  }, [])
+
 
   return (
     <View style={Styles.containerPrincipal}>
@@ -75,7 +78,9 @@ export default function TelaCadastrarColaborador() {
         source={require('../../../assets/logo.png')}
       />
       <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
-      
+      <View style={Styles.containerMatricula}>
+        <Text style={Styles.matricula}>Sua matrícula será: {usuario.matricula}</Text>
+      </View>
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
@@ -135,9 +140,8 @@ export default function TelaCadastrarColaborador() {
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovoUsuario()}>
           <Text style={Styles.textoBotaoAcessar}>CADASTRAR</Text>
         </TouchableOpacity>
-        <ActivityIndicator animating={loading} size="large" color="#0000ff" />
       </View>
-
+      <ActivityIndicator animating={loading} size="large" color="#0000ff" />
     </View>
   );
 }
@@ -153,14 +157,18 @@ const Styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
   },
-  containerTitulo: {
-    flex: 1,
-    backgroundColor: 'white',
+  containerMatricula: {
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+    borderColor: '#000000',
+    borderWidth: 3,
+    borderRadius: 10,
+    width: 300,
+    backgroundColor: '#424DF4',
+    margin: 15,
   },
   botaoContainer: {
-    flex: 2,
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
@@ -179,6 +187,13 @@ const Styles = StyleSheet.create({
     color: '#02246c',
     fontWeight: 'bold',
     alignSelf: 'center',
+  },
+  matricula: {
+    fontSize: 15,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    margin: 5,
   },
   containerDosDados: {
     margin: 10,

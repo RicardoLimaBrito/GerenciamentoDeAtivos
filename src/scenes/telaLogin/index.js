@@ -8,20 +8,21 @@ export default function TelaLogin() {
   const [loading, setLoading] = useState(false)
 
   function metodoLogin(){
+    setLoading(true)
     const {matricula, senha} = usuario
-    if(matricula=='' && senha==''){
-      Alert.alert('Informação', 'Digite os dados, por favor')
-    }else if(matricula == '2020' && senha == '1234'){
-      Actions.replace('telaAluno')
-      return null
-    }else if(matricula == '6060' && senha == '1234'){
-      Actions.replace('telaProfessor')
-    }else if(matricula == '0000' && senha == '1234'){
-      Actions.replace('telaSGP')
-    }else{
-      Alert.alert('Informação', 'Usuário não identificado')
-    }
-    return null
+      if(matricula=='' && senha==''){
+        Alert.alert('Informação', 'Digite os dados, por favor')
+      }else if(matricula == '2020' && senha == '1234'){
+        Actions.replace('telaAluno')
+        return null
+      }else if(matricula == '6060' && senha == '1234'){
+        Actions.replace('telaProfessor')
+      }else if(matricula == '0000' && senha == '1234'){
+        Actions.replace('telaSGP')
+      }else{
+        Alert.alert('Informação', 'Usuário não identificado')
+      }
+    setLoading(false)
   }
 
   return (
@@ -61,6 +62,8 @@ export default function TelaLogin() {
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>ACESSAR</Text>
         </TouchableOpacity>
+      </View>
+      <View style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>Actions.push('telaResetarSenha')}>
           <Text style={Styles.textoBotaoEsqueceuASenha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
@@ -90,12 +93,11 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
   },
   botaoContainer: {
-    flex: 2,
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    margin: 8,
   },
   redimensionarLogo: {
       width: 120,
