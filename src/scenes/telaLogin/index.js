@@ -56,7 +56,7 @@ export default function TelaLogin() {
       </View>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaCadastrarColaborador')}>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaCadastrarAluno')}>
           <Text style={Styles.textoBotaoCadastrar}>CADASTRAR - SE</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
