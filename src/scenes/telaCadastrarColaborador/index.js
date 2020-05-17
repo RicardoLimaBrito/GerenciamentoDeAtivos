@@ -46,7 +46,7 @@ export default function TelaCadastrarColaborador() {
       })
       .then((res) => {
         Alert.alert('Sucesso', 'Cadastro efetudao com sucesso')
-        Actions.replace('telaLogin')
+        Actions.replace('telaSGP')
       })
       .catch((err) => {
         console.log(err)
@@ -78,9 +78,6 @@ export default function TelaCadastrarColaborador() {
         source={require('../../../assets/logo.png')}
       />
       <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
-      <View style={Styles.containerMatricula}>
-        <Text style={Styles.matricula}>Sua matrícula será: {usuario.matricula}</Text>
-      </View>
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
@@ -134,8 +131,8 @@ export default function TelaCadastrarColaborador() {
         />
       </View>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaLogin')}>
-          <Text style={Styles.textoBotaoCadastrar}>JÁ TEM LOGIN?</Text>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaSGP')}>
+          <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovoUsuario()}>
           <Text style={Styles.textoBotaoAcessar}>CADASTRAR</Text>

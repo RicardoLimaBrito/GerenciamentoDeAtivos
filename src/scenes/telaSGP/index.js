@@ -27,6 +27,9 @@ export default function TelaSGP() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaVerificarReservas')}>
           <Text style={Styles.textoBotoesSuperiores}>Verificar reservas</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaCadastrarColaborador')}>
+          <Text style={Styles.textoBotoesSuperiores}>Cadastrar colaboradores</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat online</Text>
         </TouchableOpacity>
