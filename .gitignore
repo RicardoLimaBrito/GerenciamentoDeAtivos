@@ -27,6 +27,7 @@ machineid
 package-lock.json
 rapid_render.json
 storage.json
+src/config
 
 # macOS
 .DS_Store

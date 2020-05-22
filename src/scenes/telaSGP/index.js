@@ -31,7 +31,7 @@ export default function TelaSGP() {
           <Text style={Styles.textoBotoesSuperiores}>Cadastrar colaboradores</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Chat online</Text>
+          <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
           <Text style={Styles.textoBotaoSair}>Sair</Text>

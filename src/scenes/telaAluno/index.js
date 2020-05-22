@@ -38,6 +38,9 @@ export default function TelaAluno() {
           <Text style={Styles.textoBotoesSuperiores}>Ver minhas disciplinas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
+          <Text style={Styles.textoBotoesSuperiores}>Localizar sala</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>

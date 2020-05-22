@@ -43,7 +43,7 @@ export default function TelaConfigurarSalas() {
               maxLength={1}
             />
           </View>
-          <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>getSalasByBloco()}>
+          <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
               <Image
                 style={Styles.imagens}
                 source={{
@@ -98,21 +98,9 @@ export default function TelaConfigurarSalas() {
 
   async function getSalas() {
     setLoading(true)
-    const res = await ref.once('value')
-      .then((res) => {
-        console.log(res)
-        if (res) {
-          setDados([res])
-        } else{
-          setDados([])
-          Alert.alert('Falha ao carregar', 'Nenhuma sala foi inserida.')
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-        Alert.alert('Falha no sistema', 'Erro ao carregar as informações.')
-      })
-      .finally(() => setLoading(false))
+    let res = await ref.once('value')
+    console.log(res)
+    setLoading(false)
   }
 
 }
