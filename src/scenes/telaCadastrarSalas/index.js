@@ -3,58 +3,36 @@ import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, Acti
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 export default function TelaCadastrarSalas() {
-  const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
   const [sala, setSala] = useState({bloco: '', numAndar: '', numSala: '', orientacao: '', disciplinaAtual: '', periodo: ''})
   const [loading, setLoading] = useState(false)
-
-  function inserirNovoUsuario() {
-    if(sala.numAndar=='' || sala.numAndar=='' || sala.numSala=='' || sala.orientacao=='' || sala.periodo!=''){
-      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
-    }else{
-      if(sala.orientacao>=0 || sala.orientacao<=1){
-        Alert.alert('Atenção', 'Digite um 0 ou 1, de acordo com exemplo.')
-      }else{
-        metodoInserir()
-      }
-    }
-  }
-
-  function metodoInserir(){
-    setLoading(true)
-        axios.post('https://gerenciamentodeativosestacio.firebaseio.com/salas.json', {
-          bloco: sala.bloco,
-          numAndar: sala.numAndar,
-          numSala: sala.numSala,
-          orientacao: sala.orientacao,
-          disciplinaAtual: sala.disciplinaAtual,
-          periodo: sala.periodo
-        })
-        .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetudao com sucesso`)
-          limparCampos()
-        })
-        .catch((err) => {
-          console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir nova sala.')
-        })
-        .finally(() => setLoading(false))
-  }
-
-  function limparCampos(){
-    setSala({bloco: '', numAndar: '', numSala: '', orientacao: '', disciplinaAtual: '', periodo: ''})
-  }
+  const [dadosDropDownOrientacao, setDadosDropDownOrientacao] = useState([
+    {value: 'Esquerda'},
+    {value: 'Direita'},
+  ])
+  const [dadosDropDownPeriodo, setDadosDropDownPeriodo] = useState([
+    {value: 'AB - MANHÃ'},
+    {value: 'CD - MANHÃ'},
+    {value: 'EF - MANHÃ'},
+    {value: 'AB - TARDE'},
+    {value: 'CD - TARDE'},
+    {value: 'EF - TARDE'},
+    {value: 'AB - NOITE'},
+    {value: 'CD - NOITE'}
+  ])
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Image
-        style={Styles.redimensionarLogo}
-        source={require('../../../assets/logo.png')}
-      />
-      <Text style={Styles.titulo}>{"Cadastro de salas"}</Text>
-
+      <View style={Styles.imagemContainer}>
+        <Image
+          style={Styles.redimensionarLogo}
+          source={require('../../../assets/logo.png')}
+        />
+      </View>
+      <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
@@ -84,14 +62,11 @@ export default function TelaCadastrarSalas() {
           keyboardType={'decimal-pad'}
         />
       </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={sala.orientacao}
-          placeholder="Digite a orientação (0 = Esquerda, 1= Direita)"
+      <View style={Styles.containerDropDown}>
+        <Dropdown
+          label='Orientação dos corredores'
+          data={dadosDropDownOrientacao}
           onChangeText={texto => setSala({...sala, orientacao: texto})}
-          maxLength={1}
-          keyboardType={'decimal-pad'}
         />
       </View>
       <View style={Styles.containerDosDados}>
@@ -102,11 +77,10 @@ export default function TelaCadastrarSalas() {
           onChangeText={texto => setSala({...sala, disciplinaAtual: texto})}
         />
       </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={sala.periodo}
-          placeholder="Digite o período (Exemplo: AB - manhã)"
+      <View style={Styles.containerDropDown}>
+        <Dropdown
+          label='Período da sala'
+          data={dadosDropDownPeriodo}
           onChangeText={texto => setSala({...sala, periodo: texto})}
         />
       </View>
@@ -122,18 +96,51 @@ export default function TelaCadastrarSalas() {
 
     </View>
   );
+
+  function inserirNovoUsuario() {
+    if(sala.bloco=='' || sala.numAndar=='' || sala.numSala=='' || sala.orientacao=='' || sala.periodo==''){
+      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
+    }else{
+      metodoInserir()
+    }
+  }
+
+  function metodoInserir(){
+    setLoading(true)
+        axios.post('https://gerenciamentodeativosestacio.firebaseio.com/salas.json', {
+          bloco: sala.bloco,
+          numAndar: sala.numAndar,
+          numSala: sala.numSala,
+          orientacao: sala.orientacao,
+          disciplinaAtual: sala.disciplinaAtual,
+          periodo: sala.periodo
+        })
+        .then((res) => {
+          Alert.alert('Sucesso', `Cadastro efetudao com sucesso`)
+          Actions.push('telaConfigurarSalas')
+        })
+        .catch((err) => {
+          console.log(err)
+          Alert.alert('Falha no sistema', 'Erro ao inserir nova sala.')
+        })
+        .finally(() => setLoading(false))
+  }
 }
 
 const Styles = StyleSheet.create({
   containerPrincipal: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
   imagemContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
+  },
+  containerDropDown: {
+    width: 300,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   botaoContainer: {
     flexWrap: 'wrap',
@@ -154,6 +161,7 @@ const Styles = StyleSheet.create({
     color: '#02246c',
     fontWeight: 'bold',
     alignSelf: 'center',
+    justifyContent: 'center',
   },
   containerDosDados: {
     margin: 10,

@@ -1,44 +1,60 @@
 import React, {useState} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
+import { Dropdown } from 'react-native-material-dropdown';
 import { Actions } from 'react-native-router-flux';
 
 export default function TelaLogin() {
-  const [usuario, setUsuario] = useState({matricula: '', senha: ''})
+  const [usuario, setUsuario] = useState({matricula: '', senha: '', tipoDeColaborador: ''})
   const [loading, setLoading] = useState(false)
+  const [dadosDropDown, setDadosDropDown] = useState([
+    {value: 'Aluno'},
+    {value: 'Professor'},
+    {value: 'SGP'}
+  ])
 
   function metodoLogin(){
     setLoading(true)
-    const {matricula, senha} = usuario
-      if(matricula=='' && senha==''){
-        Alert.alert('Informação', 'Digite os dados, por favor')
-      }else if(matricula == '2020' && senha == '1234'){
-        Actions.replace('telaAluno')
-        return null
-      }else if(matricula == '6060' && senha == '1234'){
-        Actions.replace('telaProfessor')
-      }else if(matricula == '0000' && senha == '1234'){
-        Actions.replace('telaSGP')
+    const {matricula, senha, tipoDeColaborador} = usuario
+      if(tipoDeColaborador==''){
+        Alert.alert('Por favor', 'Selecione o tipo de colaborador')
       }else{
-        Alert.alert('Informação', 'Usuário não identificado')
+        if(matricula=='' || senha==''){
+          Alert.alert('Por favor', 'Digite os dados, por favor')
+        }else if(matricula == '2020' && senha == '1234' && tipoDeColaborador=='Aluno'){
+          Actions.replace('telaAluno')
+        }else if(matricula == '6060' && senha == '1234' && tipoDeColaborador=='Professor'){
+          Actions.replace('telaProfessor')
+        }else if(matricula == '0000' && senha == '1234' && tipoDeColaborador=='SGP'){
+          Actions.replace('telaSGP')
+        }else{
+          Alert.alert('Informação', 'Usuário não identificado')
+        }
       }
     setLoading(false)
   }
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Image
-        style={Styles.redimensionarLogo}
-        source={require('../../../assets/logo.png')}
-      />
-
+      <View style={Styles.imagemContainer}>
+        <Image
+          style={Styles.redimensionarLogo}
+          source={require('../../../assets/logo.png')}
+        />
+      </View>
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
-      
+      <View style={Styles.containerDropDown}>
+        <Dropdown
+          label='Tipo de colaborador'
+          data={dadosDropDown}
+          onChangeText={texto => setUsuario({...usuario, tipoDeColaborador: texto})}
+        />
+      </View>
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
           placeholder="Matricula"
-          onChangeText={matricula => setUsuario({...usuario, matricula: matricula})}
+          onChangeText={texto => setUsuario({...usuario, matricula: texto})}
           autoCapitalize={'none'}
           keyboardType={'numeric'}
           
@@ -48,7 +64,7 @@ export default function TelaLogin() {
         <TextInput
           style={{height: 40}}
           placeholder="Senha"
-          onChangeText={senha => setUsuario({...usuario, senha: senha})}
+          onChangeText={texto => setUsuario({...usuario, senha: texto})}
           autoCapitalize={'none'}
           keyboardType={'numeric'}
           secureTextEntry={true}
@@ -76,13 +92,17 @@ export default function TelaLogin() {
 const Styles = StyleSheet.create({
   containerPrincipal: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
   imagemContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
+  },
+  containerDropDown: {
+    width: 300,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   botaoContainer: {
     flexWrap: 'wrap',
@@ -100,6 +120,8 @@ const Styles = StyleSheet.create({
     fontSize: 30,
     color: '#02246c',
     fontWeight: 'bold',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   containerDosDados: {
     margin: 15,

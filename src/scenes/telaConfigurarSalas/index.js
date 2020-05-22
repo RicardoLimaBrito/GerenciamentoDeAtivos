@@ -118,7 +118,7 @@ export default function TelaConfigurarSalas() {
                 Sala: {item.numSala}
               </Text>
               <Text style={{fontSize: 15, marginLeft: 10}}>
-                Orientação: {item.orientacao?'esquerda':'direita'}
+                Orientação: {item.orientacao}
               </Text>
               <Text style={{fontSize: 15, marginLeft: 10}}>
                 Disciplina atual: {item.disciplinaAtual || 'Sala livre'}

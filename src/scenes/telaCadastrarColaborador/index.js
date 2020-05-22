@@ -10,61 +10,11 @@ export default function TelaCadastrarColaborador() {
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
   const [usuario, setUsuario] = useState({tipoDeColaborador: '', matricula: '', nome: '', email: '', senha: ''})
   const [loading, setLoading] = useState(false)
-
-  async function inserirNovoUsuario() {
-    if(usuario.matricula=='' || usuario.nome=='' || usuario.email=='' || usuario.senha=='' || usuario.tipoDeColaborador=='' ){
-      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
-    }else{
-      if(usuario.tipoDeColaborador<0 || usuario.tipoDeColaborador>2){
-        Alert.alert('Atenção', 'Preencha o tipo de colaborador corretamente.')
-      }else{
-        if(usuario.senha==confirmacaoSenha){
-          await metodoInserir()
-        }else{
-          Alert.alert('Atenção', 'As senhas digitadas não são as mesmas.')
-        }
-      }
-    }
-  }
-
-  function metodoInserir(){
-    setLoading(true)
-    let url
-      if(usuario.tipoDeColaborador==0){
-        url = 'https://gerenciamentodeativosestacio.firebaseio.com/alunos.json'
-      }else if(usuario.tipoDeColaborador==1){
-        url = 'https://gerenciamentodeativosestacio.firebaseio.com/professores.json'
-      }else{
-        url = 'https://gerenciamentodeativosestacio.firebaseio.com/sgp.json'
-      }
-      axios.post(`${url}`, {
-        matricula: usuario.matricula,
-        tipoDeColaborador: usuario.tipoDeColaborador,
-        nome: usuario.nome,
-        email: usuario.email,
-        senha: usuario.senha
-      })
-      .then((res) => {
-        Alert.alert('Sucesso', 'Cadastro efetudao com sucesso')
-        Actions.replace('telaSGP')
-      })
-      .catch((err) => {
-        console.log(err)
-        Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
-      })
-      .finally(() => {
-        setLoading(false)
-        criarNovaMatricula()
-      })
-  }
-
-  function criarNovaMatricula(){
-    let matricula = ''
-      do{
-        matricula = Math.floor(Math.random() * 99999999) + 1 ;
-      }while(matricula.length<8)
-    setUsuario({...usuario, matricula: matricula})
-  }
+  const [dadosDropDown, setDadosDropDown] = useState([
+    {value: 'Aluno'},
+    {value: 'Professor'},
+    {value: 'SGP'}
+  ])
 
   useEffect(() => {
     criarNovaMatricula()
@@ -73,19 +23,18 @@ export default function TelaCadastrarColaborador() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Image
-        style={Styles.redimensionarLogo}
-        source={require('../../../assets/logo.png')}
-      />
+      <View style={Styles.imagemContainer}>
+        <Image
+          style={Styles.redimensionarLogo}
+          source={require('../../../assets/logo.png')}
+        />
+      </View>
       <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={usuario.tipoDeColaborador}
-          placeholder="Tipo (0= Aluno, 1= Professor, 2= SGP)"
+      <View style={Styles.containerDropDown}>
+        <Dropdown
+          label='Tipo de colaborador'
+          data={dadosDropDown}
           onChangeText={texto => setUsuario({...usuario, tipoDeColaborador: texto})}
-          keyboardType={'number-pad'}
-          maxLength={1}
         />
       </View>
       <View style={Styles.containerDosDados}>
@@ -141,18 +90,79 @@ export default function TelaCadastrarColaborador() {
       <ActivityIndicator animating={loading} size="large" color="#0000ff" />
     </View>
   );
+
+  function inserirNovoUsuario() {
+    const {matricula, nome, email, senha, tipoDeColaborador} = usuario
+    if(tipoDeColaborador==''){
+      Alert.alert('Por favor', 'Selecione o tipo de colaborador')
+    }else{
+      if(matricula=='' || nome=='' || email=='' || senha==''){
+        Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
+      }else{
+        if(senha==confirmacaoSenha){
+          metodoInserir()
+        }else{
+          Alert.alert('Atenção', 'As senhas digitadas não são as mesmas.')
+        }
+      } 
+    }
+  }
+
+  async function metodoInserir(){
+    setLoading(true)
+    let url
+      if(usuario.tipoDeColaborador=='Aluno'){
+        url = 'https://gerenciamentodeativosestacio.firebaseio.com/alunos.json'
+      }else if(usuario.tipoDeColaborador=='Professor'){
+        url = 'https://gerenciamentodeativosestacio.firebaseio.com/professores.json'
+      }else{
+        url = 'https://gerenciamentodeativosestacio.firebaseio.com/sgp.json'
+      }
+      await axios.post(`${url}`, {
+        matricula: usuario.matricula,
+        tipoDeColaborador: usuario.tipoDeColaborador,
+        nome: usuario.nome,
+        email: usuario.email,
+        senha: usuario.senha
+      })
+      .then((res) => {
+        Alert.alert('Sucesso', 'Cadastro efetudao com sucesso')
+        Actions.replace('telaSGP')
+      })
+      .catch((err) => {
+        console.log(err)
+        Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
+      })
+      .finally(() => {
+        setLoading(false)
+        criarNovaMatricula()
+      })
+  }
+
+  function criarNovaMatricula(){
+    let matricula = ''
+      do{
+        matricula = Math.floor(Math.random() * 99999999) + 1 ;
+      }while(matricula.length<8)
+    setUsuario({...usuario, matricula: matricula})
+  }
+
 }
 
 const Styles = StyleSheet.create({
   containerPrincipal: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
   imagemContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
+  },
+  containerDropDown: {
+    width: 300,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   containerMatricula: {
     alignSelf: 'center',
@@ -184,6 +194,7 @@ const Styles = StyleSheet.create({
     color: '#02246c',
     fontWeight: 'bold',
     alignSelf: 'center',
+    justifyContent: 'center',
   },
   matricula: {
     fontSize: 15,
