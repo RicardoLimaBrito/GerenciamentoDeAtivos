@@ -1,12 +1,25 @@
-import React, {Component} from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { Text, View, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 
 
 export default function TelaProfessor() {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={Styles.containerPrincipal}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      >
+        <View style={Styles.containerModal}>
+          <TouchableOpacity onPress={()=>setModalVisible(false)}>
+            <Text style={Styles.textoBotoesSuperiores}>Fechar tela</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={Styles.imagemContainer}>
         <Image
           style={Styles.redimensionarLogo}
@@ -21,7 +34,7 @@ export default function TelaProfessor() {
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>setModalVisible(true)}>
           <Text style={Styles.textoBotoesSuperiores}>Visualizar minhas salas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaReservarEquipamento')}>
@@ -55,6 +68,16 @@ const Styles = StyleSheet.create({
   botaoContainer: {
     alignItems: 'center',
     margin: 15,
+  },
+  containerModal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 50,
+    width: 300,
+    height: 550,
+    backgroundColor: '#8CC8E8',
+    borderRadius: 15,
   },
   redimensionarLogo: {
       width: 120,

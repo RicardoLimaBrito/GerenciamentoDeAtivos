@@ -1,12 +1,25 @@
-import React, {Component} from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { Text, View, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
 import Constants from 'expo-constants';
 
 import { Actions } from 'react-native-router-flux';
 
 export default function TelaAluno() {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={Styles.containerPrincipal}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      >
+        <View style={Styles.containerModal}>
+          <TouchableOpacity onPress={()=>setModalVisible(false)}>
+            <Text style={Styles.textoBotoesSuperiores}>Fechar tela</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={Styles.imagemContainer}>
         <Image
           style={Styles.redimensionarLogo}
@@ -21,7 +34,7 @@ export default function TelaAluno() {
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>setModalVisible(true)}>
           <Text style={Styles.textoBotoesSuperiores}>Ver minhas disciplinas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
@@ -43,6 +56,16 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
+  },
+  containerModal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 50,
+    width: 300,
+    height: 550,
+    backgroundColor: '#8CC8E8',
+    borderRadius: 15,
   },
   imagemContainer: {
     alignItems: 'center',

@@ -1,15 +1,15 @@
 Tela de Cadastro
-OK 1. Mudar o tipo para um dropdown
+~~~~~~OK~~~~~~ 1. Mudar o tipo para um dropdown ~~~~~~OK~~~~~~
 2. Mandar para o email a matrícula e a senha.
-OK 3. Aparecer a mensagem falando que foi para o email
+~~~~~~OK~~~~~~ 3. Aparecer a mensagem falando que foi para o email ~~~~~~OK~~~~~~
 
 Tela de Login
-OK 1. Adicionar Dropdown para tipo da conta
+~~~~~~OK~~~~~~ 1. Adicionar Dropdown para tipo da conta ~~~~~~OK~~~~~~
 2. Adicionar botão para buscar sala
     2.1. Adicionar dropdown de bloco e depois um de suas salas.
 
 Tela de reservar equipamento
-OK 1. Adicionar um calendário ao clicar no TextInput
+~~~~~~OK~~~~~~ 1. Adicionar um calendário ao clicar no TextInput ~~~~~~OK~~~~~~
 
 Tela de aluno
 1. Botão ver minhas salas -> Acionar um modal que mostra as disciplinas matriculadas
@@ -18,4 +18,4 @@ Tela de professor
 1. Botão ver minhas salas -> Acionar um modal que mostra as disciplinas lecionadas
 
 Tela de Adicionar sala
-OK 1. Adicionar Dropdowns
+~~~~~~OK~~~~~~ 1. Adicionar Dropdowns ~~~~~~OK~~~~~~
