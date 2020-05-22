@@ -9,7 +9,7 @@ OK 1. Adicionar Dropdown para tipo da conta
     2.1. Adicionar dropdown de bloco e depois um de suas salas.
 
 Tela de reservar equipamento
-1. Adicionar um calendário ao clicar no TextInput
+OK 1. Adicionar um calendário ao clicar no TextInput
 
 Tela de aluno
 1. Botão ver minhas salas -> Acionar um modal que mostra as disciplinas matriculadas

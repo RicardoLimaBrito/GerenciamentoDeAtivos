@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
-import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Text } from 'react-native'
-import { TextInputMask } from 'react-native-masked-text'
+import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
 import { Switch, List } from 'react-native-paper'
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
+import DatePicker from 'react-native-datepicker'
 
 export default function TelaReservarEquipamento(){
     const [reserva, setReserva] = useState({
@@ -16,31 +16,41 @@ export default function TelaReservarEquipamento(){
         mouse: false,
         notebook: false
     })
+    const [loading, setLoading] = useState(false)
     
     function alterarValor(nome) {
         setReserva({ ...reserva, [nome]: !reserva[nome] })
+        console.log(reserva)
     }
 
     return(
         <View style={Styles.containerPrincipal}>
-            <Image
-            style={Styles.redimensionarLogo}
-            source={require('../../../assets/logo.png')}
-            />
-            <View style={Styles.containerDosDados}>
-                <TextInputMask
-                    placeholder={'DD/MM/AAAA'}
-                    type={'datetime'}
-                    options={{
-                        format: 'DD/MM/YYYY'
-                    }}
-                    value={reserva.dataRetirada}
-                    onChangeText={input => setReserva({...reserva, dataRetirada: input})}
-                    style={Styles.textoData}
-                    keyboardType={"number-pad"}
+            <View style={Styles.imagemContainer}>
+                <Image
+                style={Styles.redimensionarLogo}
+                source={require('../../../assets/logo.png')}
                 />
             </View>
-            <View style={{ustifyContent: 'center', width: '100%'}}>
+            <View style={{alignSelf: 'center'}}>
+                <DatePicker
+                    style={{width: 300}}
+                    date={reserva.dataRetirada}
+                    mode="date"
+                    placeholder="Selecione a data"
+                    format="DD/MM/YYYY"
+                    minDate="22/05/2020"
+                    maxDate="22/05/2030"
+                    confirmBtnText="Confirmar"
+                    cancelBtnText="Cancelar"
+                    customStyles={{
+                    dateInput: {
+                        marginLeft: 40
+                    }
+                    }}
+                    onDateChange={texto => setReserva({...reserva, dataRetirada: texto})}
+                />
+            </View>
+            <ScrollView style={{width: 300, height: 300, alignSelf: 'center'}}>
                 <List.Item
                     titleStyle={{ color: '#000000' }}
                     title='Adaptador Macbook'
@@ -118,7 +128,7 @@ export default function TelaReservarEquipamento(){
                         />
                     )}
                 />
-            </View>
+            </ScrollView>
             <View style={Styles.botaoContainer}>
                 <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaProfessor')}>
                 <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
@@ -127,17 +137,20 @@ export default function TelaReservarEquipamento(){
                 <Text style={Styles.textoBotaoAcessar}>RESERVAR</Text>
                 </TouchableOpacity>
             </View>
+            {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
         </View>
     )
 }
 
 const Styles = StyleSheet.create({
     containerPrincipal: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingTop: Constants.statusBarHeight,
-      backgroundColor: 'white',
+        flex: 1,
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: 'white',
+    },
+    imagemContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     },
     containerDosDados: {
         margin: 15,

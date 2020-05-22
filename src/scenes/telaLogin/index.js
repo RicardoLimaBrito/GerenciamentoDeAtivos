@@ -84,7 +84,7 @@ export default function TelaLogin() {
           <Text style={Styles.textoBotaoEsqueceuASenha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
-      <ActivityIndicator animating={loading} size="large" color="#0000ff" />
+      {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
     </View>
   );
 }

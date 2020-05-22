@@ -91,9 +91,8 @@ export default function TelaCadastrarSalas() {
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovoUsuario()}>
           <Text style={Styles.textoBotaoAcessar}>CADASTRAR</Text>
         </TouchableOpacity>
-        <ActivityIndicator animating={loading} size="large" color="#0000ff" />
       </View>
-
+      {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
     </View>
   );
 

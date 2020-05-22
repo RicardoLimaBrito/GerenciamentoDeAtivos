@@ -87,7 +87,7 @@ export default function TelaCadastrarColaborador() {
           <Text style={Styles.textoBotaoAcessar}>CADASTRAR</Text>
         </TouchableOpacity>
       </View>
-      <ActivityIndicator animating={loading} size="large" color="#0000ff" />
+      {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
     </View>
   );
 
