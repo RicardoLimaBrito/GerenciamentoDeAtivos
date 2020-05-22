@@ -79,6 +79,9 @@ export default function TelaLogin() {
 const Styles = StyleSheet.create({
   containerPrincipal: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },

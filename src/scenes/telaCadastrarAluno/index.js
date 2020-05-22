@@ -10,12 +10,8 @@ export default function TelaCadastrarAluno() {
   const ref = db.ref('usuarios/')
 
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
-  const [usuario, setUsuario] = useState({tipoDeColaborador: 'Aluno', matricula: '', nome: '', email: '', senha: ''})
+  const [usuario, setUsuario] = useState({tipoDeColaborador: 'Aluno', nome: '', email: '', senha: ''})
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    criarNovaMatricula()
-  }, [])
 
   return (
     <View style={Styles.containerPrincipal}>
