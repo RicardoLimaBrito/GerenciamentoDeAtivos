@@ -2,60 +2,16 @@ import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
-import axios from 'axios'
+import firebase from 'firebase'
 
 
 export default function TelaConfigurarSalas() {
+  const db = firebase.database()
+  const ref = db.ref(`/salas/`)
+
   const [buscarSala, setBuscarSala] = useState(null)
   const [dados, setDados] = useState([])
   const [loading, setLoading] = useState(false)
-
-  function getSalas() {
-    setLoading(true)
-    axios
-      .get(`https://gerenciamentodeativosestacio.firebaseio.com/salas.json`)
-      .then((res) => {
-        if (res.data) {
-          const datalist = Object.entries(res.data).map((e) => {
-            return { ...e[1], id: e[0] }
-          })
-          setDados(datalist)
-        } else{
-          setDados([])
-          Alert.alert('Falha ao carregar', 'Nenhuma sala foi inserida.')
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-        Alert.alert('Falha no sistema', 'Erro ao carregar as informações.')
-      })
-      .finally(() => setLoading(false))
-  }
-
-  function getSalasByBloco() {
-    setLoading(true)
-    axios
-      .get(`https://gerenciamentodeativosestacio.firebaseio.com/salas.json?bloco='${buscarSala}'`)
-      .then((res) => {
-        if (res.data) {
-          const datalist = Object.entries(res.data).map((e) => {
-            return { ...e[1], id: e[0] }
-          })
-          setDados([])
-          setDados(datalist)
-          setBuscarSala(null)
-          console.log(dados)
-        } else{
-          setDados([])
-          Alert.alert('Falha ao carregar', 'Nenhuma sala foi achada.')
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-        Alert.alert('Falha no sistema', 'Erro ao carregar as informações.')
-      })
-      .finally(() => setLoading(false))
-  }
   
   useEffect(() => {
     getSalas()
@@ -139,6 +95,26 @@ export default function TelaConfigurarSalas() {
 
     </View>
   );
+
+  async function getSalas() {
+    setLoading(true)
+    const res = await ref.once('value')
+      .then((res) => {
+        console.log(res)
+        if (res) {
+          setDados([res])
+        } else{
+          setDados([])
+          Alert.alert('Falha ao carregar', 'Nenhuma sala foi inserida.')
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        Alert.alert('Falha no sistema', 'Erro ao carregar as informações.')
+      })
+      .finally(() => setLoading(false))
+  }
+
 }
 
 const Styles = StyleSheet.create({

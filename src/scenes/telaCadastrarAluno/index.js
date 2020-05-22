@@ -2,14 +2,15 @@ import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
-import axios from 'axios';
 import email from 'react-native-email'
-import { Dropdown } from 'react-native-material-dropdown';
-
+import firebase from 'firebase'
 
 export default function TelaCadastrarAluno() {
+  const db = firebase.database()
+  const ref = db.ref('alunos/')
+
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
-  const [usuario, setUsuario] = useState({tipoDeColaborador: '0', matricula: '', nome: '', email: '', senha: ''})
+  const [usuario, setUsuario] = useState({tipoDeColaborador: 'Aluno', matricula: '', nome: '', email: '', senha: ''})
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -77,26 +78,21 @@ export default function TelaCadastrarAluno() {
     </View>
   );
 
-  async function inserirNovoUsuario() {
-    if(usuario.matricula=='' || usuario.nome=='' || usuario.email=='' || usuario.senha=='' || usuario.tipoDeColaborador=='' ){
+  function inserirNovoUsuario() {
+    if(usuario.matricula=='' || usuario.nome=='' || usuario.email=='' || usuario.senha==''){
       Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
     }else{
-      if(usuario.tipoDeColaborador<0 || usuario.tipoDeColaborador>2){
-        Alert.alert('Atenção', 'Preencha o tipo de colaborador corretamente.')
+      if(usuario.senha==confirmacaoSenha){
+        metodoInserir()
       }else{
-        if(usuario.senha==confirmacaoSenha){
-          await metodoInserir()
-        }else{
-          Alert.alert('Atenção', 'As senhas digitadas não são as mesmas.')
-        }
+        Alert.alert('Atenção', 'As senhas digitadas não são as mesmas.')
       }
     }
   }
 
-  function metodoInserir(){
+  async function metodoInserir(){
     setLoading(true)
-    let url = 'https://gerenciamentodeativosestacio.firebaseio.com/alunos.json'
-      axios.post(`${url}`, {
+    const res = await ref.push({
         matricula: usuario.matricula,
         tipoDeColaborador: usuario.tipoDeColaborador,
         nome: usuario.nome,
@@ -104,7 +100,7 @@ export default function TelaCadastrarAluno() {
         senha: usuario.senha
       })
       .then((res) => {
-        Alert.alert('Sucesso', 'Cadastro efetudao com sucesso. Você receberá um email com o login.')
+        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso. Você receberá um email com o login.')
         enviarEmail()
         Actions.replace('telaLogin')
       })
@@ -135,7 +131,7 @@ export default function TelaCadastrarAluno() {
         subject: 'Conta do aplicativo, não excluir',
         body: `Matricula: ${usuario.matricula} - Senha: ${usuario.senha}`
     }).catch(console.error)
-}
+  }
 
 }
 

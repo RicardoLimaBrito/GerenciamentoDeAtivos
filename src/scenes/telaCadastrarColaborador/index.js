@@ -2,11 +2,14 @@ import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
-import axios from 'axios';
 import { Dropdown } from 'react-native-material-dropdown';
+import firebase from 'firebase'
+import email from 'react-native-email'
 
 
 export default function TelaCadastrarColaborador() {
+  const db = firebase.database()
+
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
   const [usuario, setUsuario] = useState({tipoDeColaborador: '', matricula: '', nome: '', email: '', senha: ''})
   const [loading, setLoading] = useState(false)
@@ -110,15 +113,8 @@ export default function TelaCadastrarColaborador() {
 
   async function metodoInserir(){
     setLoading(true)
-    let url
-      if(usuario.tipoDeColaborador=='Aluno'){
-        url = 'https://gerenciamentodeativosestacio.firebaseio.com/alunos.json'
-      }else if(usuario.tipoDeColaborador=='Professor'){
-        url = 'https://gerenciamentodeativosestacio.firebaseio.com/professores.json'
-      }else{
-        url = 'https://gerenciamentodeativosestacio.firebaseio.com/sgp.json'
-      }
-      await axios.post(`${url}`, {
+    const ref = db.ref(`${usuario.tipoDeColaborador}/`)
+    const res = await ref.push({
         matricula: usuario.matricula,
         tipoDeColaborador: usuario.tipoDeColaborador,
         nome: usuario.nome,
@@ -126,7 +122,8 @@ export default function TelaCadastrarColaborador() {
         senha: usuario.senha
       })
       .then((res) => {
-        Alert.alert('Sucesso', 'Cadastro efetudao com sucesso')
+        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso. Você receberá um email com o login.')
+        enviarEmail()
         Actions.replace('telaSGP')
       })
       .catch((err) => {
@@ -138,6 +135,18 @@ export default function TelaCadastrarColaborador() {
         criarNovaMatricula()
       })
   }
+
+  function enviarEmail(){
+    const to = `${usuario.email}` // string or array of email addresses
+    email(to, {
+        // Optional additional arguments
+        cc: '', // string or array of email addresses
+        bcc: '', // string or array of email addresses
+        subject: 'Conta do aplicativo, não excluir',
+        body: `Matricula: ${usuario.matricula} - Senha: ${usuario.senha}`
+    }).catch(console.error)
+  }
+
 
   function criarNovaMatricula(){
     let matricula = ''

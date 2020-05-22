@@ -2,11 +2,14 @@ import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
-import axios from 'axios';
 import { Dropdown } from 'react-native-material-dropdown';
+import firebase from 'firebase'
 
 
 export default function TelaCadastrarSalas() {
+  const db = firebase.database()
+  const ref = db.ref(`salas/`)
+
   const [sala, setSala] = useState({bloco: '', numAndar: '', numSala: '', orientacao: '', disciplinaAtual: '', periodo: ''})
   const [loading, setLoading] = useState(false)
   const [dadosDropDownOrientacao, setDadosDropDownOrientacao] = useState([
@@ -104,9 +107,9 @@ export default function TelaCadastrarSalas() {
     }
   }
 
-  function metodoInserir(){
+  async function metodoInserir(){
     setLoading(true)
-        axios.post('https://gerenciamentodeativosestacio.firebaseio.com/salas.json', {
+    const res = await ref.push({
           bloco: sala.bloco,
           numAndar: sala.numAndar,
           numSala: sala.numSala,
