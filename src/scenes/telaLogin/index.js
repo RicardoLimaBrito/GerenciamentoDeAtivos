@@ -10,20 +10,16 @@ export default function TelaLogin() {
   function metodoLogin(){
     setLoading(true)
     const {email, senha} = usuario
-      if(tipoDeColaborador==''){
-        Alert.alert('Por favor', 'Selecione o tipo de colaborador')
+      if(email=='' || senha==''){
+        Alert.alert('Por favor', 'Digite os dados, por favor')
+      }else if(email == '2020' && senha == '1234'){
+        Actions.replace('telaAluno')
+      }else if(email == '6060' && senha == '1234'){
+        Actions.replace('telaProfessor')
+      }else if(email == '0000' && senha == '1234'){
+        Actions.replace('telaSGP')
       }else{
-        if(email=='' || senha==''){
-          Alert.alert('Por favor', 'Digite os dados, por favor')
-        }else if(email == '2020' && senha == '1234'){
-          Actions.replace('telaAluno')
-        }else if(email == '6060' && senha == '1234'){
-          Actions.replace('telaProfessor')
-        }else if(email == '0000' && senha == '1234'){
-          Actions.replace('telaSGP')
-        }else{
-          Alert.alert('Informação', 'Usuário não identificado')
-        }
+        Alert.alert('Informação', 'Usuário não identificado')
       }
     setLoading(false)
   }
