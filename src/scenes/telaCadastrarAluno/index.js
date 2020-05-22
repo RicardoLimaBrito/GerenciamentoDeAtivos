@@ -7,7 +7,7 @@ import firebase from 'firebase'
 
 export default function TelaCadastrarAluno() {
   const db = firebase.database()
-  const ref = db.ref('alunos/')
+  const ref = db.ref('usuarios/')
 
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
   const [usuario, setUsuario] = useState({tipoDeColaborador: 'Aluno', matricula: '', nome: '', email: '', senha: ''})
@@ -28,7 +28,7 @@ export default function TelaCadastrarAluno() {
         <TextInput
           style={{height: 40}}
           value={usuario.nome}
-          placeholder="Digite seu nome"
+          placeholder="Nome completo"
           onChangeText={texto => setUsuario({...usuario, nome: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
@@ -38,7 +38,7 @@ export default function TelaCadastrarAluno() {
         <TextInput
           style={{height: 40}}
           value={usuario.email}
-          placeholder="Digite seu email"
+          placeholder="Email"
           onChangeText={texto => setUsuario({...usuario, email: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
@@ -48,7 +48,7 @@ export default function TelaCadastrarAluno() {
         <TextInput
           style={{height: 40}}
           value={usuario.senha}
-          placeholder="Digite sua senha"
+          placeholder="Senha"
           onChangeText={texto => setUsuario({...usuario, senha: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
@@ -79,7 +79,7 @@ export default function TelaCadastrarAluno() {
   );
 
   function inserirNovoUsuario() {
-    if(usuario.matricula=='' || usuario.nome=='' || usuario.email=='' || usuario.senha==''){
+    if(usuario.nome=='' || usuario.email=='' || usuario.senha==''){
       Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
     }else{
       if(usuario.senha==confirmacaoSenha){
@@ -93,14 +93,13 @@ export default function TelaCadastrarAluno() {
   async function metodoInserir(){
     setLoading(true)
     const res = await ref.push({
-        matricula: usuario.matricula,
         tipoDeColaborador: usuario.tipoDeColaborador,
         nome: usuario.nome,
         email: usuario.email,
         senha: usuario.senha
       })
       .then((res) => {
-        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso. Você receberá um email com o login.')
+        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso, Você receberá um email.')
         enviarEmail()
         Actions.replace('telaLogin')
       })
@@ -110,16 +109,7 @@ export default function TelaCadastrarAluno() {
       })
       .finally(() => {
         setLoading(false)
-        criarNovaMatricula()
       })
-  }
-
-  function criarNovaMatricula(){
-    let matricula = ''
-      do{
-        matricula = Math.floor(Math.random() * 99999999) + 1 ;
-      }while(matricula.length<8)
-    setUsuario({...usuario, matricula: matricula})
   }
 
   function enviarEmail(){
@@ -129,7 +119,7 @@ export default function TelaCadastrarAluno() {
         cc: '', // string or array of email addresses
         bcc: '', // string or array of email addresses
         subject: 'Conta do aplicativo, não excluir',
-        body: `Matricula: ${usuario.matricula} - Senha: ${usuario.senha}`
+        body: `Email: ${usuario.email} - Senha: ${usuario.senha}`
     }).catch(console.error)
   }
 
@@ -145,17 +135,6 @@ const Styles = StyleSheet.create({
   },
   imagemContainer: {
     alignItems: 'center',
-  },
-  containerMatricula: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#000000',
-    borderWidth: 3,
-    borderRadius: 10,
-    width: 300,
-    backgroundColor: '#424DF4',
-    margin: 15,
   },
   botaoContainer: {
     flexWrap: 'wrap',
@@ -176,13 +155,6 @@ const Styles = StyleSheet.create({
     color: '#02246c',
     fontWeight: 'bold',
     alignSelf: 'center',
-  },
-  matricula: {
-    fontSize: 15,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    margin: 5,
   },
   containerDosDados: {
     margin: 10,

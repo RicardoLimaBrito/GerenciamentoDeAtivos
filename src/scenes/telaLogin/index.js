@@ -1,31 +1,25 @@
 import React, {useState} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-import { Dropdown } from 'react-native-material-dropdown';
 import { Actions } from 'react-native-router-flux';
 
 export default function TelaLogin() {
-  const [usuario, setUsuario] = useState({matricula: '', senha: '', tipoDeColaborador: ''})
+  const [usuario, setUsuario] = useState({email: '', senha: ''})
   const [loading, setLoading] = useState(false)
-  const [dadosDropDown, setDadosDropDown] = useState([
-    {value: 'Aluno'},
-    {value: 'Professor'},
-    {value: 'SGP'}
-  ])
 
   function metodoLogin(){
     setLoading(true)
-    const {matricula, senha, tipoDeColaborador} = usuario
+    const {email, senha} = usuario
       if(tipoDeColaborador==''){
         Alert.alert('Por favor', 'Selecione o tipo de colaborador')
       }else{
-        if(matricula=='' || senha==''){
+        if(email=='' || senha==''){
           Alert.alert('Por favor', 'Digite os dados, por favor')
-        }else if(matricula == '2020' && senha == '1234' && tipoDeColaborador=='Aluno'){
+        }else if(email == '2020' && senha == '1234'){
           Actions.replace('telaAluno')
-        }else if(matricula == '6060' && senha == '1234' && tipoDeColaborador=='Professor'){
+        }else if(email == '6060' && senha == '1234'){
           Actions.replace('telaProfessor')
-        }else if(matricula == '0000' && senha == '1234' && tipoDeColaborador=='SGP'){
+        }else if(email == '0000' && senha == '1234'){
           Actions.replace('telaSGP')
         }else{
           Alert.alert('Informação', 'Usuário não identificado')
@@ -43,18 +37,11 @@ export default function TelaLogin() {
         />
       </View>
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
-      <View style={Styles.containerDropDown}>
-        <Dropdown
-          label='Tipo de colaborador'
-          data={dadosDropDown}
-          onChangeText={texto => setUsuario({...usuario, tipoDeColaborador: texto})}
-        />
-      </View>
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}
-          placeholder="Matricula"
-          onChangeText={texto => setUsuario({...usuario, matricula: texto})}
+          placeholder="Email"
+          onChangeText={texto => setUsuario({...usuario, email: texto})}
           autoCapitalize={'none'}
           keyboardType={'numeric'}
           

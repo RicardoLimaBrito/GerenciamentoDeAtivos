@@ -9,20 +9,16 @@ import email from 'react-native-email'
 
 export default function TelaCadastrarColaborador() {
   const db = firebase.database()
+  const ref = db.ref('usuarios/')
 
   const [confirmacaoSenha, setConfirmacaoSenha] = useState('')
-  const [usuario, setUsuario] = useState({tipoDeColaborador: '', matricula: '', nome: '', email: '', senha: ''})
+  const [usuario, setUsuario] = useState({tipoDeColaborador: '', nome: '', email: '', senha: ''})
   const [loading, setLoading] = useState(false)
   const [dadosDropDown, setDadosDropDown] = useState([
     {value: 'Aluno'},
     {value: 'Professor'},
     {value: 'SGP'}
   ])
-
-  useEffect(() => {
-    criarNovaMatricula()
-  }, [])
-
 
   return (
     <View style={Styles.containerPrincipal}>
@@ -44,7 +40,7 @@ export default function TelaCadastrarColaborador() {
         <TextInput
           style={{height: 40}}
           value={usuario.nome}
-          placeholder="Digite seu nome"
+          placeholder="Nome completo"
           onChangeText={texto => setUsuario({...usuario, nome: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
@@ -54,7 +50,7 @@ export default function TelaCadastrarColaborador() {
         <TextInput
           style={{height: 40}}
           value={usuario.email}
-          placeholder="Digite seu email"
+          placeholder="Email"
           onChangeText={texto => setUsuario({...usuario, email: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
@@ -64,7 +60,7 @@ export default function TelaCadastrarColaborador() {
         <TextInput
           style={{height: 40}}
           value={usuario.senha}
-          placeholder="Digite sua senha"
+          placeholder="Senha"
           onChangeText={texto => setUsuario({...usuario, senha: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
@@ -95,11 +91,11 @@ export default function TelaCadastrarColaborador() {
   );
 
   function inserirNovoUsuario() {
-    const {matricula, nome, email, senha, tipoDeColaborador} = usuario
+    const {nome, email, senha, tipoDeColaborador} = usuario
     if(tipoDeColaborador==''){
       Alert.alert('Por favor', 'Selecione o tipo de colaborador')
     }else{
-      if(matricula=='' || nome=='' || email=='' || senha==''){
+      if(nome=='' || email=='' || senha==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
       }else{
         if(senha==confirmacaoSenha){
@@ -113,16 +109,14 @@ export default function TelaCadastrarColaborador() {
 
   async function metodoInserir(){
     setLoading(true)
-    const ref = db.ref(`${usuario.tipoDeColaborador}/`)
     const res = await ref.push({
-        matricula: usuario.matricula,
         tipoDeColaborador: usuario.tipoDeColaborador,
         nome: usuario.nome,
         email: usuario.email,
         senha: usuario.senha
       })
       .then((res) => {
-        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso. Você receberá um email com o login.')
+        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso, Você receberá um email.')
         enviarEmail()
         Actions.replace('telaSGP')
       })
@@ -132,7 +126,6 @@ export default function TelaCadastrarColaborador() {
       })
       .finally(() => {
         setLoading(false)
-        criarNovaMatricula()
       })
   }
 
@@ -143,17 +136,8 @@ export default function TelaCadastrarColaborador() {
         cc: '', // string or array of email addresses
         bcc: '', // string or array of email addresses
         subject: 'Conta do aplicativo, não excluir',
-        body: `Matricula: ${usuario.matricula} - Senha: ${usuario.senha}`
+        body: `Email: ${usuario.email} - Senha: ${usuario.senha}`
     }).catch(console.error)
-  }
-
-
-  function criarNovaMatricula(){
-    let matricula = ''
-      do{
-        matricula = Math.floor(Math.random() * 99999999) + 1 ;
-      }while(matricula.length<8)
-    setUsuario({...usuario, matricula: matricula})
   }
 
 }
@@ -172,17 +156,6 @@ const Styles = StyleSheet.create({
     width: 300,
     justifyContent: 'center',
     alignSelf: 'center',
-  },
-  containerMatricula: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#000000',
-    borderWidth: 3,
-    borderRadius: 10,
-    width: 300,
-    backgroundColor: '#424DF4',
-    margin: 15,
   },
   botaoContainer: {
     flexWrap: 'wrap',
@@ -204,13 +177,6 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     justifyContent: 'center',
-  },
-  matricula: {
-    fontSize: 15,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    margin: 5,
   },
   containerDosDados: {
     margin: 10,
