@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndi
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase'
+import { FontAwesome } from '@expo/vector-icons'; 
 
 
 export default function TelaConfigurarSalas() {
@@ -61,27 +62,37 @@ export default function TelaConfigurarSalas() {
           data={dados}
           renderItem={({ item }) => (
             <View style={Styles.containerSalas}>
-              <Text style={{fontSize: 20, alignSelf:'center', fontWeight: 'bold'}}>
-                Sala: {item.bloco} - {item.numSala}
-              </Text>
-              <Text style={{fontSize: 15, marginLeft: 10}}>
-                Bloco {item.bloco}
-              </Text>
-              <Text style={{fontSize: 15, marginLeft: 10}}>
-                Andar: {item.numAndar}º andar
-              </Text>
-              <Text style={{fontSize: 15, marginLeft: 10}}>
-                Sala: {item.numSala}
-              </Text>
-              <Text style={{fontSize: 15, marginLeft: 10}}>
-                Orientação: {item.orientacao}
-              </Text>
-              <Text style={{fontSize: 15, marginLeft: 10}}>
-                Disciplina atual: {item.disciplinaAtual || 'Sala livre'}
-              </Text>
-              <Text style={{fontSize: 15, marginLeft: 10}}>
-                Período: {item.periodo}.
-              </Text>
+              <View style={{flex: 3}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
+                  Sala: {item.bloco} - {item.numSala}
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Bloco {item.bloco}
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Andar: {item.numAndar}º andar
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Sala: {item.numSala}
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Orientação: {item.orientacao}
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Disciplina atual: {item.disciplinaAtual || 'Sala livre'}
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Período: {item.periodo}.
+                </Text>
+              </View>
+              <View>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.id)}>
+                  <FontAwesome name="trash" size={25} color="#FF0000" />
+                </TouchableOpacity>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>AtualizarSala(item.id)}>
+                  <FontAwesome name="pencil" size={25} color="#39D716" />
+                </TouchableOpacity>
+              </View>
             </View>
           )}
           keyExtractor={(item, index) => `${index}`}
@@ -99,10 +110,52 @@ export default function TelaConfigurarSalas() {
   async function getSalas() {
     setLoading(true)
     let res = await ref.once('value')
-    const datalist = Object.entries(res.val()).map((e) => {
-      return { ...e[1], id: e[0] }
-    })
-    setDados(datalist)
+      if(res.val()){
+        const datalist = Object.entries(res.val()).map((e) => {
+          return { ...e[1], id: e[0] }
+        })
+        setDados([])
+        setDados(datalist)
+      }else{
+        setDados([])
+        Alert.alert('Atenção', 'Não existem salas cadastradas.')
+      }
+    setLoading(false)
+  }
+
+  async function delSala(id){
+    setLoading(true)
+    Alert.alert('Atenção','Deseja realmente excluir esta sala?',
+      [
+        { text: 'Cancelar' },
+        {
+          text: 'Sim',
+          onPress: () => {
+            ref.child(`${id}`).remove()
+            getSalas()
+          },
+        },
+      ],
+      { cancelable: true }
+    )
+    setLoading(false)
+  }
+
+  async function AtualizarSala(id){
+    setLoading(true)
+    Alert.alert('Atenção','Deseja atualizar esta sala?',
+      [
+        { text: 'Cancelar' },
+        {
+          text: 'Sim',
+          onPress: () => {
+            ref.child(`${id}`).update({bloco: 'G', numSala: 306, orientacao: 'direita'})
+            getSalas()
+          },
+        },
+      ],
+      { cancelable: true }
+    )
     setLoading(false)
   }
 
@@ -142,6 +195,7 @@ const Styles = StyleSheet.create({
 
   },
   containerSalas:{
+    flexDirection: 'row',
     margin: 5,
     backgroundColor: '#f5f5f5',
     width: 300,
@@ -150,6 +204,7 @@ const Styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: 'black',
     borderWidth: 3,
+    alignItems: 'center',
   },
   botaoContainer: {
     flex: 1,
