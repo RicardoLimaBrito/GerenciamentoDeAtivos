@@ -99,7 +99,10 @@ export default function TelaConfigurarSalas() {
   async function getSalas() {
     setLoading(true)
     let res = await ref.once('value')
-    console.log(res)
+    const datalist = Object.entries(res.val()).map((e) => {
+      return { ...e[1], id: e[0] }
+    })
+    setDados(datalist)
     setLoading(false)
   }
 

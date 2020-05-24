@@ -23,14 +23,14 @@ Tela de reservar equipamento
 3. Cria tela de reservas de salas-------------------------------------FAZER-------------------
 
 Tela de aluno
-1. Botão ver minhas salas---------------------------------------------FAZER-------------------
+1. Botão ver minhas salas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
 1.1. Acionar um modal ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
 1.1.1. Mostrar as disciplinas matriculadas----------------------------FAZER-------------------
 2. Criar um botão pesquisa de salas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
 2.1. Adicionar a funcionalidade ao botão------------------------------FAZER-------------------
 
 Tela de professor
-1. Botão ver minhas salas---------------------------------------------FAZER-------------------
+1. Botão ver minhas salas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
 1.1. Acionar um modal ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
 1.1.1. Mostrar as disciplinas lecionadas------------------------------FAZER-------------------
 2. Criar um botão pesquisa de salas ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~

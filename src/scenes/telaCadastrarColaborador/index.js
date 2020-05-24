@@ -4,7 +4,6 @@ import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
-import email from 'react-native-email'
 
 
 export default function TelaCadastrarColaborador() {
@@ -42,7 +41,7 @@ export default function TelaCadastrarColaborador() {
           value={usuario.nome}
           placeholder="Nome completo"
           onChangeText={texto => setUsuario({...usuario, nome: texto})}
-          autoCapitalize={'none'}
+          autoCapitalize={'words'}
           keyboardType={'default'}
         />
       </View>
@@ -63,7 +62,7 @@ export default function TelaCadastrarColaborador() {
           placeholder="Senha"
           onChangeText={texto => setUsuario({...usuario, senha: texto})}
           autoCapitalize={'none'}
-          keyboardType={'default'}
+          keyboardType={'number-pad'}
           secureTextEntry={true}
         />
       </View>
@@ -74,7 +73,7 @@ export default function TelaCadastrarColaborador() {
           placeholder="Confirme sua senha"
           onChangeText={texto => setConfirmacaoSenha(texto)}
           autoCapitalize={'none'}
-          keyboardType={'default'}
+          keyboardType={'number-pad'}
           secureTextEntry={true}
         />
       </View>
@@ -117,7 +116,6 @@ export default function TelaCadastrarColaborador() {
       })
       .then((res) => {
         Alert.alert('Sucesso', 'Cadastro efetuado com sucesso, Você receberá um email.')
-        enviarEmail()
         Actions.replace('telaSGP')
       })
       .catch((err) => {
@@ -127,17 +125,6 @@ export default function TelaCadastrarColaborador() {
       .finally(() => {
         setLoading(false)
       })
-  }
-
-  function enviarEmail(){
-    const to = `${usuario.email}` // string or array of email addresses
-    email(to, {
-        // Optional additional arguments
-        cc: '', // string or array of email addresses
-        bcc: '', // string or array of email addresses
-        subject: 'Conta do aplicativo, não excluir',
-        body: `Email: ${usuario.email} - Senha: ${usuario.senha}`
-    }).catch(console.error)
   }
 
 }

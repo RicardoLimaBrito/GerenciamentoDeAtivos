@@ -39,7 +39,7 @@ export default function TelaLogin() {
           placeholder="Email"
           onChangeText={texto => setUsuario({...usuario, email: texto})}
           autoCapitalize={'none'}
-          keyboardType={'numeric'}
+          keyboardType={'default'}
           
         />
       </View>

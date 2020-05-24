@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
-import email from 'react-native-email'
 import firebase from 'firebase'
 
 export default function TelaCadastrarAluno() {
@@ -26,7 +25,7 @@ export default function TelaCadastrarAluno() {
           value={usuario.nome}
           placeholder="Nome completo"
           onChangeText={texto => setUsuario({...usuario, nome: texto})}
-          autoCapitalize={'none'}
+          autoCapitalize={'words'}
           keyboardType={'default'}
         />
       </View>
@@ -46,8 +45,7 @@ export default function TelaCadastrarAluno() {
           value={usuario.senha}
           placeholder="Senha"
           onChangeText={texto => setUsuario({...usuario, senha: texto})}
-          autoCapitalize={'none'}
-          keyboardType={'default'}
+          keyboardType={'number-pad'}
           secureTextEntry={true}
         />
       </View>
@@ -57,8 +55,7 @@ export default function TelaCadastrarAluno() {
           value={confirmacaoSenha}
           placeholder="Confirme sua senha"
           onChangeText={texto => setConfirmacaoSenha(texto)}
-          autoCapitalize={'none'}
-          keyboardType={'default'}
+          keyboardType={'number-pad'}
           secureTextEntry={true}
         />
       </View>
@@ -96,7 +93,6 @@ export default function TelaCadastrarAluno() {
       })
       .then((res) => {
         Alert.alert('Sucesso', 'Cadastro efetuado com sucesso, Você receberá um email.')
-        enviarEmail()
         Actions.replace('telaLogin')
       })
       .catch((err) => {
@@ -106,17 +102,6 @@ export default function TelaCadastrarAluno() {
       .finally(() => {
         setLoading(false)
       })
-  }
-
-  function enviarEmail(){
-    const to = `${usuario.email}` // string or array of email addresses
-    email(to, {
-        // Optional additional arguments
-        cc: '', // string or array of email addresses
-        bcc: '', // string or array of email addresses
-        subject: 'Conta do aplicativo, não excluir',
-        body: `Email: ${usuario.email} - Senha: ${usuario.senha}`
-    }).catch(console.error)
   }
 
 }
