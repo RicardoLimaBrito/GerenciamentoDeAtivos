@@ -134,6 +134,8 @@ const Styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imagemContainer: {
     justifyContent: 'center',

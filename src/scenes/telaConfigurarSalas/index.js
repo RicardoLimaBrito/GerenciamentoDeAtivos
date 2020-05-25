@@ -44,17 +44,11 @@ export default function TelaConfigurarSalas() {
               maxLength={1}
             />
           </View>
-          <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-              <Image
-                style={Styles.imagens}
-                source={{
-                uri: 'https://images.vexels.com/media/users/3/128198/isolated/preview/f7d19e11011fb8ddfe0d533909dc8ace---cone-de-acampamento-de-lupa-by-vexels.png'
-                }}
-              />
+          <TouchableOpacity style={Styles.containerBotaoPesquisar} onPress={()=>null}>
+            <FontAwesome name="search" size={35} color="#000000" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaCadastrarSalas')}>
-            <Text style={Styles.textoBotoesSuperiores}>Adicionar</Text>
-            <Text style={Styles.textoBotoesSuperiores}>salas</Text>
+          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>Actions.push('telaCadastrarSalas')}>
+            <FontAwesome name="plus" size={35} color="#337861" />
           </TouchableOpacity>
         </View>
         {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -80,9 +74,6 @@ export default function TelaConfigurarSalas() {
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
                   Disciplina atual: {item.disciplinaAtual || 'Sala livre'}
-                </Text>
-                <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Período: {item.periodo}.
                 </Text>
               </View>
               <View>
@@ -174,6 +165,29 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
   },
+  containerBotaoPesquisar: {
+    width: 50,
+    height: 50,
+    backgroundColor: '#dae6c2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    borderColor: '#284474',
+    borderWidth: 1,
+    margin: 5,
+    marginRight: 20,
+  },
+  containerBotaoAdicionar: {
+    width: 50,
+    height: 50,
+    backgroundColor: '#dae6c2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    borderColor: '#284474',
+    borderWidth: 1,
+    margin: 5,
+  },
   containerDosDados:{
     margin: 10,
     borderBottomWidth: 2,
@@ -234,17 +248,6 @@ const Styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
-  },
-  botoesSuperiores: {
-    width: 80,
-    height: 50,
-    backgroundColor: '#dae6c2',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 15,
-    borderColor: '#284474',
-    borderWidth: 1,
-    margin: 5,
   },
   botaoDeSair: {
     width: 320,

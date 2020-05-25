@@ -10,21 +10,39 @@ export default function TelaCadastrarSalas() {
   const db = firebase.database()
   const ref = db.ref(`salas/`)
 
-  const [sala, setSala] = useState({bloco: '', numAndar: '', numSala: '', orientacao: '', disciplinaAtual: '', periodo: ''})
+  const [sala, setSala] = useState({bloco: '', numAndar: '', numSala: '', orientacao: '', disciplinaAtual: ''})
   const [loading, setLoading] = useState(false)
+  const [dadosDropDownBlocos, setDadosDropDownBlocos] = useState([
+    {value: 'A'},
+    {value: 'B'},
+    {value: 'C'},
+    {value: 'D'},
+    {value: 'E'},
+    {value: 'F'},
+    {value: 'G'},
+    {value: 'H'},
+    {value: 'I'},
+    {value: 'J'},
+    {value: 'K'},
+    {value: 'L'},
+    {value: 'M'},
+    {value: 'N'},
+    {value: 'O'},
+    {value: 'P'},
+    {value: 'Q'},
+    {value: 'R'},
+    {value: 'S'},
+    {value: 'T'},
+    {value: 'U'},
+    {value: 'V'},
+    {value: 'W'},
+    {value: 'X'},
+    {value: 'Y'},
+    {value: 'Z'},
+  ])
   const [dadosDropDownOrientacao, setDadosDropDownOrientacao] = useState([
     {value: 'Esquerda'},
     {value: 'Direita'},
-  ])
-  const [dadosDropDownPeriodo, setDadosDropDownPeriodo] = useState([
-    {value: 'AB - MANHÃ'},
-    {value: 'CD - MANHÃ'},
-    {value: 'EF - MANHÃ'},
-    {value: 'AB - TARDE'},
-    {value: 'CD - TARDE'},
-    {value: 'EF - TARDE'},
-    {value: 'AB - NOITE'},
-    {value: 'CD - NOITE'}
   ])
 
   return (
@@ -35,14 +53,12 @@ export default function TelaCadastrarSalas() {
           source={require('../../../assets/logo.png')}
         />
       </View>
-      <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={sala.bloco}
-          placeholder="Digite a letra do bloco"
+      <Text style={Styles.titulo}>{"Cadastro de sala"}</Text>
+      <View style={Styles.containerDropDown}>
+        <Dropdown
+          label='Letra do bloco'
+          data={dadosDropDownBlocos}
           onChangeText={texto => setSala({...sala, bloco: texto})}
-          maxLength={1}
         />
       </View>
       <View style={Styles.containerDosDados}>
@@ -51,7 +67,7 @@ export default function TelaCadastrarSalas() {
           value={sala.numAndar}
           placeholder="Digite o número do andar"
           onChangeText={texto => setSala({...sala, numAndar: texto})}
-          maxLength={2}
+          maxLength={3}
           keyboardType={'decimal-pad'}
         />
       </View>
@@ -80,19 +96,12 @@ export default function TelaCadastrarSalas() {
           onChangeText={texto => setSala({...sala, disciplinaAtual: texto})}
         />
       </View>
-      <View style={Styles.containerDropDown}>
-        <Dropdown
-          label='Período da sala'
-          data={dadosDropDownPeriodo}
-          onChangeText={texto => setSala({...sala, periodo: texto})}
-        />
-      </View>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaConfigurarSalas')}>
-          <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaConfigurarSalas')}>
+          <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovoUsuario()}>
-          <Text style={Styles.textoBotaoAcessar}>CADASTRAR</Text>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovoUsuario()}>
+          <Text style={Styles.textoBotaoCadastrar}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
@@ -100,7 +109,7 @@ export default function TelaCadastrarSalas() {
   );
 
   function inserirNovoUsuario() {
-    if(sala.bloco=='' || sala.numAndar=='' || sala.numSala=='' || sala.orientacao=='' || sala.periodo==''){
+    if(sala.bloco=='' || sala.numAndar=='' || sala.numSala=='' || sala.orientacao==''){
       Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
     }else{
       metodoInserir()
@@ -115,7 +124,6 @@ export default function TelaCadastrarSalas() {
           numSala: sala.numSala,
           orientacao: sala.orientacao,
           disciplinaAtual: sala.disciplinaAtual,
-          periodo: sala.periodo
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetudao com sucesso`)
@@ -134,6 +142,8 @@ const Styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imagemContainer: {
     justifyContent: 'center',
@@ -179,19 +189,19 @@ const Styles = StyleSheet.create({
     alignSelf: 'center',
   },
   textoBotaoAcessar: {
-    fontSize: 15,
+    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
   },
   textoBotaoCadastrar: {
-    fontSize: 15,
+    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
   },
   botaoCadastrar: {
     width: 160,
     height: 50,
-    backgroundColor: '#002566',
+    backgroundColor: '#337861',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
@@ -200,7 +210,7 @@ const Styles = StyleSheet.create({
   botaoAcessar: {
     width: 160,
     height: 50,
-    backgroundColor: '#acd54a',
+    backgroundColor: '#002566',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
