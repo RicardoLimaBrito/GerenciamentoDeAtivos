@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
@@ -61,7 +61,7 @@ export default function TelaLogin() {
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>Acessar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>metodoLogin()}>
+        <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>null}>
           <Text style={Styles.textoLocalizarSala}>Localizar sala</Text>
       </TouchableOpacity>
       </View>

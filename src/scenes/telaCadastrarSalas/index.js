@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -10,7 +10,7 @@ export default function TelaCadastrarSalas() {
   const db = firebase.database()
   const ref = db.ref(`salas/`)
 
-  const [sala, setSala] = useState({bloco: '', numAndar: '', numSala: '', orientacao: '', disciplinaAtual: ''})
+  const [sala, setSala] = useState({bloco: '', andar: '', sala: '', orientacao: '', disciplinaAtual: '', capacidade: ''})
   const [loading, setLoading] = useState(false)
   const [dadosDropDownBlocos, setDadosDropDownBlocos] = useState([
     {value: 'A'},
@@ -40,6 +40,14 @@ export default function TelaCadastrarSalas() {
     {value: 'Y'},
     {value: 'Z'},
   ])
+  const [dadosDropDownAndares, setDadosDropDownAndares] = useState([
+    {value: 'Súbsolo'},
+    {value: 'Térreo'},
+    {value: '1º andar'},
+    {value: '2º andar'},
+    {value: '3º andar'},
+    {value: '4º andar'},
+  ])
   const [dadosDropDownOrientacao, setDadosDropDownOrientacao] = useState([
     {value: 'Esquerda'},
     {value: 'Direita'},
@@ -47,55 +55,64 @@ export default function TelaCadastrarSalas() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <View style={Styles.imagemContainer}>
-        <Image
-          style={Styles.redimensionarLogo}
-          source={require('../../../assets/logo.png')}
-        />
-      </View>
-      <Text style={Styles.titulo}>{"Cadastro de sala"}</Text>
-      <View style={Styles.containerDropDown}>
-        <Dropdown
-          label='Letra do bloco'
-          data={dadosDropDownBlocos}
-          onChangeText={texto => setSala({...sala, bloco: texto})}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={sala.numAndar}
-          placeholder="Digite o número do andar"
-          onChangeText={texto => setSala({...sala, numAndar: texto})}
-          maxLength={3}
-          keyboardType={'decimal-pad'}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={sala.numSala}
-          placeholder="Digite o número da sala"
-          onChangeText={texto => setSala({...sala, numSala: texto})}
-          maxLength={4}
-          keyboardType={'decimal-pad'}
-        />
-      </View>
-      <View style={Styles.containerDropDown}>
-        <Dropdown
-          label='Orientação dos corredores'
-          data={dadosDropDownOrientacao}
-          onChangeText={texto => setSala({...sala, orientacao: texto})}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={sala.disciplinaAtual}
-          placeholder="Digite a disciplina atual ou deixe em branco"
-          onChangeText={texto => setSala({...sala, disciplinaAtual: texto})}
-        />
-      </View>
+        <View style={Styles.imagemContainer}>
+          <Image
+            style={Styles.redimensionarLogo}
+            source={require('../../../assets/logo.png')}
+          />
+        </View>
+        <Text style={Styles.titulo}>{"Cadastro de sala"}</Text>
+      <ScrollView style={{maxHeight: 300}}>
+        <View style={Styles.containerDropDown}>
+          <Dropdown
+            label='Letra do bloco *'
+            data={dadosDropDownBlocos}
+            onChangeText={texto => setSala({...sala, bloco: texto})}
+          />
+        </View>
+        <View style={Styles.containerDropDown}>
+          <Dropdown
+            label='Andar da sala *'
+            data={dadosDropDownAndares}
+            onChangeText={texto => setSala({...sala, andar: texto})}
+          />
+        </View>
+        <View style={Styles.containerDropDown}>
+          <Dropdown
+            label='Orientação dos corredores *'
+            data={dadosDropDownOrientacao}
+            onChangeText={texto => setSala({...sala, orientacao: texto})}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={sala.sala}
+            placeholder="Número da sala *"
+            onChangeText={texto => setSala({...sala, sala: texto})}
+            maxLength={4}
+            keyboardType={'number-pad'}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={sala.capacidade}
+            placeholder="Capacidade de estudantes *"
+            onChangeText={texto => setSala({...sala, capacidade: texto})}
+            maxLength={4}
+            keyboardType={'number-pad'}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={sala.disciplinaAtual}
+            placeholder="Disciplina atual"
+            onChangeText={texto => setSala({...sala, disciplinaAtual: texto})}
+          />
+        </View>
+      </ScrollView>
       <View style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaConfigurarSalas')}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
@@ -109,10 +126,14 @@ export default function TelaCadastrarSalas() {
   );
 
   function inserirNovoUsuario() {
-    if(sala.bloco=='' || sala.numAndar=='' || sala.numSala=='' || sala.orientacao==''){
+    if(sala.bloco=='' || sala.andar=='' || sala.sala=='' || sala.orientacao=='' || sala.capacidade==''){
       Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
     }else{
-      metodoInserir()
+      if(sala.capacidade<=0){
+        Alert.alert('Atenção', 'A capacidade tem que ser maior de 1.')
+      }else{
+        metodoInserir()
+      }
     }
   }
 
@@ -120,10 +141,11 @@ export default function TelaCadastrarSalas() {
     setLoading(true)
     const res = await ref.push({
           bloco: sala.bloco,
-          numAndar: sala.numAndar,
-          numSala: sala.numSala,
+          andar: sala.andar,
+          sala: sala.sala,
           orientacao: sala.orientacao,
           disciplinaAtual: sala.disciplinaAtual,
+          capacidade: sala.capacidade,
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetudao com sucesso`)

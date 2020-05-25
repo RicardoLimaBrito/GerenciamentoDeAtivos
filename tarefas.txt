@@ -13,14 +13,13 @@ Tela de Cadastro de alunos
 
 Tela de Login
 1. Adicionar Dropdown para tipo da conta ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
-2. Adicionar botão para buscar sala-----------------------------------FAZER-------------------
+2. Adicionar botão para buscar sala ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
     2.1. Adicionar dropdown de bloco----------------------------------FAZER-------------------
     2.2. Adicionar dropdown de salas----------------------------------FAZER-------------------
 
 Tela de reservar equipamento
 1. Adicionar um calendário ao clicar no TextInput ~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
-2. Cria tela de reservas de equipamentos -----------------------------FAZER-------------------
-3. Cria tela de reservas de salas-------------------------------------FAZER-------------------
+2. Organizar a tela---------------------------------------------------FAZER-------------------
 
 Tela de aluno
 1. Botão ver minhas salas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OK~~~~~~~~~~~~~~~~~~~~
@@ -37,3 +36,5 @@ Tela de professor
 2.1. Adicionar a funcionalidade ao botão------------------------------FAZER-------------------
 3. Modificar para aparecer as reservas atuais-------------------------FAZER-------------------
 3.1. criar um botão nessa tela para adicionar novas-------------------FAZER-------------------
+4. Cria tela de reservas de equipamentos -----------------------------FAZER-------------------
+5. Cria tela de reservas de salas-------------------------------------FAZER-------------------

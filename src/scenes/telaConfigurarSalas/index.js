@@ -58,19 +58,16 @@ export default function TelaConfigurarSalas() {
             <View style={Styles.containerSalas}>
               <View style={{flex: 3}}>
                 <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
-                  Sala: {item.bloco} - {item.numSala}
+                  Sala: {item.bloco} - {item.sala}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Bloco {item.bloco}
-                </Text>
-                <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Andar: {item.numAndar}º andar
-                </Text>
-                <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Sala: {item.numSala}
+                  Andar: {item.andar}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
                   Orientação: {item.orientacao}
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Capacidade: {item.capacidade}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
                   Disciplina atual: {item.disciplinaAtual || 'Sala livre'}
@@ -80,7 +77,7 @@ export default function TelaConfigurarSalas() {
                 <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.id)}>
                   <FontAwesome name="trash" size={25} color="#FF0000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>AtualizarSala(item.id)}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>catchSala(item.id)}>
                   <FontAwesome name="pencil" size={25} color="#39D716" />
                 </TouchableOpacity>
               </View>
@@ -132,7 +129,7 @@ export default function TelaConfigurarSalas() {
     setLoading(false)
   }
 
-  async function AtualizarSala(id){
+  async function atualizarSala(id, sala){
     setLoading(true)
     Alert.alert('Atenção','Deseja atualizar esta sala?',
       [
@@ -140,7 +137,7 @@ export default function TelaConfigurarSalas() {
         {
           text: 'Sim',
           onPress: () => {
-            ref.child(`${id}`).update({bloco: 'G', numSala: 306, orientacao: 'direita'})
+            ref.child(`${id}`).update({bloco: 'A', andar: '1º andar', sala: '101'})
             getSalas()
           },
         },
