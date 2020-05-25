@@ -54,16 +54,19 @@ export default function TelaLogin() {
         />
       </View>
 
-      <View style={Styles.botaoContainer}>
+      <View style={Styles.containerBotoes}>
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaCadastrarAluno')}>
-          <Text style={Styles.textoBotaoCadastrar}>CADASTRAR - SE</Text>
+          <Text style={Styles.textoBotaoCadastrar}>Cadastrar-se</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
-          <Text style={Styles.textoBotaoAcessar}>ACESSAR</Text>
+          <Text style={Styles.textoBotaoAcessar}>Acessar</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>metodoLogin()}>
+          <Text style={Styles.textoLocalizarSala}>Localizar sala</Text>
+      </TouchableOpacity>
       </View>
-      <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>Actions.push('telaResetarSenha')}>
+      <View style={Styles.containerBotaoEsqueceuSenha}>
+        <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>null}>
           <Text style={Styles.textoBotaoEsqueceuASenha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
@@ -82,6 +85,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   imagemContainer: {
+    paddingTop: Constants.statusBarHeight,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -90,12 +94,18 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
   },
-  botaoContainer: {
+  containerBotoes: {
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 8,
+    margin: 5,
+  },
+  containerBotaoEsqueceuSenha: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   redimensionarLogo: {
       width: 120,
@@ -117,13 +127,13 @@ const Styles = StyleSheet.create({
     borderRadius: 10,
   },
   textoBotaoAcessar: {
-    fontSize: 15,
-    color: 'white',
+    fontSize: 20,
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
   textoBotaoCadastrar: {
-    fontSize: 15,
-    color: 'white',
+    fontSize: 20,
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
   textoBotaoEsqueceuASenha: {
@@ -131,10 +141,15 @@ const Styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
   },
+  textoLocalizarSala: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+  },
   botaoCadastrar: {
     width: 160,
     height: 50,
-    backgroundColor: '#acd54a',
+    backgroundColor: '#337861',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
@@ -144,6 +159,15 @@ const Styles = StyleSheet.create({
     width: 160,
     height: 50,
     backgroundColor: '#002566',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    margin: 5,
+  },
+  botaoLocalizarSala: {
+    width: 320,
+    height: 50,
+    backgroundColor: '#BDA207',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,

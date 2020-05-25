@@ -78,11 +78,11 @@ export default function TelaCadastrarColaborador() {
         />
       </View>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaSGP')}>
-          <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaSGP')}>
+          <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovoUsuario()}>
-          <Text style={Styles.textoBotaoAcessar}>CADASTRAR</Text>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovoUsuario()}>
+          <Text style={Styles.textoBotaoCadastrar}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
@@ -174,19 +174,19 @@ const Styles = StyleSheet.create({
     alignSelf: 'center',
   },
   textoBotaoAcessar: {
-    fontSize: 15,
+    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
   },
   textoBotaoCadastrar: {
-    fontSize: 15,
+    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
   },
   botaoCadastrar: {
     width: 160,
     height: 50,
-    backgroundColor: '#002566',
+    backgroundColor: '#337861',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
@@ -195,7 +195,7 @@ const Styles = StyleSheet.create({
   botaoAcessar: {
     width: 160,
     height: 50,
-    backgroundColor: '#acd54a',
+    backgroundColor: '#002566',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
