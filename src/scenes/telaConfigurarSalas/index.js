@@ -21,18 +21,7 @@ export default function TelaConfigurarSalas() {
   
   return (
     <View style={Styles.containerPrincipal}>
-      <View style={Styles.imagemContainer}>
-        <Image
-          style={Styles.redimensionarLogo}
-          source={require('../../../assets/SGP.png')}
-        />
-        <Image
-          style={Styles.redimensionarLogo}
-          source={require('../../../assets/logo.png')}
-        />
-      </View>
-
-      <Text style={Styles.titulo}>{"Configurando salas"}</Text>
+      <Text style={Styles.titulo}>Configurando salas</Text>
       <View style={Styles.containerDeDados}>
         <View style={{flexDirection: 'row'}}>
           <View style={Styles.containerDosDados}>
@@ -173,11 +162,6 @@ const Styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
-  imagemContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
   containerBotaoPesquisar: {
     width: 50,
     height: 50,
@@ -211,6 +195,8 @@ const Styles = StyleSheet.create({
   },
   containerDeDados:{
     margin: 15,
+    marginTop: 30,
+    marginBottom: 30,
     borderColor: 'black',
     backgroundColor: '#f5f5f5',
     borderWidth: 1,
@@ -235,16 +221,6 @@ const Styles = StyleSheet.create({
   botaoContainer: {
     flex: 1,
     alignItems: 'center',
-  },
-  imagens: {
-    width: 70,
-    height: 70,
-  },
-  redimensionarLogo: {
-      width: 120,
-      height: 120,
-      resizeMode: 'contain',
-      margin: 5,
   },
   titulo: {
     fontSize: 30,

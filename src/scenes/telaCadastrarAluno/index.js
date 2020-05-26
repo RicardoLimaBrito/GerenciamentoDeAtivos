@@ -14,12 +14,8 @@ export default function TelaCadastrarAluno() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Image
-        style={Styles.redimensionarLogo}
-        source={require('../../../assets/logo.png')}
-      />
-      <Text style={Styles.titulo}>{"Cadastro de alunos"}</Text>
-      <ScrollView style={{maxHeight: 200}}>
+      <Text style={Styles.titulo}>Cadastro de alunos</Text>
+      <ScrollView style={{maxHeight: 200, margin: 30}}>
         <View style={Styles.containerDosDados}>
           <TextInput
             style={{height: 40}}
@@ -116,9 +112,6 @@ const Styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
-  imagemContainer: {
-    alignItems: 'center',
-  },
   botaoContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
@@ -126,12 +119,6 @@ const Styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     margin: 8,
-  },
-  redimensionarLogo: {
-      width: 120,
-      height: 120,
-      resizeMode: 'contain',
-      alignSelf: 'center',
   },
   titulo: {
     fontSize: 30,

@@ -40,8 +40,8 @@ export default function TelaProfessor() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Localizar sala</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaReservarEquipamento')}>
-          <Text style={Styles.textoBotoesSuperiores}>Reservar equipamento</Text>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaSolicitacaoReservas')}>
+          <Text style={Styles.textoBotoesSuperiores}>Reservas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>

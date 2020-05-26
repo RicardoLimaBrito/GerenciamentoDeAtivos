@@ -10,6 +10,7 @@ export default function TelaReservarEquipamento(){
     const ref = db.ref('reserva/')
     
     const [reserva, setReserva] = useState({
+        tipoDeReserva: 'Equipamento',
         situacao: 'Em análise',
         dataRetirada: '',
         adaptadorMacbook: false,
@@ -28,12 +29,6 @@ export default function TelaReservarEquipamento(){
 
     return(
         <View style={Styles.containerPrincipal}>
-            <View style={Styles.imagemContainer}>
-                <Image
-                style={Styles.redimensionarLogo}
-                source={require('../../../assets/logo.png')}
-                />
-            </View>
             <Text style={Styles.titulo}>Solicitar reserva</Text>
             <View style={{alignSelf: 'center', margin: 10}}>
                 <DatePicker
@@ -54,7 +49,7 @@ export default function TelaReservarEquipamento(){
                     onDateChange={texto => setReserva({...reserva, dataRetirada: texto})}
                 />
             </View>
-            <ScrollView style={{maxHeight: 300, maxWidth: 300}}>
+            <ScrollView style={{maxHeight: 300, maxWidth: 300, margin: 15}}>
                 <View style={Styles.containerSwitch}>
                     <Switch
                         trackColor={{ false: "#c0c4bc", true: "#799E34" }}
@@ -127,7 +122,7 @@ export default function TelaReservarEquipamento(){
                 </View>
             </ScrollView>
             <View style={Styles.botaoContainer}>
-                <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaProfessor')}>
+                <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaSolicitacaoReservas')}>
                 <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovaReserva()}>
@@ -154,6 +149,7 @@ export default function TelaReservarEquipamento(){
       async function metodoInserir(){
         setLoading(true)
         const res = await ref.push({
+            tipoDeReserva: reserva.tipoDeReserva,
             situacao: reserva.situacao,
             dataRetirada: reserva.dataRetirada,
             adaptadorMacbook: reserva.adaptadorMacbook,
@@ -166,7 +162,7 @@ export default function TelaReservarEquipamento(){
           })
           .then((res) => {
             Alert.alert('Sucesso', 'Solicitação para reservar efetuada com sucesso.')
-            Actions.replace('telaProfessor')
+            Actions.push('telaSolicitacaoReservas')
           })
           .catch((err) => {
             console.log(err)
@@ -231,6 +227,7 @@ const Styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     titulo: {
+        margin: 30,
         fontSize: 30,
         color: '#02246c',
         fontWeight: 'bold',

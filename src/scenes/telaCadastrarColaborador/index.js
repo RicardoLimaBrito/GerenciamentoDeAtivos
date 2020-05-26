@@ -21,14 +21,8 @@ export default function TelaCadastrarColaborador() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <View style={Styles.imagemContainer}>
-        <Image
-          style={Styles.redimensionarLogo}
-          source={require('../../../assets/logo.png')}
-        />
-      </View>
-      <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
-      <ScrollView style={{maxHeight: 200}}>
+      <Text style={Styles.titulo}>Cadastro de colaborador</Text>
+      <ScrollView style={{maxHeight: 200, margin:30}}>
         <View style={Styles.containerDropDown}>
           <Dropdown
             label='Tipo de colaborador'
