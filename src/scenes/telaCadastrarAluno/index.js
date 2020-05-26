@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase'
@@ -19,46 +19,48 @@ export default function TelaCadastrarAluno() {
         source={require('../../../assets/logo.png')}
       />
       <Text style={Styles.titulo}>{"Cadastro de alunos"}</Text>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={usuario.nome}
-          placeholder="Nome completo"
-          onChangeText={texto => setUsuario({...usuario, nome: texto})}
-          autoCapitalize={'words'}
-          keyboardType={'default'}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={usuario.email}
-          placeholder="Email"
-          onChangeText={texto => setUsuario({...usuario, email: texto})}
-          autoCapitalize={'none'}
-          keyboardType={'default'}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={usuario.senha}
-          placeholder="Senha"
-          onChangeText={texto => setUsuario({...usuario, senha: texto})}
-          keyboardType={'number-pad'}
-          secureTextEntry={true}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={confirmacaoSenha}
-          placeholder="Confirme sua senha"
-          onChangeText={texto => setConfirmacaoSenha(texto)}
-          keyboardType={'number-pad'}
-          secureTextEntry={true}
-        />
-      </View>
+      <ScrollView style={{maxHeight: 200}}>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={usuario.nome}
+            placeholder="Nome completo"
+            onChangeText={texto => setUsuario({...usuario, nome: texto})}
+            autoCapitalize={'words'}
+            keyboardType={'default'}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={usuario.email}
+            placeholder="Email"
+            onChangeText={texto => setUsuario({...usuario, email: texto})}
+            autoCapitalize={'none'}
+            keyboardType={'default'}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={usuario.senha}
+            placeholder="Senha"
+            onChangeText={texto => setUsuario({...usuario, senha: texto})}
+            keyboardType={'number-pad'}
+            secureTextEntry={true}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={confirmacaoSenha}
+            placeholder="Confirme sua senha"
+            onChangeText={texto => setConfirmacaoSenha(texto)}
+            keyboardType={'number-pad'}
+            secureTextEntry={true}
+          />
+        </View>
+      </ScrollView>
       <View style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaLogin')}>
           <Text style={Styles.textoBotaoAcessar}>Já tem login?</Text>

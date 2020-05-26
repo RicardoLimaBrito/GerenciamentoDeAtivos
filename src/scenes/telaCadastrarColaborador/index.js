@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -28,55 +28,57 @@ export default function TelaCadastrarColaborador() {
         />
       </View>
       <Text style={Styles.titulo}>{"Cadastro de colaborador"}</Text>
-      <View style={Styles.containerDropDown}>
-        <Dropdown
-          label='Tipo de colaborador'
-          data={dadosDropDown}
-          onChangeText={texto => setUsuario({...usuario, tipoDeColaborador: texto})}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={usuario.nome}
-          placeholder="Nome completo"
-          onChangeText={texto => setUsuario({...usuario, nome: texto})}
-          autoCapitalize={'words'}
-          keyboardType={'default'}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={usuario.email}
-          placeholder="Email"
-          onChangeText={texto => setUsuario({...usuario, email: texto})}
-          autoCapitalize={'none'}
-          keyboardType={'default'}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={usuario.senha}
-          placeholder="Senha"
-          onChangeText={texto => setUsuario({...usuario, senha: texto})}
-          autoCapitalize={'none'}
-          keyboardType={'number-pad'}
-          secureTextEntry={true}
-        />
-      </View>
-      <View style={Styles.containerDosDados}>
-        <TextInput
-          style={{height: 40}}
-          value={confirmacaoSenha}
-          placeholder="Confirme sua senha"
-          onChangeText={texto => setConfirmacaoSenha(texto)}
-          autoCapitalize={'none'}
-          keyboardType={'number-pad'}
-          secureTextEntry={true}
-        />
-      </View>
+      <ScrollView style={{maxHeight: 200}}>
+        <View style={Styles.containerDropDown}>
+          <Dropdown
+            label='Tipo de colaborador'
+            data={dadosDropDown}
+            onChangeText={texto => setUsuario({...usuario, tipoDeColaborador: texto})}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={usuario.nome}
+            placeholder="Nome completo"
+            onChangeText={texto => setUsuario({...usuario, nome: texto})}
+            autoCapitalize={'words'}
+            keyboardType={'default'}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={usuario.email}
+            placeholder="Email"
+            onChangeText={texto => setUsuario({...usuario, email: texto})}
+            autoCapitalize={'none'}
+            keyboardType={'default'}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={usuario.senha}
+            placeholder="Senha"
+            onChangeText={texto => setUsuario({...usuario, senha: texto})}
+            autoCapitalize={'none'}
+            keyboardType={'number-pad'}
+            secureTextEntry={true}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={confirmacaoSenha}
+            placeholder="Confirme sua senha"
+            onChangeText={texto => setConfirmacaoSenha(texto)}
+            autoCapitalize={'none'}
+            keyboardType={'number-pad'}
+            secureTextEntry={true}
+          />
+        </View>
+      </ScrollView>
       <View style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaSGP')}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
