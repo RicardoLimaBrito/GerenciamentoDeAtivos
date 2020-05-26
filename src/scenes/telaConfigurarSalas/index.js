@@ -57,7 +57,7 @@ export default function TelaConfigurarSalas() {
           renderItem={({ item }) => (
             <View style={Styles.containerSalas}>
               <View style={{flex: 3}}>
-                <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', margin: 10}}>
                   Sala: {item.bloco} - {item.sala}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
@@ -74,10 +74,10 @@ export default function TelaConfigurarSalas() {
                 </Text>
               </View>
               <View>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.id)}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.key)}>
                   <FontAwesome name="trash" size={25} color="#FF0000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>catchSala(item.id)}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>catchSala(item.key)}>
                   <FontAwesome name="pencil" size={25} color="#39D716" />
                 </TouchableOpacity>
               </View>
@@ -211,20 +211,19 @@ const Styles = StyleSheet.create({
   },
   containerDeDados:{
     margin: 15,
-    width: '95%',
-    height: '55%',
     borderColor: 'black',
+    backgroundColor: '#f5f5f5',
     borderWidth: 1,
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-
+    maxHeight: 350,
   },
   containerSalas:{
     flexDirection: 'row',
     margin: 5,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#ffffff',
     width: 300,
     height: 200,
     justifyContent: 'center',
