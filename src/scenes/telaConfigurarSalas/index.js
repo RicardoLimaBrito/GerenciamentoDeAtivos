@@ -97,53 +97,69 @@ export default function TelaConfigurarSalas() {
 
   async function getSalas() {
     setLoading(true)
-    let res = await ref.once('value')
-      if(res.val()){
-        const datalist = Object.entries(res.val()).map((e) => {
-          return { ...e[1], id: e[0] }
-        })
-        setDados([])
-        setDados(datalist)
-      }else{
-        setDados([])
-        Alert.alert('Atenção', 'Não existem salas cadastradas.')
+      try {
+        let res = await ref.once('value')
+          if(res.val()){
+            // const datalist = Object.entries(res.val()).map((e) => {
+            //   return { ...e[1], id: e[0] }
+            // })
+            let datalist= []
+            res.forEach((e) => {
+              datalist.push({key: e.key, ...e.val()})
+            })
+            setDados([])
+            setDados(datalist)
+          }else{
+            setDados([])
+            Alert.alert('Atenção', 'Não existem salas cadastradas.')
+          }
+      } catch (error) {
+        Alert.alert('Atenção', error)
       }
     setLoading(false)
   }
 
   async function delSala(id){
     setLoading(true)
-    Alert.alert('Atenção','Deseja realmente excluir esta sala?',
-      [
-        { text: 'Cancelar' },
-        {
-          text: 'Sim',
-          onPress: () => {
-            ref.child(`${id}`).remove()
-            getSalas()
-          },
-        },
-      ],
-      { cancelable: true }
-    )
+      try {
+        Alert.alert('Atenção','Deseja realmente excluir esta sala?',
+          [
+            { text: 'Cancelar' },
+            {
+              text: 'Sim',
+              onPress: () => {
+                ref.child(`${id}`).remove()
+                getSalas()
+              },
+            },
+          ],
+          { cancelable: true }
+        )
+      } catch (error) {
+        Alert.alert('Atenção', error)
+      }
     setLoading(false)
   }
 
   async function atualizarSala(id, sala){
     setLoading(true)
-    Alert.alert('Atenção','Deseja atualizar esta sala?',
-      [
-        { text: 'Cancelar' },
-        {
-          text: 'Sim',
-          onPress: () => {
-            ref.child(`${id}`).update({bloco: 'A', andar: '1º andar', sala: '101'})
-            getSalas()
-          },
-        },
-      ],
-      { cancelable: true }
-    )
+      try {
+        Alert.alert('Atenção','Deseja atualizar esta sala?',
+          [
+            { text: 'Cancelar' },
+            {
+              text: 'Sim',
+              onPress: () => {
+                ref.child(`${id}`).update({bloco: 'A', andar: '1º andar', sala: '101'})
+                getSalas()
+              },
+            },
+          ],
+          { cancelable: true }
+        )
+      } catch (error) {
+        Alert.alert('Atenção', error)
+      }
     setLoading(false)
   }
 
