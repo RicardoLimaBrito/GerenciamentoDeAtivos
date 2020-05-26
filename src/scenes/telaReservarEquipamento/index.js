@@ -1,11 +1,16 @@
 import React, {useState} from 'react'
-import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Alert, Switch, StyleSheet, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker'
+import firebase from 'firebase'
 
 export default function TelaReservarEquipamento(){
+    const db = firebase.database()
+    const ref = db.ref('reserva/')
+    
     const [reserva, setReserva] = useState({
+        situacao: 'Em análise',
         dataRetirada: '',
         adaptadorMacbook: false,
         adaptadorVGA: false,
@@ -19,7 +24,6 @@ export default function TelaReservarEquipamento(){
     
     function alterarValor(nome) {
         setReserva({ ...reserva, [nome]: !reserva[nome] })
-        console.log(reserva)
     }
 
     return(
@@ -30,9 +34,10 @@ export default function TelaReservarEquipamento(){
                 source={require('../../../assets/logo.png')}
                 />
             </View>
-            <View style={{alignSelf: 'center'}}>
+            <Text style={Styles.titulo}>Solicitar reserva</Text>
+            <View style={{alignSelf: 'center', margin: 10}}>
                 <DatePicker
-                    style={{width: 300}}
+                    style={{width: 200}}
                     date={reserva.dataRetirada}
                     mode="date"
                     placeholder="Selecione a data"
@@ -49,25 +54,129 @@ export default function TelaReservarEquipamento(){
                     onDateChange={texto => setReserva({...reserva, dataRetirada: texto})}
                 />
             </View>
-            <ScrollView style={{maxHeight: 300, maxWidth: 250, marginLeft: '20%'}}>
-                {/* onValueChange={(input) => alterarValor('adaptadorMacbook', input)}
-                onValueChange={(input) => alterarValor('adaptadorVGA', input)}
-                onValueChange={(input) => alterarValor('caixaDeSom', input)}
-                onValueChange={() => alterarValor('datashow')}
-                onValueChange={(input) => alterarValor('filtroDeLinha', input)}
-                onValueChange={(input) => alterarValor('mouse', input)} */}
+            <ScrollView style={{maxHeight: 300, maxWidth: 300}}>
+                <View style={Styles.containerSwitch}>
+                    <Switch
+                        trackColor={{ false: "#c0c4bc", true: "#799E34" }}
+                        thumbColor={reserva.adaptadorMacbook ? "#6FDE0E" : "#6f706e"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => alterarValor('adaptadorMacbook')}
+                        value={reserva.adaptadorMacbook}
+                    />
+                    <Text style={{fontSize: 15}}>adaptador para macbook</Text>
+                </View>
+                <View style={Styles.containerSwitch}>
+                    <Switch
+                        trackColor={{ false: "#c0c4bc", true: "#799E34" }}
+                        thumbColor={reserva.adaptadorVGA ? "#6FDE0E" : "#6f706e"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => alterarValor('adaptadorVGA')}
+                        value={reserva.adaptadorVGA}
+                    />
+                    <Text style={{fontSize: 15}}>adaptador VGA</Text>
+                </View>
+                <View style={Styles.containerSwitch}>
+                    <Switch
+                        trackColor={{ false: "#c0c4bc", true: "#799E34" }}
+                        thumbColor={reserva.caixaDeSom ? "#6FDE0E" : "#6f706e"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => alterarValor('caixaDeSom')}
+                        value={reserva.caixaDeSom}
+                    />
+                    <Text style={{fontSize: 15}}>Caixa de som</Text>
+                </View>
+                <View style={Styles.containerSwitch}>
+                    <Switch
+                        trackColor={{ false: "#c0c4bc", true: "#799E34" }}
+                        thumbColor={reserva.datashow ? "#6FDE0E" : "#6f706e"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => alterarValor('datashow')}
+                        value={reserva.datashow}
+                    />
+                    <Text style={{fontSize: 15}}>Datashow</Text>
+                </View>
+                <View style={Styles.containerSwitch}>
+                    <Switch
+                        trackColor={{ false: "#c0c4bc", true: "#799E34" }}
+                        thumbColor={reserva.filtroDeLinha ? "#6FDE0E" : "#6f706e"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => alterarValor('filtroDeLinha')}
+                        value={reserva.filtroDeLinha}
+                    />
+                    <Text style={{fontSize: 15}}>Filtro de linha</Text>
+                </View>
+                <View style={Styles.containerSwitch}>
+                    <Switch
+                        trackColor={{ false: "#c0c4bc", true: "#799E34" }}
+                        thumbColor={reserva.mouse ? "#6FDE0E" : "#6f706e"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => alterarValor('mouse')}
+                        value={reserva.mouse}
+                    />
+                    <Text style={{fontSize: 15}}>Mouse</Text>
+                </View>
+                <View style={Styles.containerSwitch}>
+                    <Switch
+                        trackColor={{ false: "#c0c4bc", true: "#799E34" }}
+                        thumbColor={reserva.notebook ? "#6FDE0E" : "#6f706e"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => alterarValor('notebook')}
+                        value={reserva.notebook}
+                    />
+                    <Text style={{fontSize: 15}}>Notebook</Text>
+                </View>
             </ScrollView>
             <View style={Styles.botaoContainer}>
                 <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaProfessor')}>
                 <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>null}>
+                <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovaReserva()}>
                 <Text style={Styles.textoBotaoAcessar}>RESERVAR</Text>
                 </TouchableOpacity>
             </View>
             {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
         </View>
     )
+
+    function inserirNovaReserva() {
+        if(reserva.dataRetirada==''){
+          Alert.alert('Atenção', 'Você precisa escolher uma data.')
+        }else{
+          if(reserva.adaptadorMacbook==false && reserva.adaptadorVGA==false && reserva.caixaDeSom==false
+            && reserva.datashow==false && reserva.filtroDeLinha==false && reserva.mouse==false && reserva.notebook==false){
+            Alert.alert('Atenção', 'Você precisa selecionar pelo menos um equipamento.')
+          }else{
+            metodoInserir()
+          }
+        }
+      }
+    
+      async function metodoInserir(){
+        setLoading(true)
+        const res = await ref.push({
+            situacao: reserva.situacao,
+            dataRetirada: reserva.dataRetirada,
+            adaptadorMacbook: reserva.adaptadorMacbook,
+            adaptadorVGA: reserva.adaptadorVGA,
+            caixaDeSom: reserva.caixaDeSom,
+            datashow: reserva.datashow,
+            filtroDeLinha: reserva.filtroDeLinha,
+            mouse: reserva.mouse,
+            notebook: reserva.notebook,
+          })
+          .then((res) => {
+            Alert.alert('Sucesso', 'Solicitação para reservar efetuada com sucesso.')
+            Actions.replace('telaProfessor')
+          })
+          .catch((err) => {
+            console.log(err)
+            Alert.alert('Falha no sistema', 'Erro ao socilitar reserva.')
+          })
+          .finally(() => {
+            setLoading(false)
+          })
+      }
+
 }
 
 const Styles = StyleSheet.create({
@@ -75,6 +184,13 @@ const Styles = StyleSheet.create({
         flex: 1,
         paddingTop: Constants.statusBarHeight,
         backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    containerSwitch: {
+        flexDirection: 'row',
+        margin: 10,
+        alignItems: 'center',
     },
     imagemContainer: {
         justifyContent: 'center',
@@ -113,6 +229,12 @@ const Styles = StyleSheet.create({
         fontSize: 15,
         color: 'white',
         fontWeight: 'bold',
+    },
+    titulo: {
+        fontSize: 30,
+        color: '#02246c',
+        fontWeight: 'bold',
+        alignSelf: 'center',
     },
     botaoCadastrar: {
         width: 160,
