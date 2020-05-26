@@ -66,7 +66,7 @@ export default function TelaLogin() {
       </TouchableOpacity>
       </View>
       <View style={Styles.containerBotaoEsqueceuSenha}>
-        <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>Actions.push('telaResetarSenha')}>
           <Text style={Styles.textoBotaoEsqueceuASenha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
