@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
-import { Switch, List } from 'react-native-paper'
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker'
@@ -38,8 +37,8 @@ export default function TelaReservarEquipamento(){
                     mode="date"
                     placeholder="Selecione a data"
                     format="DD/MM/YYYY"
-                    minDate="22/05/2020"
-                    maxDate="22/05/2030"
+                    minDate="27/05/2020"
+                    maxDate="30/12/2050"
                     confirmBtnText="Confirmar"
                     cancelBtnText="Cancelar"
                     customStyles={{
@@ -50,84 +49,13 @@ export default function TelaReservarEquipamento(){
                     onDateChange={texto => setReserva({...reserva, dataRetirada: texto})}
                 />
             </View>
-            <ScrollView style={{width: 300, height: 300, alignSelf: 'center'}}>
-                <List.Item
-                    titleStyle={{ color: '#000000' }}
-                    title='Adaptador Macbook'
-                    left={(props) => (
-                        <Switch
-                        {...props}
-                        value={reserva.adaptadorMacbook}
-                        onValueChange={(input) => alterarValor('adaptadorMacbook', input)}
-                        />
-                    )}
-                />
-                <List.Item
-                    titleStyle={{ color: '#000000' }}
-                    title='Adaptador VGA'
-                    left={(props) => (
-                        <Switch
-                        {...props}
-                        value={reserva.adaptadorVGA}
-                        onValueChange={(input) => alterarValor('adaptadorVGA', input)}
-                        />
-                    )}
-                />
-                <List.Item
-                    titleStyle={{ color: '#000000' }}
-                    title='Caixa de som'
-                    left={(props) => (
-                        <Switch
-                        {...props}
-                        value={reserva.caixaDeSom}
-                        onValueChange={(input) => alterarValor('caixaDeSom', input)}
-                        />
-                    )}
-                />
-                <List.Item
-                    titleStyle={{ color: '#000000' }}
-                    title='Datashow'
-                    left={(props) => (
-                        <Switch
-                        {...props}
-                        value={reserva.datashow}
-                        onValueChange={() => alterarValor('datashow')}
-                        />
-                    )}
-                />
-                <List.Item
-                    titleStyle={{ color: '#000000' }}
-                    title='Filtro de linha'
-                    left={(props) => (
-                        <Switch
-                        {...props}
-                        value={reserva.filtroDeLinha}
-                        onValueChange={(input) => alterarValor('filtroDeLinha', input)}
-                        />
-                    )}
-                />
-                <List.Item
-                    titleStyle={{ color: '#000000' }}
-                    title='Mouse'
-                    left={(props) => (
-                        <Switch
-                        {...props}
-                        value={reserva.mouse}
-                        onValueChange={(input) => alterarValor('mouse', input)}
-                        />
-                    )}
-                />
-                <List.Item
-                    titleStyle={{ color: '#000000' }}
-                    title='Notebook'
-                    left={(props) => (
-                        <Switch
-                        {...props}
-                        value={reserva.notebook}
-                        onValueChange={(input) => alterarValor('notebook', input)}
-                        />
-                    )}
-                />
+            <ScrollView style={{maxHeight: 300, maxWidth: 250, marginLeft: '20%'}}>
+                {/* onValueChange={(input) => alterarValor('adaptadorMacbook', input)}
+                onValueChange={(input) => alterarValor('adaptadorVGA', input)}
+                onValueChange={(input) => alterarValor('caixaDeSom', input)}
+                onValueChange={() => alterarValor('datashow')}
+                onValueChange={(input) => alterarValor('filtroDeLinha', input)}
+                onValueChange={(input) => alterarValor('mouse', input)} */}
             </ScrollView>
             <View style={Styles.botaoContainer}>
                 <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaProfessor')}>
@@ -147,8 +75,6 @@ const Styles = StyleSheet.create({
         flex: 1,
         paddingTop: Constants.statusBarHeight,
         backgroundColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     imagemContainer: {
         justifyContent: 'center',
