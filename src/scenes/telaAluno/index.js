@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
 import Constants from 'expo-constants';
 
 import { Actions } from 'react-native-router-flux';
@@ -33,7 +33,7 @@ export default function TelaAluno() {
 
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
 
-      <View style={Styles.botaoContainer}>
+      <ScrollView style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>setModalVisible(true)}>
           <Text style={Styles.textoBotoesSuperiores}>Ver minhas disciplinas</Text>
         </TouchableOpacity>
@@ -43,10 +43,10 @@ export default function TelaAluno() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
-          <Text style={Styles.textoBotaoSair}>Sair</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
+      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
+        <Text style={Styles.textoBotaoSair}>Sair</Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -81,8 +81,8 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
   },
   botaoContainer: {
-    alignItems: 'center',
     margin: 15,
+    maxHeight: 280,
   },
   redimensionarLogo: {
       width: 120,
@@ -123,7 +123,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    margin: 25,
+    margin: 10,
   },
 });
 

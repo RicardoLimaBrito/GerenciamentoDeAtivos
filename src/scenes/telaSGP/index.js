@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 
@@ -20,7 +20,7 @@ export default function TelaSGP() {
 
       <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
 
-      <View style={Styles.botaoContainer}>
+      <ScrollView style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaConfigurarSalas')}>
           <Text style={Styles.textoBotoesSuperiores}>Configurar salas</Text>
         </TouchableOpacity>
@@ -33,11 +33,10 @@ export default function TelaSGP() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
-          <Text style={Styles.textoBotaoSair}>Sair</Text>
-        </TouchableOpacity>
-      </View>
-
+      </ScrollView>
+      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
+        <Text style={Styles.textoBotaoSair}>Sair</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -56,8 +55,8 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   botaoContainer: {
-    alignItems: 'center',
     margin: 15,
+    maxHeight: 300,
   },
   redimensionarLogo: {
       width: 120,
@@ -98,7 +97,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    margin: 25,
+    margin: 10,
   },
 });
 
