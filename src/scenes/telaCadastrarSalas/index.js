@@ -55,8 +55,8 @@ export default function TelaCadastrarSalas() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Text style={Styles.titulo}>Cadastro de sala</Text>
-      <ScrollView style={{maxHeight: 300, margin:30}}>
+      <Text style={Styles.titulo}>Cadastrar sala</Text>
+      <ScrollView style={{maxHeight: '38%', margin:30}}>
         <View style={Styles.containerDropDown}>
           <Dropdown
             label='Letra do bloco *'

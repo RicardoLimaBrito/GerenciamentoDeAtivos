@@ -220,7 +220,7 @@ const Styles = StyleSheet.create({
     alignSelf: 'center',
   },
   containerDeDados:{
-    margin: 15,
+    margin: 5,
     borderColor: 'black',
     backgroundColor: '#f5f5f5',
     borderWidth: 1,
@@ -228,8 +228,8 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    maxHeight: 350,
-    minWidth: 300,
+    maxWidth: '90%',
+    maxHeight: '70%'
   },
   containerSalas:{
     flexDirection: 'row',
@@ -253,7 +253,8 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
   },
   titulo: {
-    margin: 30,
+    marginTop: 30,
+    margin: 10,
     fontSize: 30,
     color: '#02246c',
     fontWeight: 'bold',

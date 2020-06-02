@@ -9,17 +9,18 @@ export default function TelaProfessor() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-      >
-        <View style={Styles.containerModal}>
-          <TouchableOpacity onPress={()=>setModalVisible(false)}>
-            <Text style={Styles.textoBotoesSuperiores}>Fechar tela</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+      <View style={Styles.containerModal}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}>
+          <View>
+            <TouchableOpacity onPress={()=>setModalVisible(false)}>
+              <Text style={Styles.textoBotoesSuperiores}>Fechar tela</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </View>
       <View style={Styles.imagemContainer}>
         <Image
           style={Styles.redimensionarLogo}
@@ -31,7 +32,7 @@ export default function TelaProfessor() {
         />
       </View>
 
-      <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
+      <Text style={Styles.titulo}>{"Gestão de Ativos"}</Text>
 
       <ScrollView style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>setModalVisible(true)}>
@@ -69,15 +70,14 @@ const Styles = StyleSheet.create({
   },
   botaoContainer: {
     margin: 15,
-    maxHeight: 300,
+    maxHeight: '45%',
   },
   containerModal: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
-    marginTop: 50,
-    width: 300,
-    height: 550,
+    width: '80%',
+    height: '80%',
     backgroundColor: '#8CC8E8',
     borderRadius: 15,
   },

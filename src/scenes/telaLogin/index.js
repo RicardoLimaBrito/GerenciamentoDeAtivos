@@ -32,7 +32,7 @@ export default function TelaLogin() {
           source={require('../../../assets/logo.png')}
         />
       </View>
-      <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
+      <Text style={Styles.titulo}>{"Gestão de Ativos"}</Text>
       <View style={Styles.containerDosDados}>
         <TextInput
           style={{height: 40}}

@@ -18,7 +18,7 @@ export default function TelaSGP() {
         />
       </View>
 
-      <Text style={Styles.titulo}>{"Gerenciamento de Ativos"}</Text>
+      <Text style={Styles.titulo}>{"Gestão de Ativos"}</Text>
 
       <ScrollView style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaConfigurarSalas')}>
@@ -56,7 +56,7 @@ const Styles = StyleSheet.create({
   },
   botaoContainer: {
     margin: 15,
-    maxHeight: 300,
+    maxHeight: '45%',
   },
   redimensionarLogo: {
       width: 120,

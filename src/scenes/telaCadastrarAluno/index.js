@@ -14,8 +14,8 @@ export default function TelaCadastrarAluno() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Text style={Styles.titulo}>Cadastro de alunos</Text>
-      <ScrollView style={{maxHeight: 200, margin: 30}}>
+      <Text style={Styles.titulo}>Novo cadastro</Text>
+      <ScrollView style={{maxHeight: '30%', margin: 30}}>
         <View style={Styles.containerDosDados}>
           <TextInput
             style={{height: 40}}
