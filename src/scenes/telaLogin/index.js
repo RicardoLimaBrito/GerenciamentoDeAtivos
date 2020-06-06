@@ -61,7 +61,7 @@ export default function TelaLogin() {
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>Acessar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>Actions.push('telaLocalizarSala')}>
           <Text style={Styles.textoLocalizarSala}>Localizar sala</Text>
       </TouchableOpacity>
       </View>

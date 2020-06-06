@@ -2,6 +2,7 @@ import React from 'react'
 import { Router, Stack, Scene } from 'react-native-router-flux'
 
 import TelaLogin from './scenes/telaLogin'
+import TelaLocalizarSala from './scenes/telaLocalizarSala'
 import TelaCadastrarAluno from './scenes/telaCadastrarAluno'
 import TelaResetarSenha from './scenes/telaResetarSenha'
 import TelaAluno from './scenes/telaAluno'
@@ -19,6 +20,7 @@ export function Route(props){
         <Router>
             <Stack key="root">
                 <Scene key="telaLogin" component={TelaLogin} title="TelaLogin" hideNavBar={true}/>
+                <Scene key="telaLocalizarSala" component={TelaLocalizarSala} title="TelaLocalizarSala" hideNavBar={true}/>
                 <Scene key="telaCadastrarAluno" component={TelaCadastrarAluno} title="TelaCadastrarAluno" hideNavBar={true}/>
                 <Scene key="telaResetarSenha" component={TelaResetarSenha} title="TelaResetarSenha" hideNavBar={true}/>
                 <Scene key="telaAluno" component={TelaAluno} title="TelaAluno" hideNavBar={true}/>

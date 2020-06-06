@@ -36,7 +36,7 @@ export default function TelaProfessor() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>setModalVisible(true)}>
           <Text style={Styles.textoBotoesSuperiores}>Visualizar minhas salas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaLocalizarSala')}>
           <Text style={Styles.textoBotoesSuperiores}>Localizar sala</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaSolicitacaoReservas')}>
