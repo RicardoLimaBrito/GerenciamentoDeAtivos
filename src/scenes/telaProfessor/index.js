@@ -9,18 +9,16 @@ export default function TelaProfessor() {
 
   return (
     <View style={Styles.containerPrincipal}>
-      <View style={Styles.containerModal}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}>
-          <View>
-            <TouchableOpacity onPress={()=>setModalVisible(false)}>
-              <Text style={Styles.textoBotoesSuperiores}>Fechar tela</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-      </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}>
+        <View style={Styles.containerModal}>
+          <TouchableOpacity onPress={()=>setModalVisible(false)}>
+            <Text style={Styles.textoBotoesSuperiores}>Fechar tela</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={Styles.imagemContainer}>
         <Image
           style={Styles.redimensionarLogo}
@@ -76,6 +74,7 @@ const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     width: '80%',
     height: '80%',
     backgroundColor: '#8CC8E8',
