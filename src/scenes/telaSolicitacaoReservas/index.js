@@ -48,6 +48,9 @@ export default function TelaSolicitacaoReservas() {
                   Situação: {item.situacao}
                 </Text>
                 <Text style={{fontSize: 17, marginLeft: 10}}>
+                  Para o dia {item.dataRetirada} às {item.horaRetirada}
+                </Text>
+                <Text style={{fontSize: 17, marginLeft: 10}}>
                   Solicitações:
                 </Text>
                 <View style={{maxHeight: 300, maxWidth: 300, margin: 10}}>
@@ -236,7 +239,7 @@ const Styles = StyleSheet.create({
     margin: 5,
     backgroundColor: '#ffffff',
     width: 300,
-    height: 430,
+    height: 460,
     justifyContent: 'center',
     borderRadius: 15,
     borderColor: 'black',

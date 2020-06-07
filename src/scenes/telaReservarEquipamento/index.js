@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, ScrollView, Alert, Switch, StyleSheet, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Alert, Switch, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker'
@@ -13,6 +13,7 @@ export default function TelaReservarEquipamento(){
         tipoDeReserva: 'Equipamento',
         situacao: 'Em análise',
         dataRetirada: '',
+        horaRetirada: '',
         adaptadorMacbook: false,
         adaptadorVGA: false,
         caixaDeSom: false,
@@ -22,7 +23,7 @@ export default function TelaReservarEquipamento(){
         notebook: false
     })
     const [loading, setLoading] = useState(false)
-    
+
     function alterarValor(nome) {
         setReserva({ ...reserva, [nome]: !reserva[nome] })
     }
@@ -30,24 +31,36 @@ export default function TelaReservarEquipamento(){
     return(
         <View style={Styles.containerPrincipal}>
             <Text style={Styles.titulo}>Solicitar reserva</Text>
-            <View style={{alignSelf: 'center', margin: 10}}>
-                <DatePicker
-                    style={{width: 200}}
-                    date={reserva.dataRetirada}
-                    mode="date"
-                    placeholder="Selecione a data"
-                    format="DD/MM/YYYY"
-                    minDate="27/05/2020"
-                    maxDate="30/12/2050"
-                    confirmBtnText="Confirmar"
-                    cancelBtnText="Cancelar"
-                    customStyles={{
-                    dateInput: {
-                        marginLeft: 40
-                    }
-                    }}
-                    onDateChange={texto => setReserva({...reserva, dataRetirada: texto})}
-                />
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{margin: 5}}>
+                    <DatePicker
+                        style={{width: 100}}
+                        date={reserva.horaRetirada}
+                        mode="time"
+                        placeholder="Horário"
+                        format="HH:mm"
+                        is24Hour={true}
+                        showIcon={false}
+                        confirmBtnText="Confirmar"
+                        cancelBtnText="Cancelar"
+                        onDateChange={texto => setReserva({...reserva, horaRetirada: texto})}
+                    />
+                </View>
+                <View style={{margin: 5}}>
+                    <DatePicker
+                        style={{width: 100}}
+                        date={reserva.dataRetirada}
+                        mode="date"
+                        placeholder="Data"
+                        format="DD/MM/YYYY"
+                        minDate="01/06/2020"
+                        maxDate="30/12/2050"
+                        confirmBtnText="Confirmar"
+                        cancelBtnText="Cancelar"
+                        showIcon={false}
+                        onDateChange={texto => setReserva({...reserva, dataRetirada: texto})}
+                    />
+                </View>
             </View>
             <ScrollView style={{maxHeight: 300, maxWidth: 300, margin: 15}}>
                 <View style={Styles.containerSwitch}>
@@ -152,6 +165,7 @@ export default function TelaReservarEquipamento(){
             tipoDeReserva: reserva.tipoDeReserva,
             situacao: reserva.situacao,
             dataRetirada: reserva.dataRetirada,
+            horaRetirada: reserva.horaRetirada,
             adaptadorMacbook: reserva.adaptadorMacbook,
             adaptadorVGA: reserva.adaptadorVGA,
             caixaDeSom: reserva.caixaDeSom,
