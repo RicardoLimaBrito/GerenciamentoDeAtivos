@@ -85,7 +85,7 @@ export default function TelaLocalizarSala() {
       { latitude: -3.742280, longitude: -38.502090, titulo: 'Sala: G303', descricao: 'Bloco: G, 3º andar, número 303', pinColor: '#4ed4ae'},
       { latitude: -3.742440, longitude: -38.502160, titulo: 'Sala: G304', descricao: 'Bloco: G, 3º andar, número 304', pinColor: '#4ed4ae'},
       { latitude: -3.742250, longitude: -38.502190, titulo: 'Sala: G305', descricao: 'Bloco: G, 3º andar, número 305', pinColor: '#4ed4ae'},
-      { latitude: -3.742410, longitude: -38.502260, titulo: 'Sala: G304', descricao: 'Bloco: G, 3º andar, número 304', pinColor: '#4ed4ae'},
+      { latitude: -3.742410, longitude: -38.502260, titulo: 'Sala: G306', descricao: 'Bloco: G, 3º andar, número 306', pinColor: '#4ed4ae'},
       
 
       //Bloco F

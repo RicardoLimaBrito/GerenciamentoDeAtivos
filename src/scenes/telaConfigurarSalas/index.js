@@ -53,7 +53,10 @@ export default function TelaConfigurarSalas() {
                   Andar: {item.andar}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Orientação: {item.orientacao}
+                  Latitude: {item.latitude || "Não cadastrado"}
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10}}>
+                  Longitude:  {item.longitude || "Não cadastrado"}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
                   Capacidade: {item.capacidade}
@@ -66,7 +69,7 @@ export default function TelaConfigurarSalas() {
                 <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.key)}>
                   <FontAwesome name="trash" size={25} color="#FF0000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>catchSala(item.key)}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>null}>
                   <FontAwesome name="pencil" size={25} color="#39D716" />
                 </TouchableOpacity>
               </View>
@@ -211,7 +214,7 @@ const Styles = StyleSheet.create({
     margin: 5,
     backgroundColor: '#ffffff',
     width: 300,
-    height: 200,
+    height: 250,
     justifyContent: 'center',
     borderRadius: 15,
     borderColor: 'black',
