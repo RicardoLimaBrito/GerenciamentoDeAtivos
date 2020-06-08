@@ -7,7 +7,7 @@ import firebase from 'firebase'
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-export default function TelaCadastrarSalas() {
+export default function TelaCadastrarLocal() {
   const db = firebase.database()
 
   const [local, setLocal] = useState({
@@ -148,7 +148,7 @@ export default function TelaCadastrarSalas() {
         </View>
       </ScrollView>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaConfigurarSalas')}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.pop()}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovoLocal()}>
@@ -243,7 +243,7 @@ export default function TelaCadastrarSalas() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.push('telaConfigurarSalas')
+          Actions.pop()
         })
         .catch((err) => {
           console.log(err)
@@ -265,7 +265,7 @@ export default function TelaCadastrarSalas() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.push('telaConfigurarSalas')
+          Actions.pop()
         })
         .catch((err) => {
           console.log(err)
@@ -288,7 +288,7 @@ export default function TelaCadastrarSalas() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.push('telaConfigurarSalas')
+          Actions.pop()
         })
         .catch((err) => {
           console.log(err)
@@ -311,7 +311,7 @@ export default function TelaCadastrarSalas() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.push('telaConfigurarSalas')
+          Actions.pop()
         })
         .catch((err) => {
           console.log(err)

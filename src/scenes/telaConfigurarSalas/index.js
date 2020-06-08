@@ -51,7 +51,7 @@ export default function TelaConfigurarSalas() {
           <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getSalasMultiuso()}>
             <FontAwesome name="refresh" size={35} color="#edc453" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>Actions.push('telaCadastrarSalas')}>
+          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>Actions.push('telaCadastrarLocal')}>
             <FontAwesome name="plus" size={35} color="#edc453" />
           </TouchableOpacity>
         </View>
