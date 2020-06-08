@@ -85,7 +85,7 @@ export default function TelaConfigurarSalas() {
                 <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.key)}>
                   <FontAwesome name="trash" size={25} color="#FF0000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>null}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>editarSala(item.key)}>
                   <FontAwesome name="pencil" size={25} color="#39D716" />
                 </TouchableOpacity>
               </View>
@@ -146,22 +146,10 @@ export default function TelaConfigurarSalas() {
     setLoading(false)
   }
 
-  async function atualizarSala(id, sala){
+  async function editarSala(id){
     setLoading(true)
       try {
-        Alert.alert('Atenção','Deseja atualizar esta sala?',
-          [
-            { text: 'Cancelar' },
-            {
-              text: 'Sim',
-              onPress: () => {
-                ref.child(`${id}`).update({bloco: 'A', andar: '1º andar', sala: '101'})
-                getSalas()
-              },
-            },
-          ],
-          { cancelable: true }
-        )
+        Actions.telaEditarLocal({tipoLocal: 'Sala multiuso', key: id});
       } catch (error) {
         Alert.alert('Atenção', error)
       }

@@ -7,11 +7,11 @@ import firebase from 'firebase'
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-export default function TelaCadastrarLocal() {
+export default function TelaEditarLocal() {
   const db = firebase.database()
+  const {tipoLocal, key} = Actions
 
   const [local, setLocal] = useState({
-    tipoLocal: 'Sala multiuso',
     bloco: '',
     andar: '',
     sala: '',
@@ -57,25 +57,15 @@ export default function TelaCadastrarLocal() {
     {value: '3º andar'},
     {value: '4º andar'},
   ])
-  const [dadosDropDownTipoLocal, setDadosDropDownTipoLocal] = useState([
-    {value: 'Sala multiuso'},
-    {value: 'Serviços'},
-    {value: 'Entradas'},
-    {value: 'Estacionamento'},
-  ])
+
+  useEffect(() => {
+    console.log(tipoLocal)
+  }, [])
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Text style={Styles.titulo}>Cadastrar local</Text>
+      <Text style={Styles.titulo}>Editar local</Text>
       <ScrollView style={{maxHeight: '60%',  marginTop: 20, marginBottom: 15}}>
-      <View style={Styles.containerDropDown}>
-          <Dropdown
-            label='Tipo de local *'
-            value={local.tipoLocal}
-            data={dadosDropDownTipoLocal}
-            onChangeText={texto => setLocal({...local, bloco: texto})}
-          />
-        </View>
         <View style={Styles.containerDropDown}>
           <Dropdown
             label='Letra do bloco *'
@@ -153,13 +143,43 @@ export default function TelaCadastrarLocal() {
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.pop()}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovoLocal()}>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>atualizarLocal()}>
           <Text style={Styles.textoBotaoCadastrar}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
     </View>
   );
+
+  async function getLocal() {
+    let ref
+      if(tipoLocal=='Sala multiuso'){
+        ref = db.ref(`locais_salas/`)
+      }else if(tipoLocal=='Serviços'){
+        ref = db.ref(`locais_servicos/`)
+      }else if(tipoLocal=='Entradas'){
+        ref = db.ref(`locais_entradas/`)
+      }else if(tipoLocal=='Estacionamento'){
+        ref = db.ref(`locais_estacionamentos/`)
+      }else{
+        ref = db.ref(`locais_salas/`)
+      }
+    try {
+      let res = await ref.child(`${key}`).once('value')
+      setLocal({
+      bloco: `${res.val().bloco}`,
+      andar: `${res.val().andar}`,
+      sala: `${res.val().sala}`,
+      latitude: `${res.val().latitude}`,
+      longitude: `${res.val().longitude}`,
+      corDoMarkador: `${res.val().corDoMarkador}`,
+      disciplinaAtual: `${res.val().disciplinaAtual}`,
+      capacidade: `${res.val().capacidade}`,})
+    } catch (error) {
+      Alert.alert('Atenção', error)
+    }
+  }
+
 
   async function getLatitude() {
     navigator.geolocation.getCurrentPosition(
@@ -195,45 +215,44 @@ export default function TelaCadastrarLocal() {
     );
   }
 
-  function inserirNovoLocal() {
-    if(local.tipoLocal=='Sala multiuso'){
+  function atualizarLocal() {
+    if(tipoLocal=='Sala multiuso'){
       if(local.bloco=='' || local.andar=='' || local.sala=='' || local.latitude=='' || local.longitude=='' || local.capacidade==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
       }else{
         if(local.capacidade<=0){
           Alert.alert('Atenção', 'A capacidade tem que ser maior de 1.')
         }else{
-          metodoInserirSalaMultiuso()
+          metodoAtualizarSalaMultiuso()
         }
       }
-    }else if(local.tipoLocal=='Serviços'){
+    }else if(tipoLocal=='Serviços'){
       if(local.bloco==''  || local.andar=='' || local.latitude=='' || local.longitude==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
       }else{
-        metodoInserirServico()
+        metodoAtualizarServico()
       }
-    }else if(local.tipoLocal=='Estacionamento'){
+    }else if(tipoLocal=='Estacionamento'){
       if(local.bloco==''  || local.andar=='' || local.latitude=='' || local.longitude=='' || local.capacidade==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
       }else{
-        metodoInserirEstacionamento()
+        metodoAtualizarEstacionamento()
       }   
-    }else if(local.tipoLocal=='Entradas'){
+    }else if(tipoLocal=='Entradas'){
       if(local.bloco==''  || local.latitude=='' || local.longitude==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
       }else{
-        metodoInserirEntrada()
+        metodoAtualizarEntrada()
       }
     }else{
       Alert.alert('Atenção', 'Tipo não reconhecido.')
     }
   }
 
-  async function metodoInserirSalaMultiuso(){
+  async function metodoAtualizarSalaMultiuso(){
     setLoading(true)
     let ref = db.ref(`locais_salas/`)
-    const res = await ref.push({
-          tipoLocal: local.tipoLocal,
+    const res = await ref.child(key).update({
           bloco: local.bloco,
           andar: local.andar,
           sala: local.sala,
@@ -254,11 +273,10 @@ export default function TelaCadastrarLocal() {
         .finally(() => setLoading(false))
   }
 
-  async function metodoInserirServico(){
+  async function metodoAtualizarServico(){
     setLoading(true)
     let ref = db.ref(`locais_servicos/`)
-    const res = await ref.push({
-          tipoLocal: local.tipoLocal,
+    const res = await ref.child(key).update({
           bloco: local.bloco,
           andar: local.andar,
           longitude: local.longitude,
@@ -276,11 +294,10 @@ export default function TelaCadastrarLocal() {
         .finally(() => setLoading(false))
   }
 
-  async function metodoInserirEstacionamento(){
+  async function metodoAtualizarEstacionamento(){
     setLoading(true)
     let ref = db.ref(`locais_estacionamentos/`)
-    const res = await ref.push({
-          tipoLocal: local.tipoLocal,
+    const res = await ref.child(key).update({
           bloco: local.bloco,
           andar: local.andar,
           longitude: local.longitude,
@@ -299,11 +316,10 @@ export default function TelaCadastrarLocal() {
         .finally(() => setLoading(false))
   }
 
-  async function metodoInserirEntrada(){
+  async function metodoAtualizarEntrada(){
     setLoading(true)
     let ref = db.ref(`locais_entradas/`)
-    const res = await ref.push({
-          tipoLocal: local.tipoLocal,
+    const res = await ref.child(key).update({
           bloco: local.bloco,
           andar: local.andar,
           longitude: local.longitude,

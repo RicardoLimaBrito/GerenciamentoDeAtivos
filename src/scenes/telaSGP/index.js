@@ -22,7 +22,7 @@ export default function TelaSGP() {
 
       <ScrollView style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaConfigurarSalas')}>
-          <Text style={Styles.textoBotoesSuperiores}>Configurar salas</Text>
+          <Text style={Styles.textoBotoesSuperiores}>Configurar locais</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaVerificarReservas')}>
           <Text style={Styles.textoBotoesSuperiores}>Verificar reservas</Text>

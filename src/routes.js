@@ -14,6 +14,7 @@ import TelaCadastrarColaborador from './scenes/telaCadastrarColaborador'
 import TelaVerificarReservas from './scenes/telaVerificarReservas'
 import TelaConfigurarSalas from './scenes/telaConfigurarSalas'
 import TelaCadastrarLocal from './scenes/telaCadastrarLocal'
+import TelaEditarLocal from './scenes/telaEditarLocal'
 
 export function Route(props){
     return(
@@ -32,6 +33,7 @@ export function Route(props){
                 <Scene key="telaVerificarReservas" component={TelaVerificarReservas} title="TelaVerificarReservas" hideNavBar={true}/>
                 <Scene key="telaConfigurarSalas" component={TelaConfigurarSalas} title="TelaConfigurarSalas" hideNavBar={true}/>
                 <Scene key="telaCadastrarLocal" component={TelaCadastrarLocal} title="TelaCadastrarLocal" hideNavBar={true}/>
+                <Scene key="telaEditarLocal" component={TelaEditarLocal} title="TelaEditarLocal" hideNavBar={true}/>
             </Stack>
         </Router>
     )
