@@ -6,22 +6,22 @@ import firebase from 'firebase'
 import { FontAwesome, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 
-export default function TelaConfigurarSalas({ navigation }) {
+export default function TelaConfigurarServicos({ navigation }) {
   const db = firebase.database()
+  const ref = db.ref(`locais_servicos`)
 
-  const [local, setLocal] = useState({titulo: 'Salas multiuso', tipoLocal: 'Sala multiuso', referencia: 'locais_salas'})
   const [buscarSala, setBuscarSala] = useState(null)
   const [dados, setDados] = useState([])
   const [loading, setLoading] = useState(false)
   
   useEffect(() => {
-    getLocal()
+    getServicos()
   }, [])
 
   
   return (
     <View style={Styles.containerPrincipal}>
-      <Text style={Styles.titulo}>{local.titulo}</Text>
+      <Text style={Styles.titulo}>Locais de serviços</Text>
       <View style={Styles.containerDeDados}>
         <View style={{flexDirection: 'row'}}>
           <View style={Styles.containerDosDados}>
@@ -36,25 +36,22 @@ export default function TelaConfigurarSalas({ navigation }) {
           <TouchableOpacity style={Styles.containerBotaoPesquisar} onPress={()=>null}>
             <FontAwesome name="search" size={35} color="#000000" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getLocal()}>
-            <FontAwesome name="refresh" size={35} color="#0d0da3" />
-          </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaCadastrarLocal')}>
-            <FontAwesome name="plus" size={35} color="#1d8238" />
-          </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Estacionamentos')}>
+          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>null}>
             <FontAwesome5 name="parking" size={35} color="#000000" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Serviços')}>
-            <FontAwesome name="bullhorn" size={35} color="#919492" />
+          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>navigation.navigate('TelaConfigurarSalas')}>
+            <MaterialCommunityIcons name="google-classroom" size={35} color="#edc453" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Entradas')}>
+          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>null}>
             <FontAwesome name="arrow-circle-up" size={35} color="#6cb7f5" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Sala multiuso')}>
-            <MaterialCommunityIcons name="google-classroom" size={35} color="#edc453" />
+          <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getServicos()}>
+            <FontAwesome name="refresh" size={35} color="#919492" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaCadastrarLocal')}>
+            <FontAwesome name="plus" size={35} color="#919492" />
           </TouchableOpacity>
         </View>
         {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -64,16 +61,13 @@ export default function TelaConfigurarSalas({ navigation }) {
             <View style={Styles.containerSalas}>
               <View style={{flex: 3}}>
                 <Text style={{fontSize: 20, fontWeight: 'bold', margin: 10}}>
-                  Nome: {item.nomeLocal}
-                </Text>
-                <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Local: bloco {item.bloco} - {item.andar}
+                  Sala: {item.bloco} - {item.sala}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
                   Capacidade: {item.capacidade}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Descrição: {item.descricao || 'Sem descrição'}
+                  Disciplina atual: {item.disciplinaAtual || 'Sala livre'}
                 </Text>
                 <MapView style={{ margin: 10, width: 200, height: 100 }}
                   initialRegion={{latitude: parseFloat(item.latitude), longitude: parseFloat(item.longitude), latitudeDelta: 0.001,longitudeDelta: 0.001}}
@@ -87,10 +81,10 @@ export default function TelaConfigurarSalas({ navigation }) {
                 </MapView>
               </View>
               <View>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>delLocal(item.key)}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.key)}>
                   <FontAwesome name="trash" size={25} color="#FF0000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>navigation.navigate('TelaEditarLocal', {tipoLocal: `${local.tipoLocal}`, key: item.key})}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>navigation.navigate('TelaEditarLocal', {tipoLocal: 'Serviços', key: item.key})}>
                   <FontAwesome name="pencil" size={25} color="#39D716" />
                 </TouchableOpacity>
               </View>
@@ -108,31 +102,8 @@ export default function TelaConfigurarSalas({ navigation }) {
     </View>
   );
 
-  function mudarReferencia(tipo){
-    try {
-      setLocal({})
-        if(tipo=='Sala multiuso'){
-          setLocal({titulo: 'Salas multiuso', tipoLocal: `${tipo}`, referencia: 'locais_salas'})
-        }else if(tipo=='Serviços'){
-          setLocal({titulo: 'Locais dos serviços', tipoLocal: `${tipo}`, referencia: 'locais_servicos'})
-        }else if(tipo=='Estacionamentos'){
-          setLocal({titulo: 'Estacionamentos', tipoLocal: `${tipo}`, referencia: 'locais_estacionamentos'})
-        }else if(tipo=='Entradas'){
-          setLocal({titulo: 'Entradas', tipoLocal: `${tipo}`, referencia: 'locais_entradas'})
-        }else{
-          setLocal({titulo: 'Salas multiuso', tipoLocal: `${tipo}`, referencia: 'locais_salas'})
-          Alert.alert('Atenção', 'Tipo não reconhecido.')
-        }
-      getLocal()
-    } catch (error) {
-      Alert.alert('Atenção', `${error}`)
-    }
-  }
-
-  async function getLocal() {
+  async function getServicos() {
     setLoading(true)
-    setDados([])
-    const ref = db.ref(`${local.referencia}`)
       try {
         let res = await ref.orderByChild('bloco').once('value')
           if(res.val()){
@@ -140,8 +111,10 @@ export default function TelaConfigurarSalas({ navigation }) {
             res.forEach((e) => {
               datalist.push({key: e.key, ...e.val()})
             })
+            setDados([])
             setDados(datalist)
           }else{
+            setDados([])
             Alert.alert('Atenção', 'Não existem locais cadastrados.')
           }
       } catch (error) {
@@ -150,21 +123,8 @@ export default function TelaConfigurarSalas({ navigation }) {
     setLoading(false)
   }
 
-  async function delLocal(id){
+  async function delSala(id){
     setLoading(true)
-    let referencia = 'locais_salas'
-      if(tipoLocal=='Sala multiuso'){
-        referencia = 'locais_salas'
-      }else if(tipoLocal=='Serviços'){
-        referencia = 'locais_servicos'
-      }else if(tipoLocal=='Estacionamento'){
-        referencia = 'locais_estacionamentos'
-      }else if(tipoLocal=='Entradas'){
-        referencia = 'locais_entradas'
-      }else{
-        Alert.alert('Atenção', 'Tipo não reconhecido.')
-      }
-    let ref = db.ref(`${referencia}`)
       try {
         Alert.alert('Atenção','Deseja realmente excluir este local?',
           [
@@ -173,7 +133,7 @@ export default function TelaConfigurarSalas({ navigation }) {
               text: 'Sim',
               onPress: () => {
                 ref.child(`${id}`).remove()
-                getLocal()
+                getServicos()
               },
             },
           ],

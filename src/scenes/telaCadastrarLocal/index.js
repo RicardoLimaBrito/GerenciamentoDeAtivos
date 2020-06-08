@@ -11,14 +11,15 @@ export default function TelaCadastrarLocal({ navigation }) {
 
   const [local, setLocal] = useState({
     tipoLocal: 'Sala multiuso',
+    capacidade: '',
     bloco: '',
     andar: '',
-    sala: '',
+    nomeLocal: '',
+    descricao: '',
     latitude: '',
     longitude: '',
     corDoMarkador: '',
-    disciplinaAtual: '',
-    capacidade: ''})
+    })
   const [loading, setLoading] = useState(false)
   const [dadosDropDownBlocos, setDadosDropDownBlocos] = useState([
     {value: 'A'},
@@ -72,7 +73,17 @@ export default function TelaCadastrarLocal({ navigation }) {
             label='Tipo de local *'
             value={local.tipoLocal}
             data={dadosDropDownTipoLocal}
-            onChangeText={texto => setLocal({...local, bloco: texto})}
+            onChangeText={texto => setLocal({...local, tipoLocal: texto})}
+          />
+        </View>
+        <View style={Styles.containerDosDados}>
+          <TextInput
+            style={{height: 40}}
+            value={local.capacidade}
+            placeholder="Capacidade"
+            onChangeText={texto => setLocal({...local, capacidade: texto})}
+            maxLength={4}
+            keyboardType={'number-pad'}
           />
         </View>
         <View style={Styles.containerDropDown}>
@@ -94,29 +105,19 @@ export default function TelaCadastrarLocal({ navigation }) {
         <View style={Styles.containerDosDados}>
           <TextInput
             style={{height: 40}}
-            value={local.sala}
-            placeholder="Número do local *"
-            onChangeText={texto => setLocal({...local, sala: texto})}
-            maxLength={4}
-            keyboardType={'number-pad'}
+            value={local.nomeLocal}
+            placeholder="Nome do local *"
+            onChangeText={texto => setLocal({...local, nomeLocal: texto})}
+            maxLength={50}
           />
         </View>
         <View style={Styles.containerDosDados}>
           <TextInput
-            style={{height: 40}}
-            value={local.capacidade}
-            placeholder="Capacidade de estudantes *"
-            onChangeText={texto => setLocal({...local, capacidade: texto})}
-            maxLength={4}
-            keyboardType={'number-pad'}
-          />
-        </View>
-        <View style={Styles.containerDosDados}>
-          <TextInput
-            style={{height: 40}}
-            value={local.disciplinaAtual}
-            placeholder="Disciplina atual"
-            onChangeText={texto => setLocal({...local, disciplinaAtual: texto})}
+            value={local.descricao}
+            placeholder="Descrição"
+            onChangeText={texto => setLocal({...local, descricao: texto})}
+            maxLength={115}
+            multiline={true}
           />
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -127,7 +128,7 @@ export default function TelaCadastrarLocal({ navigation }) {
             <TextInput
               style={{height: 40, textAlign: 'center'}}
               value={local.latitude}
-              placeholder="Latitude"
+              placeholder="Latitude *"
               keyboardType={'number-pad'}
               maxLength={15}
               onChangeText={texto => setLocal({...local, latitude: texto})}
@@ -137,7 +138,7 @@ export default function TelaCadastrarLocal({ navigation }) {
             <TextInput
               style={{height: 40, textAlign: 'center'}}
               value={local.longitude}
-              placeholder="Longitude"
+              placeholder="Longitude *"
               maxLength={15}
               onChangeText={texto => setLocal({...local, longitude: texto})}
               keyboardType={'number-pad'}
@@ -195,120 +196,54 @@ export default function TelaCadastrarLocal({ navigation }) {
   }
 
   function inserirNovoLocal() {
-    if(local.tipoLocal=='Sala multiuso'){
-      if(local.bloco=='' || local.andar=='' || local.sala=='' || local.latitude=='' || local.longitude=='' || local.capacidade==''){
-        Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
+    if(local.bloco=='' || local.andar=='' || local.nomeLocal=='' || local.latitude=='' || local.longitude==''){
+      Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
+    }else{
+      if(local.capacidade==''){
+        if(local.tipoLocal=='Sala multiuso'){
+          metodoInserirLocal('#edc453', 'locais_salas')
+        }else if(local.tipoLocal=='Serviços'){
+          metodoInserirLocal('#919492', 'locais_servicos')
+        }else if(local.tipoLocal=='Estacionamento'){
+          metodoInserirLocal('#250c87', 'locais_estacionamentos')
+        }else if(local.tipoLocal=='Entradas'){
+          metodoInserirLocal('#6cb7f5', 'locais_entradas')
+        }else{
+          Alert.alert('Atenção', 'Tipo não reconhecido.')
+        }
       }else{
         if(local.capacidade<=0){
           Alert.alert('Atenção', 'A capacidade tem que ser maior de 1.')
         }else{
-          metodoInserirSalaMultiuso()
+          if(local.tipoLocal=='Sala multiuso'){
+            metodoInserirLocal('#edc453', 'locais_salas')
+          }else if(local.tipoLocal=='Serviços'){
+            metodoInserirLocal('#919492', 'locais_servicos')
+          }else if(local.tipoLocal=='Estacionamento'){
+            metodoInserirLocal('#250c87', 'locais_estacionamentos')
+          }else if(local.tipoLocal=='Entradas'){
+            metodoInserirLocal('#6cb7f5', 'locais_entradas')
+          }else{
+            Alert.alert('Atenção', 'Tipo não reconhecido.')
+          }
         }
       }
-    }else if(local.tipoLocal=='Serviços'){
-      if(local.bloco==''  || local.andar=='' || local.latitude=='' || local.longitude==''){
-        Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
-      }else{
-        metodoInserirServico()
-      }
-    }else if(local.tipoLocal=='Estacionamento'){
-      if(local.bloco==''  || local.andar=='' || local.latitude=='' || local.longitude=='' || local.capacidade==''){
-        Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
-      }else{
-        metodoInserirEstacionamento()
-      }   
-    }else if(local.tipoLocal=='Entradas'){
-      if(local.bloco==''  || local.latitude=='' || local.longitude==''){
-        Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
-      }else{
-        metodoInserirEntrada()
-      }
-    }else{
-      Alert.alert('Atenção', 'Tipo não reconhecido.')
     }
   }
 
-  async function metodoInserirSalaMultiuso(){
+  async function metodoInserirLocal(corMarkador, referencia){
     setLoading(true)
-    let ref = db.ref(`locais_salas/`)
+    let ref = db.ref(`${referencia}`)
     const res = await ref.push({
           tipoLocal: local.tipoLocal,
-          bloco: local.bloco,
-          andar: local.andar,
-          sala: local.sala,
-          longitude: local.longitude,
-          latitude: local.latitude,
-          corDoMarkador: '#edc453',
-          disciplinaAtual: local.disciplinaAtual,
           capacidade: local.capacidade,
-        })
-        .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          navigation.goBack()
-        })
-        .catch((err) => {
-          console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo local.')
-        })
-        .finally(() => setLoading(false))
-  }
-
-  async function metodoInserirServico(){
-    setLoading(true)
-    let ref = db.ref(`locais_servicos/`)
-    const res = await ref.push({
-          tipoLocal: local.tipoLocal,
           bloco: local.bloco,
           andar: local.andar,
+          nomeLocal: local.nomeLocal,
+          descricao: local.descricao,
           longitude: local.longitude,
           latitude: local.latitude,
-          corDoMarkador: '#919492',
-        })
-        .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          navigation.goBack()
-        })
-        .catch((err) => {
-          console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo local.')
-        })
-        .finally(() => setLoading(false))
-  }
-
-  async function metodoInserirEstacionamento(){
-    setLoading(true)
-    let ref = db.ref(`locais_estacionamentos/`)
-    const res = await ref.push({
-          tipoLocal: local.tipoLocal,
-          bloco: local.bloco,
-          andar: local.andar,
-          longitude: local.longitude,
-          latitude: local.latitude,
-          corDoMarkador: '#000000',
-          capacidade: local.capacidade
-        })
-        .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          navigation.goBack()
-        })
-        .catch((err) => {
-          console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo local.')
-        })
-        .finally(() => setLoading(false))
-  }
-
-  async function metodoInserirEntrada(){
-    setLoading(true)
-    let ref = db.ref(`locais_entradas/`)
-    const res = await ref.push({
-          tipoLocal: local.tipoLocal,
-          bloco: local.bloco,
-          andar: local.andar,
-          longitude: local.longitude,
-          latitude: local.latitude,
-          corDoMarkador: '#6cb7f5',
-          capacidade: local.capacidade
+          corDoMarkador: `${corMarkador}`,
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
