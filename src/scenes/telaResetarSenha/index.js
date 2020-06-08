@@ -1,9 +1,8 @@
 import React, {Component, useState} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 
-export default function TelaResetarSenha() {
+export default function TelaResetarSenha({ navigation }) {
   const [email, setEmail] = useState('');
 
 
@@ -28,7 +27,7 @@ export default function TelaResetarSenha() {
       </View>
 
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoVoltar} onPress={()=>Actions.push('telaLogin')}>
+        <TouchableOpacity style={Styles.botaoVoltar} onPress={()=>navigation.navigate('TelaLogin')}>
           <Text style={Styles.textoBotaoVoltar}>Voltar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoEnviar} onPress={()=>null}>

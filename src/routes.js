@@ -1,5 +1,8 @@
-import React from 'react'
-import { Router, Stack, Scene } from 'react-native-router-flux'
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 import TelaLogin from './scenes/telaLogin'
 import TelaLocalizarSala from './scenes/telaLocalizarSala'
@@ -18,23 +21,23 @@ import TelaEditarLocal from './scenes/telaEditarLocal'
 
 export function Route(props){
     return(
-        <Router>
-            <Stack key="root">
-                <Scene key="telaLogin" component={TelaLogin} title="TelaLogin" hideNavBar={true}/>
-                <Scene key="telaLocalizarSala" component={TelaLocalizarSala} title="TelaLocalizarSala" hideNavBar={true}/>
-                <Scene key="telaCadastrarAluno" component={TelaCadastrarAluno} title="TelaCadastrarAluno" hideNavBar={true}/>
-                <Scene key="telaResetarSenha" component={TelaResetarSenha} title="TelaResetarSenha" hideNavBar={true}/>
-                <Scene key="telaAluno" component={TelaAluno} title="TelaAluno" hideNavBar={true}/>
-                <Scene key="telaProfessor" component={TelaProfessor} title="TelaProfessor" hideNavBar={true}/>
-                <Scene key="telaSolicitacaoReservas" component={TelaSolicitacaoReservas} title="TelaSolicitacaoReservas" hideNavBar={true}/>
-                <Scene key="telaReservarEquipamento" component={TelaReservarEquipamento} title="TelaReservarEquipamento" hideNavBar={true}/>
-                <Scene key="telaSGP" component={TelaSGP} title="TelaSGP" hideNavBar={true}/>
-                <Scene key="telaCadastrarColaborador" component={TelaCadastrarColaborador} title="TelaCadastrarColaborador" hideNavBar={true}/>
-                <Scene key="telaVerificarReservas" component={TelaVerificarReservas} title="TelaVerificarReservas" hideNavBar={true}/>
-                <Scene key="telaConfigurarSalas" component={TelaConfigurarSalas} title="TelaConfigurarSalas" hideNavBar={true}/>
-                <Scene key="telaCadastrarLocal" component={TelaCadastrarLocal} title="TelaCadastrarLocal" hideNavBar={true}/>
-                <Scene key="telaEditarLocal" component={TelaEditarLocal} title="TelaEditarLocal" hideNavBar={true}/>
-            </Stack>
-        </Router>
+        <NavigationContainer>
+            <Stack.Navigator headerMode={"none"}>
+                <Stack.Screen name="TelaLogin" component={TelaLogin} />
+                <Stack.Screen name="TelaLocalizarSala" component={TelaLocalizarSala} />
+                <Stack.Screen name="TelaCadastrarAluno" component={TelaCadastrarAluno} />
+                <Stack.Screen name="TelaResetarSenha" component={TelaResetarSenha} />
+                <Stack.Screen name="TelaAluno" component={TelaAluno} />
+                <Stack.Screen name="TelaProfessor" component={TelaProfessor} />
+                <Stack.Screen name="TelaSolicitacaoReservas" component={TelaSolicitacaoReservas} />
+                <Stack.Screen name="TelaReservarEquipamento" component={TelaReservarEquipamento} />
+                <Stack.Screen name="TelaSGP" component={TelaSGP} />
+                <Stack.Screen name="TelaCadastrarColaborador" component={TelaCadastrarColaborador} />
+                <Stack.Screen name="TelaVerificarReservas" component={TelaVerificarReservas} />
+                <Stack.Screen name="TelaConfigurarSalas" component={TelaConfigurarSalas} />
+                <Stack.Screen name="TelaCadastrarLocal" component={TelaCadastrarLocal} />
+                <Stack.Screen name="TelaEditarLocal" component={TelaEditarLocal} />
+            </Stack.Navigator>
+        </NavigationContainer>
     )
 }

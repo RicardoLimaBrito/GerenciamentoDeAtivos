@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 
 
-export default function TelaSGP() {
+export default function TelaSGP({ navigation }) {
   return (
     <View style={Styles.containerPrincipal}>
       <View style={Styles.imagemContainer}>
@@ -21,20 +20,20 @@ export default function TelaSGP() {
       <Text style={Styles.titulo}>{"Gestão de Ativos"}</Text>
 
       <ScrollView style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaConfigurarSalas')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaConfigurarSalas')}>
           <Text style={Styles.textoBotoesSuperiores}>Configurar locais</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaVerificarReservas')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaVerificarReservas')}>
           <Text style={Styles.textoBotoesSuperiores}>Verificar reservas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaCadastrarColaborador')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaCadastrarColaborador')}>
           <Text style={Styles.textoBotoesSuperiores}>Cadastrar colaboradores</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
+      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaLogin')}>
         <Text style={Styles.textoBotaoSair}>Sair</Text>
       </TouchableOpacity>
     </View>

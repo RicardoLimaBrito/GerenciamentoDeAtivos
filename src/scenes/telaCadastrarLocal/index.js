@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, ScrollView, StyleSheet, Geolocation, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-export default function TelaCadastrarLocal() {
+export default function TelaCadastrarLocal({ navigation }) {
   const db = firebase.database()
 
   const [local, setLocal] = useState({
@@ -150,7 +149,7 @@ export default function TelaCadastrarLocal() {
         </View>
       </ScrollView>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.pop()}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>navigation.goBack()}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovoLocal()}>
@@ -245,7 +244,7 @@ export default function TelaCadastrarLocal() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)
@@ -267,7 +266,7 @@ export default function TelaCadastrarLocal() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)
@@ -290,7 +289,7 @@ export default function TelaCadastrarLocal() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)
@@ -313,7 +312,7 @@ export default function TelaCadastrarLocal() {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)

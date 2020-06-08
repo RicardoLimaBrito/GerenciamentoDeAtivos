@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 import MapView, { Marker, Polyline } from 'react-native-maps'
 import firebase from 'firebase'
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'; 
 
 
-export default function TelaConfigurarSalas() {
+export default function TelaConfigurarSalas({ navigation }) {
   const db = firebase.database()
   const ref = db.ref(`locais_salas`)
 
@@ -51,7 +50,7 @@ export default function TelaConfigurarSalas() {
           <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getSalasMultiuso()}>
             <FontAwesome name="refresh" size={35} color="#edc453" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>Actions.push('telaCadastrarLocal')}>
+          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaCadastrarLocal')}>
             <FontAwesome name="plus" size={35} color="#edc453" />
           </TouchableOpacity>
         </View>
@@ -85,7 +84,7 @@ export default function TelaConfigurarSalas() {
                 <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.key)}>
                   <FontAwesome name="trash" size={25} color="#FF0000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>editarSala(item.key)}>
+                <TouchableOpacity style={{margin: 10}} onPress={()=>navigation.navigate('TelaEditarLocal', {tipoLocal: 'Sala multiuso', key: item.key})}>
                   <FontAwesome name="pencil" size={25} color="#39D716" />
                 </TouchableOpacity>
               </View>
@@ -95,7 +94,7 @@ export default function TelaConfigurarSalas() {
         />
       </View>
       <View>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.push('telaSGP')}>
+        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaSGP')}>
           <Text style={Styles.textoBotaoSair}>Retornar</Text>
         </TouchableOpacity>
       </View>
@@ -140,16 +139,6 @@ export default function TelaConfigurarSalas() {
           ],
           { cancelable: true }
         )
-      } catch (error) {
-        Alert.alert('Atenção', error)
-      }
-    setLoading(false)
-  }
-
-  async function editarSala(id){
-    setLoading(true)
-      try {
-        Actions.telaEditarLocal({tipoLocal: 'Sala multiuso', key: id});
       } catch (error) {
         Alert.alert('Atenção', error)
       }

@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
 import { View, ScrollView, Alert, Switch, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker'
 import firebase from 'firebase'
 
-export default function TelaReservarEquipamento(){
+export default function TelaReservarEquipamento({ navigation }){
     const db = firebase.database()
     const ref = db.ref('reserva/')
     
@@ -135,7 +134,7 @@ export default function TelaReservarEquipamento(){
                 </View>
             </ScrollView>
             <View style={Styles.botaoContainer}>
-                <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaSolicitacaoReservas')}>
+                <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>navigation.navigate('TelaSolicitacaoReservas')}>
                 <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovaReserva()}>
@@ -176,7 +175,7 @@ export default function TelaReservarEquipamento(){
           })
           .then((res) => {
             Alert.alert('Sucesso', 'Solicitação para reservar efetuada com sucesso.')
-            Actions.push('telaSolicitacaoReservas')
+            navigation.navigate('TelaSolicitacaoReservas')
           })
           .catch((err) => {
             console.log(err)

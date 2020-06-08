@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase'
 
-export default function TelaCadastrarAluno() {
+export default function TelaCadastrarAluno({ navigation }) {
   const db = firebase.database()
   const ref = db.ref('usuarios/')
 
@@ -58,7 +57,7 @@ export default function TelaCadastrarAluno() {
         </View>
       </ScrollView>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaLogin')}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>navigation.navigate('TelaLogin')}>
           <Text style={Styles.textoBotaoAcessar}>Já tem login?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovoUsuario()}>
@@ -91,7 +90,7 @@ export default function TelaCadastrarAluno() {
       })
       .then((res) => {
         Alert.alert('Sucesso', 'Cadastro efetuado com sucesso, Você receberá um email.')
-        Actions.replace('telaLogin')
+        navigation.navigate('TelaLogin')
       })
       .catch((err) => {
         console.log(err)

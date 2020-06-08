@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 
-export default function TelaLogin() {
+export default function TelaLogin({ navigation }) {
   const [usuario, setUsuario] = useState({email: '', senha: ''})
   const [loading, setLoading] = useState(false)
 
@@ -13,11 +12,11 @@ export default function TelaLogin() {
       if(email=='' || senha==''){
         Alert.alert('Por favor', 'Digite os dados, por favor')
       }else if(email == '2020' && senha == '1234'){
-        Actions.replace('telaAluno')
+        navigation.navigate('TelaAluno')
       }else if(email == '6060' && senha == '1234'){
-        Actions.replace('telaProfessor')
+        navigation.navigate('TelaProfessor')
       }else if(email == '0000' && senha == '1234'){
-        Actions.replace('telaSGP')
+        navigation.navigate('TelaSGP')
       }else{
         Alert.alert('Informação', 'Usuário não identificado')
       }
@@ -55,18 +54,18 @@ export default function TelaLogin() {
       </View>
 
       <View style={Styles.containerBotoes}>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>Actions.push('telaCadastrarAluno')}>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>navigation.navigate('TelaCadastrarAluno')}>
           <Text style={Styles.textoBotaoCadastrar}>Cadastrar-se</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>Acessar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>Actions.push('telaLocalizarSala')}>
+        <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>navigation.navigate('TelaLocalizarSala')}>
           <Text style={Styles.textoLocalizarSala}>Localizar sala</Text>
       </TouchableOpacity>
       </View>
       <View style={Styles.containerBotaoEsqueceuSenha}>
-        <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>Actions.push('telaResetarSenha')}>
+        <TouchableOpacity style={Styles.botaoEsqueceuASenha} onPress={()=>navigation.navigate('TelaResetarSenha')}>
           <Text style={Styles.textoBotaoEsqueceuASenha}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>

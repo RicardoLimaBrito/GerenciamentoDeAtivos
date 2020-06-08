@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 
-
-export default function TelaProfessor() {
+export default function TelaProfessor({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -36,17 +34,17 @@ export default function TelaProfessor() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>setModalVisible(true)}>
           <Text style={Styles.textoBotoesSuperiores}>Visualizar minhas salas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaLocalizarSala')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaLocalizarSala')}>
           <Text style={Styles.textoBotoesSuperiores}>Localizar sala</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Actions.push('telaSolicitacaoReservas')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaSolicitacaoReservas')}>
           <Text style={Styles.textoBotoesSuperiores}>Reservas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
         </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaLogin')}>
+      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaLogin')}>
         <Text style={Styles.textoBotaoSair}>Sair</Text>
       </TouchableOpacity>
     </View>

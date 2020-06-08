@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, ScrollView, StyleSheet, Geolocation, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-export default function TelaEditarLocal() {
+export default function TelaEditarLocal({ navigation, route }) {
   const db = firebase.database()
-  const {tipoLocal, key} = Actions
+  const { tipoLocal, key } = route.params;
 
   const [local, setLocal] = useState({
     bloco: '',
@@ -59,7 +58,7 @@ export default function TelaEditarLocal() {
   ])
 
   useEffect(() => {
-    console.log(tipoLocal)
+    getLocal()
   }, [])
 
   return (
@@ -140,11 +139,11 @@ export default function TelaEditarLocal() {
         </View>
       </ScrollView>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.pop()}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>navigation.goBack()}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>atualizarLocal()}>
-          <Text style={Styles.textoBotaoCadastrar}>Cadastrar</Text>
+          <Text style={Styles.textoBotaoCadastrar}>Editar</Text>
         </TouchableOpacity>
       </View>
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
@@ -263,12 +262,12 @@ export default function TelaEditarLocal() {
           capacidade: local.capacidade,
         })
         .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          Alert.alert('Sucesso', `Editado com sucesso`)
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo local.')
+          Alert.alert('Falha no sistema', 'Erro ao editar local.')
         })
         .finally(() => setLoading(false))
   }
@@ -284,12 +283,12 @@ export default function TelaEditarLocal() {
           corDoMarkador: '#919492',
         })
         .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          Alert.alert('Sucesso', `Editado com sucesso`)
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo local.')
+          Alert.alert('Falha no sistema', 'Erro ao editar local.')
         })
         .finally(() => setLoading(false))
   }
@@ -306,12 +305,12 @@ export default function TelaEditarLocal() {
           capacidade: local.capacidade
         })
         .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          Alert.alert('Sucesso', `Editado com sucesso`)
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo local.')
+          Alert.alert('Falha no sistema', 'Erro ao editar local.')
         })
         .finally(() => setLoading(false))
   }
@@ -328,12 +327,12 @@ export default function TelaEditarLocal() {
           capacidade: local.capacidade
         })
         .then((res) => {
-          Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          Actions.pop()
+          Alert.alert('Sucesso', `Editado com sucesso`)
+          navigation.goBack()
         })
         .catch((err) => {
           console.log(err)
-          Alert.alert('Falha no sistema', 'Erro ao inserir novo local.')
+          Alert.alert('Falha no sistema', 'Erro ao editar local.')
         })
         .finally(() => setLoading(false))
   }

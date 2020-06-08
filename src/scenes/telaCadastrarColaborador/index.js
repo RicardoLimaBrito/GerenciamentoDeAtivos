@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
 
 
-export default function TelaCadastrarColaborador() {
+export default function TelaCadastrarColaborador({ navigation }) {
   const db = firebase.database()
   const ref = db.ref('usuarios/')
 
@@ -74,7 +73,7 @@ export default function TelaCadastrarColaborador() {
         </View>
       </ScrollView>
       <View style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>Actions.push('telaSGP')}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>navigation.navigate('TelaSGP')}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovoUsuario()}>
@@ -112,7 +111,7 @@ export default function TelaCadastrarColaborador() {
       })
       .then((res) => {
         Alert.alert('Sucesso', 'Cadastro efetuado com sucesso, Você receberá um email.')
-        Actions.replace('telaSGP')
+        navigation.navigate('TelaSGP')
       })
       .catch((err) => {
         console.log(err)

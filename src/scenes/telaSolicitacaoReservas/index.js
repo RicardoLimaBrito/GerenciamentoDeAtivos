@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Switch, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase'
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-export default function TelaSolicitacaoReservas() {
+export default function TelaSolicitacaoReservas({ navigation }) {
   const db = firebase.database()
   const ref = db.ref(`reserva/`)
 
@@ -28,7 +27,7 @@ export default function TelaSolicitacaoReservas() {
               <Text style ={{margin: 5}}>Ir para salas</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>Actions.push('telaReservarEquipamento')}>
+          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaReservarEquipamento')}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
               <FontAwesome name="plus" size={35} color="#337861" />
               <Text style ={{margin: 5}}>Equipamento</Text>
@@ -130,7 +129,7 @@ export default function TelaSolicitacaoReservas() {
         />
       </View>
       <View>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.replace('telaProfessor')}>
+        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaProfessor')}>
           <Text style={Styles.textoBotaoSair}>Retornar</Text>
         </TouchableOpacity>
       </View>

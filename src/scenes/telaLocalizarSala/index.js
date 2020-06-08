@@ -3,9 +3,7 @@ import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Modal } fr
 import MapView, { Marker, Polyline } from 'react-native-maps'
 import Constants from 'expo-constants';
 
-import { Actions } from 'react-native-router-flux';
-
-export default function TelaLocalizarSala() {
+export default function TelaLocalizarSala({ navigation }) {
 
   const [currentlyLocation, setCurrentlyLocation] = useState({
     latitude: -3.817219,
@@ -67,7 +65,7 @@ export default function TelaLocalizarSala() {
           strokeWidth={3}
         /> */}
       </MapView>
-      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.pop()}>
+      <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.goBack()}>
         <Text style={Styles.textoBotaoSair}>Voltar</Text>
       </TouchableOpacity>
     </View>

@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-import { Actions } from 'react-native-router-flux';
 
-
-export default function TelaVerificarReservas() {
+export default function TelaVerificarReservas({ navigation }) {
   return (
     <View style={Styles.containerPrincipal}>
       <View style={Styles.imagemContainer}>
@@ -27,7 +25,7 @@ export default function TelaVerificarReservas() {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
           <Text style={Styles.textoBotoesSuperiores}>Salas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>Actions.push('telaSGP')}>
+        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaSGP')}>
           <Text style={Styles.textoBotaoSair}>Retornar</Text>
         </TouchableOpacity>
       </View>
