@@ -2,26 +2,27 @@ import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
 import Constants from 'expo-constants';
 import { Actions } from 'react-native-router-flux';
+import MapView, { Marker, Polyline } from 'react-native-maps'
 import firebase from 'firebase'
-import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'; 
 
 
 export default function TelaConfigurarSalas() {
   const db = firebase.database()
-  const ref = db.ref(`/salas/`)
+  const ref = db.ref(`locais_salas`)
 
   const [buscarSala, setBuscarSala] = useState(null)
   const [dados, setDados] = useState([])
   const [loading, setLoading] = useState(false)
   
   useEffect(() => {
-    getSalas()
+    getSalasMultiuso()
   }, [])
 
   
   return (
     <View style={Styles.containerPrincipal}>
-      <Text style={Styles.titulo}>Configurando salas</Text>
+      <Text style={Styles.titulo}>Salas multiuso</Text>
       <View style={Styles.containerDeDados}>
         <View style={{flexDirection: 'row'}}>
           <View style={Styles.containerDosDados}>
@@ -36,8 +37,22 @@ export default function TelaConfigurarSalas() {
           <TouchableOpacity style={Styles.containerBotaoPesquisar} onPress={()=>null}>
             <FontAwesome name="search" size={35} color="#000000" />
           </TouchableOpacity>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>null}>
+            <FontAwesome5 name="parking" size={35} color="#000000" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>null}>
+            <FontAwesome name="bullhorn" size={35} color="#919492" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>null}>
+            <FontAwesome name="arrow-circle-up" size={35} color="#6cb7f5" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getSalasMultiuso()}>
+            <FontAwesome name="refresh" size={35} color="#edc453" />
+          </TouchableOpacity>
           <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>Actions.push('telaCadastrarSalas')}>
-            <FontAwesome name="plus" size={35} color="#337861" />
+            <FontAwesome name="plus" size={35} color="#edc453" />
           </TouchableOpacity>
         </View>
         {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -50,20 +65,21 @@ export default function TelaConfigurarSalas() {
                   Sala: {item.bloco} - {item.sala}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Andar: {item.andar}
-                </Text>
-                <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Latitude: {item.latitude || "Não cadastrado"}
-                </Text>
-                <Text style={{fontSize: 15, marginLeft: 10}}>
-                  Longitude:  {item.longitude || "Não cadastrado"}
-                </Text>
-                <Text style={{fontSize: 15, marginLeft: 10}}>
                   Capacidade: {item.capacidade}
                 </Text>
                 <Text style={{fontSize: 15, marginLeft: 10}}>
                   Disciplina atual: {item.disciplinaAtual || 'Sala livre'}
                 </Text>
+                <MapView style={{ margin: 10, width: 200, height: 100 }}
+                  initialRegion={{latitude: parseFloat(item.latitude), longitude: parseFloat(item.longitude), latitudeDelta: 0.001,longitudeDelta: 0.001}}
+                  liteMode={true}
+                >
+                  <Marker
+                    key={item.key}
+                    coordinate={{latitude: parseFloat(item.latitude), longitude: parseFloat(item.longitude)}}
+                    pinColor={item.corDoMarkador}
+                  />
+                </MapView>
               </View>
               <View>
                 <TouchableOpacity style={{margin: 10}} onPress={()=>delSala(item.key)}>
@@ -87,14 +103,11 @@ export default function TelaConfigurarSalas() {
     </View>
   );
 
-  async function getSalas() {
+  async function getSalasMultiuso() {
     setLoading(true)
       try {
-        let res = await ref.once('value')
+        let res = await ref.orderByChild('bloco').once('value')
           if(res.val()){
-            // const datalist = Object.entries(res.val()).map((e) => {
-            //   return { ...e[1], id: e[0] }
-            // })
             let datalist= []
             res.forEach((e) => {
               datalist.push({key: e.key, ...e.val()})
@@ -121,7 +134,7 @@ export default function TelaConfigurarSalas() {
               text: 'Sim',
               onPress: () => {
                 ref.child(`${id}`).remove()
-                getSalas()
+                getSalasMultiuso()
               },
             },
           ],
@@ -166,6 +179,13 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   containerBotaoPesquisar: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+  },
+  containerBotaoRefresh: {
     width: 50,
     height: 50,
     backgroundColor: '#dae6c2',
@@ -175,9 +195,20 @@ const Styles = StyleSheet.create({
     borderColor: '#284474',
     borderWidth: 1,
     margin: 5,
-    marginRight: 20,
+    marginLeft: 20,
   },
   containerBotaoAdicionar: {
+    width: 50,
+    height: 50,
+    backgroundColor: '#dae6c2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    borderColor: '#284474',
+    borderWidth: 1,
+    margin: 5,
+  },
+  containerBotoesLocais: {
     width: 50,
     height: 50,
     backgroundColor: '#dae6c2',
@@ -214,7 +245,7 @@ const Styles = StyleSheet.create({
     margin: 5,
     backgroundColor: '#ffffff',
     width: 300,
-    height: 250,
+    height: 280,
     justifyContent: 'center',
     borderRadius: 15,
     borderColor: 'black',
