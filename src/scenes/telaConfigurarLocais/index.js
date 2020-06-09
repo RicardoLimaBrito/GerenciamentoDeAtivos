@@ -11,7 +11,7 @@ export default function TelaConfigurarLocais({ navigation }) {
   const db = firebase.database()
 
   const [local, setLocal] = useState({titulo: 'Salas multiuso', tipoLocal: 'Sala multiuso', referencia: 'locais_salas'})
-  const [bloco, setBloco] = useState('A')
+  const [bloco, setBloco] = useState('')
   const [dados, setDados] = useState([])
   const [dadosDropDownBlocos, setDadosDropDownBlocos] = useState([
     {value: 'A'},
@@ -66,7 +66,7 @@ export default function TelaConfigurarLocais({ navigation }) {
           <TouchableOpacity style={Styles.containerBotaoPesquisar} onPress={()=>pesquisarPorBloco(`${bloco}`)}>
             <FontAwesome name="search" size={35} color="#000000" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getLocal()}>
+          <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>refresh()}>
             <FontAwesome name="refresh" size={35} color="#0d0da3" />
           </TouchableOpacity>
           <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaCadastrarLocal')}>
@@ -138,24 +138,35 @@ export default function TelaConfigurarLocais({ navigation }) {
     </View>
   );
 
+  function refresh(){
+    getLocal()
+    setBloco('')
+  }
+
   function pesquisarPorBloco(blocoParaPesquisa){
     setLoading(true)
-    setDados([])
-    const ref = db.ref(`${local.referencia}`)
-      try {
-        let res = ref.orderByChild('bloco').equalTo('G').once('value')
-          if(res.val()){
-            let datalist= []
-            res.forEach((e) => {
-              datalist.push({key: e.key, ...e.val()})
+      if(bloco==''){
+        Alert.alert('Atenção', 'Selecione algum bloco.')
+      }else{
+        setDados([])
+        const ref = db.ref(`${local.referencia}`)
+          try {
+            ref.orderByChild('bloco').equalTo(`${bloco}`).once("value", function(snapshot) {
+              if(snapshot.val()){
+                let datalist= []
+                snapshot.forEach((e) => {
+                  datalist.push({key: e.key, ...e.val()})
+                })
+                setDados(datalist)
+              }else{
+                Alert.alert('Atenção', 'Não existem locais cadastrados nesse bloco.')
+              }
             })
-            setDados(datalist)
-          }else{
-            Alert.alert('Atenção', 'Não existem locais cadastrados nesse bloco.')
+          } catch (error) {
+            Alert.alert('Atenção', error)
           }
-      } catch (error) {
-        Alert.alert('Atenção', error)
       }
+    setBloco('')
     setLoading(false)
   }
 
@@ -251,10 +262,10 @@ const Styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 5,
+    marginTop: 15,
   },
   containerDropDown: {
-    width: 50,
+    width: 70,
     justifyContent: 'center',
     alignSelf: 'center',
   },
@@ -266,7 +277,7 @@ const Styles = StyleSheet.create({
     alignSelf: 'center',
   },
   containerBotaoRefresh: {
-    width: 70,
+    width: 50,
     height: 50,
     backgroundColor: '#dae6c2',
     alignItems: 'center',
@@ -275,7 +286,8 @@ const Styles = StyleSheet.create({
     borderColor: '#284474',
     borderWidth: 1,
     margin: 5,
-    marginLeft: 20,
+    marginLeft: 8,
+    marginTop: 15,
   },
   containerBotaoAdicionar: {
     width: 50,
@@ -287,6 +299,7 @@ const Styles = StyleSheet.create({
     borderColor: '#284474',
     borderWidth: 1,
     margin: 5,
+    marginTop: 15,
   },
   containerBotoesLocais: {
     width: 50,
