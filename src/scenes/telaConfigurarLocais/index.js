@@ -215,13 +215,13 @@ export default function TelaConfigurarLocais({ navigation }) {
   async function delLocal(id){
     setLoading(true)
     let referencia = 'locais_salas'
-      if(tipoLocal=='Sala multiuso'){
+      if(local.tipoLocal=='Sala multiuso'){
         referencia = 'locais_salas'
-      }else if(tipoLocal=='Serviços'){
+      }else if(local.tipoLocal=='Serviços'){
         referencia = 'locais_servicos'
-      }else if(tipoLocal=='Estacionamento'){
+      }else if(local.tipoLocal=='Estacionamento'){
         referencia = 'locais_estacionamentos'
-      }else if(tipoLocal=='Entradas'){
+      }else if(local.tipoLocal=='Entradas'){
         referencia = 'locais_entradas'
       }else{
         Alert.alert('Atenção', 'Tipo não reconhecido.')

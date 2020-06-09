@@ -159,7 +159,21 @@ export default function TelaCadastrarLocal({ navigation }) {
       </View>
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
     </View>
-  );
+  )
+
+  function limparCampos(){
+    setLocal({
+      tipoLocal: 'Sala multiuso',
+      capacidade: '',
+      bloco: '',
+      andar: '',
+      nomeLocal: '',
+      descricao: '',
+      latitude: '',
+      longitude: '',
+      corDoMarkador: '',
+    })
+  }
 
   async function getLatitude() {
     navigator.geolocation.getCurrentPosition(
@@ -233,6 +247,9 @@ export default function TelaCadastrarLocal({ navigation }) {
 
   async function metodoInserirLocal(corMarkador, referencia){
     setLoading(true)
+      if(local.tipoLocal=='Sala multiuso' && local.descricao==''){
+        setLocal({...local, descricao: `Bloco e número: ${local.nomeLocal}, ${local.andar}.`})
+      }
     let ref = db.ref(`${referencia}`)
     const res = await ref.push({
           tipoLocal: local.tipoLocal,
@@ -247,7 +264,7 @@ export default function TelaCadastrarLocal({ navigation }) {
         })
         .then((res) => {
           Alert.alert('Sucesso', `Cadastro efetuado com sucesso`)
-          navigation.goBack()
+          limparCampos()
         })
         .catch((err) => {
           console.log(err)
