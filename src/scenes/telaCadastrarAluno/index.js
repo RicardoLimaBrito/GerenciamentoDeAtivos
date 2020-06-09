@@ -106,7 +106,6 @@ export default function TelaCadastrarAluno({ navigation }) {
     }
     setLoading(false)
   }
-
 }
 
 const Styles = StyleSheet.create({
