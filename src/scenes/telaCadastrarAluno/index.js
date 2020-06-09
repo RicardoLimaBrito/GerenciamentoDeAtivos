@@ -14,7 +14,7 @@ export default function TelaCadastrarAluno({ navigation }) {
   return (
     <View style={Styles.containerPrincipal}>
       <Text style={Styles.titulo}>Novo cadastro</Text>
-      <ScrollView style={{maxHeight: '30%', margin: 30}}>
+      <ScrollView style={{maxHeight: 250, margin: 30}}>
         <View style={Styles.containerDosDados}>
           <TextInput
             style={{height: 40}}
@@ -82,23 +82,29 @@ export default function TelaCadastrarAluno({ navigation }) {
 
   async function metodoInserir(){
     setLoading(true)
-    const res = await ref.push({
-        tipoDeColaborador: usuario.tipoDeColaborador,
-        nome: usuario.nome,
-        email: usuario.email,
-        senha: usuario.senha
+    try {
+      await ref.orderByChild('email').equalTo(`${usuario.email}`).limitToFirst(1).once("value", function(snapshot) {
+        if(snapshot.val()){
+          Alert.alert('Atenção', 'Email já cadastrado.')
+        }else{
+          try {
+            const res = ref.push({
+              tipoDeColaborador: usuario.tipoDeColaborador,
+              nome: usuario.nome,
+              email: usuario.email,
+              senha: usuario.senha
+            })
+              Alert.alert('Sucesso', 'Cadastro efetuado com sucesso.')
+              navigation.navigate('TelaLogin')
+          } catch (error) {
+            Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
+          }
+        }
       })
-      .then((res) => {
-        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso, Você receberá um email.')
-        navigation.navigate('TelaLogin')
-      })
-      .catch((err) => {
-        console.log(err)
-        Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    } catch (error) {
+      Alert.alert('Atenção', error)
+    }
+    setLoading(false)
   }
 
 }
