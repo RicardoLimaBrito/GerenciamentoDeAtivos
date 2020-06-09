@@ -20,7 +20,7 @@ export default function TelaSGP({ navigation }) {
       <Text style={Styles.titulo}>{"Gestão de Ativos"}</Text>
 
       <ScrollView style={Styles.botaoContainer}>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaConfigurarSalas')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaConfigurarLocais')}>
           <Text style={Styles.textoBotoesSuperiores}>Configurar locais</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaVerificarReservas')}>

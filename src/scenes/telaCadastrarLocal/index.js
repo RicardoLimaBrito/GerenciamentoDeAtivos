@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, ScrollView, StyleSheet, Geolocation, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
@@ -68,7 +68,7 @@ export default function TelaCadastrarLocal({ navigation }) {
     <View style={Styles.containerPrincipal}>
       <Text style={Styles.titulo}>Cadastrar local</Text>
       <ScrollView style={{maxHeight: '60%',  marginTop: 20, marginBottom: 15}}>
-      <View style={Styles.containerDropDown}>
+        <View style={Styles.containerDropDown}>
           <Dropdown
             label='Tipo de local *'
             value={local.tipoLocal}

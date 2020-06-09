@@ -1,17 +1,46 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
 import Constants from 'expo-constants';
 import MapView, { Marker, Polyline } from 'react-native-maps'
+import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
 import { FontAwesome, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 
-export default function TelaConfigurarSalas({ navigation }) {
+export default function TelaConfigurarLocais({ navigation }) {
   const db = firebase.database()
 
   const [local, setLocal] = useState({titulo: 'Salas multiuso', tipoLocal: 'Sala multiuso', referencia: 'locais_salas'})
-  const [buscarSala, setBuscarSala] = useState(null)
+  const [bloco, setBloco] = useState('A')
   const [dados, setDados] = useState([])
+  const [dadosDropDownBlocos, setDadosDropDownBlocos] = useState([
+    {value: 'A'},
+    {value: 'B'},
+    {value: 'C'},
+    {value: 'D'},
+    {value: 'E'},
+    {value: 'F'},
+    {value: 'G'},
+    {value: 'H'},
+    {value: 'I'},
+    {value: 'J'},
+    {value: 'K'},
+    {value: 'L'},
+    {value: 'M'},
+    {value: 'N'},
+    {value: 'O'},
+    {value: 'P'},
+    {value: 'Q'},
+    {value: 'R'},
+    {value: 'S'},
+    {value: 'T'},
+    {value: 'U'},
+    {value: 'V'},
+    {value: 'W'},
+    {value: 'X'},
+    {value: 'Y'},
+    {value: 'Z'},
+  ])
   const [loading, setLoading] = useState(false)
   
   useEffect(() => {
@@ -25,15 +54,16 @@ export default function TelaConfigurarSalas({ navigation }) {
       <View style={Styles.containerDeDados}>
         <View style={{flexDirection: 'row'}}>
           <View style={Styles.containerDosDados}>
-            <TextInput
-              style={{height: 40}}
-              value={buscarSala}
-              placeholder="Digite a letra do bloco"
-              onChangeText={texto => setBuscarSala(texto)}
-              maxLength={1}
-            />
+            <View style={Styles.containerDropDown}>
+              <Dropdown
+                label='Bloco *'
+                value={bloco}
+                data={dadosDropDownBlocos}
+                onChangeText={texto => setBloco(texto)}
+              />
+            </View>
           </View>
-          <TouchableOpacity style={Styles.containerBotaoPesquisar} onPress={()=>null}>
+          <TouchableOpacity style={Styles.containerBotaoPesquisar} onPress={()=>pesquisarPorBloco(`${bloco}`)}>
             <FontAwesome name="search" size={35} color="#000000" />
           </TouchableOpacity>
           <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getLocal()}>
@@ -107,6 +137,27 @@ export default function TelaConfigurarSalas({ navigation }) {
 
     </View>
   );
+
+  function pesquisarPorBloco(blocoParaPesquisa){
+    setLoading(true)
+    setDados([])
+    const ref = db.ref(`${local.referencia}`)
+      try {
+        let res = ref.orderByChild('bloco').equalTo('G').once('value')
+          if(res.val()){
+            let datalist= []
+            res.forEach((e) => {
+              datalist.push({key: e.key, ...e.val()})
+            })
+            setDados(datalist)
+          }else{
+            Alert.alert('Atenção', 'Não existem locais cadastrados nesse bloco.')
+          }
+      } catch (error) {
+        Alert.alert('Atenção', error)
+      }
+    setLoading(false)
+  }
 
   function mudarReferencia(tipo){
     try {
@@ -202,8 +253,20 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
   },
-  containerBotaoRefresh: {
+  containerDropDown: {
     width: 50,
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  containerDosDados:{
+    borderBottomWidth: 2,
+    width: 70,
+    borderColor: '#e0ebeb',
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
+  containerBotaoRefresh: {
+    width: 70,
     height: 50,
     backgroundColor: '#dae6c2',
     alignItems: 'center',
@@ -235,14 +298,6 @@ const Styles = StyleSheet.create({
     borderColor: '#284474',
     borderWidth: 1,
     margin: 5,
-  },
-  containerDosDados:{
-    margin: 10,
-    borderBottomWidth: 2,
-    width: 140,
-    borderColor: '#e0ebeb',
-    borderRadius: 10,
-    alignSelf: 'center',
   },
   containerDeDados:{
     margin: 15,
