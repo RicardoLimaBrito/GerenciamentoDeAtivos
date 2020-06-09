@@ -215,13 +215,13 @@ export default function TelaCadastrarLocal({ navigation }) {
     }else{
       if(local.capacidade==''){
         if(local.tipoLocal=='Sala multiuso'){
-          metodoInserirLocal('#edc453', 'locais_salas')
+          metodoInserirLocal('BLUE', 'locais_salas')
         }else if(local.tipoLocal=='Serviços'){
-          metodoInserirLocal('#919492', 'locais_servicos')
+          metodoInserirLocal('RED', 'locais_servicos')
         }else if(local.tipoLocal=='Estacionamento'){
-          metodoInserirLocal('#250c87', 'locais_estacionamentos')
+          metodoInserirLocal('TAN', 'locais_estacionamentos')
         }else if(local.tipoLocal=='Entradas'){
-          metodoInserirLocal('#6cb7f5', 'locais_entradas')
+          metodoInserirLocal('GREEN', 'locais_entradas')
         }else{
           Alert.alert('Atenção', 'Tipo não reconhecido.')
         }
@@ -230,13 +230,13 @@ export default function TelaCadastrarLocal({ navigation }) {
           Alert.alert('Atenção', 'A capacidade tem que ser maior de 1.')
         }else{
           if(local.tipoLocal=='Sala multiuso'){
-            metodoInserirLocal('#edc453', 'locais_salas')
+            metodoInserirLocal('BLUE', 'locais_salas')
           }else if(local.tipoLocal=='Serviços'){
-            metodoInserirLocal('#919492', 'locais_servicos')
+            metodoInserirLocal('RED', 'locais_servicos')
           }else if(local.tipoLocal=='Estacionamento'){
-            metodoInserirLocal('#250c87', 'locais_estacionamentos')
+            metodoInserirLocal('TAN', 'locais_estacionamentos')
           }else if(local.tipoLocal=='Entradas'){
-            metodoInserirLocal('#6cb7f5', 'locais_entradas')
+            metodoInserirLocal('GREEN', 'locais_entradas')
           }else{
             Alert.alert('Atenção', 'Tipo não reconhecido.')
           }

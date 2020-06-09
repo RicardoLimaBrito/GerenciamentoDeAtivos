@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps'
 import Constants from 'expo-constants';
+import firebase from 'firebase'
 
 export default function TelaLocalizarSala({ navigation }) {
+  const db = firebase.database()
 
   const [currentlyLocation, setCurrentlyLocation] = useState({
     latitude: -3.817219,
@@ -16,6 +18,7 @@ export default function TelaLocalizarSala({ navigation }) {
     longitudeDelta: 0.001
   }
   const [marcadores, setMarcadores] = useState([])
+  const [loading, setLoading] = useState(false)
 
   async function getCurrentLocation() {
     navigator.geolocation.getCurrentPosition(
@@ -50,10 +53,10 @@ export default function TelaLocalizarSala({ navigation }) {
         {marcadores.map((e, i) => (
           <Marker
             key={i}
-            coordinate={e.coordenada}
-            title={e.titulo}
+            coordinate={{latitude: parseFloat(e.latitude), longitude: parseFloat(e.longitude)}}
+            title={e.nomeLocal}
             description={e.descricao}
-            pinColor={e.pinColor || '#ed242a'}
+            pinColor={e.corDoMarkador || '#ed242a'}
           />
         ))}
         {/* <Polyline
@@ -65,6 +68,7 @@ export default function TelaLocalizarSala({ navigation }) {
           strokeWidth={3}
         /> */}
       </MapView>
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.goBack()}>
         <Text style={Styles.textoBotaoSair}>Voltar</Text>
       </TouchableOpacity>
@@ -72,41 +76,28 @@ export default function TelaLocalizarSala({ navigation }) {
   )
 
   function getMarkeres() {
-    let res = [
-      //Entradas
-      { latitude: -3.742580, longitude: -38.501530, titulo: 'Entrada A', descricao: 'Entrada pela Av. Visconde de Mauá', pinColor: '#bce5f5'},
-      { latitude: -3.742089, longitude: -38.502362, titulo: 'Entrada B', descricao: 'Entrada pela R. Osvaldo Cruz', pinColor: '#bce5f5'},
-      
-      //Bloco G
-      { latitude: -3.742310, longitude: -38.501990, titulo: 'Sala: G301', descricao: 'Bloco: G, 3º andar, número 301', pinColor: '#4ed4ae'},
-      { latitude: -3.742480, longitude: -38.502060, titulo: 'Sala: G302', descricao: 'Bloco: G, 3º andar, número 302', pinColor: '#4ed4ae'},
-      { latitude: -3.742280, longitude: -38.502090, titulo: 'Sala: G303', descricao: 'Bloco: G, 3º andar, número 303', pinColor: '#4ed4ae'},
-      { latitude: -3.742440, longitude: -38.502160, titulo: 'Sala: G304', descricao: 'Bloco: G, 3º andar, número 304', pinColor: '#4ed4ae'},
-      { latitude: -3.742250, longitude: -38.502190, titulo: 'Sala: G305', descricao: 'Bloco: G, 3º andar, número 305', pinColor: '#4ed4ae'},
-      { latitude: -3.742410, longitude: -38.502260, titulo: 'Sala: G306', descricao: 'Bloco: G, 3º andar, número 306', pinColor: '#4ed4ae'},
-      
+    setMarcadores([])
+    getEntradas()
+  }
 
-      //Bloco F
-      { latitude: -3.742350, longitude: -38.501830, titulo: 'Sala: F301', descricao: 'Bloco: F, 3º andar, número 301', pinColor: '#4ed4ae'},
-      { latitude: -3.742520, longitude: -38.501920, titulo: 'Sala: F302', descricao: 'Bloco: F, 3º andar, número 302', pinColor: '#4ed4ae'},
-      { latitude: -3.742380, longitude: -38.501730, titulo: 'Sala: F303', descricao: 'Bloco: F, 3º andar, número 303', pinColor: '#4ed4ae'},
-      { latitude: -3.742550, longitude: -38.501820, titulo: 'Sala: F304', descricao: 'Bloco: F, 3º andar, número 304', pinColor: '#4ed4ae'},
-      { latitude: -3.742420, longitude: -38.501630, titulo: 'Sala: F305', descricao: 'Bloco: F, 3º andar, número 305', pinColor: '#4ed4ae'},
-      { latitude: -3.742580, longitude: -38.501720, titulo: 'Sala: F306', descricao: 'Bloco: F, 3º andar, número 306', pinColor: '#4ed4ae'},
-    ]
-    const result = res.map((e, i) => ({
-      coordenada: {
-        latitude: e.latitude,
-        longitude: e.longitude,
-        latitudeDelta: 0.002,
-        longitudeDelta: 0.001
-      },
-      titulo: `${e.titulo}`,
-      descricao: `${e.descricao}`,
-      pinColor: `${e.pinColor}`
-    }))
-    setMarcadores(result)
-  }  
+  async function getEntradas(){
+    setLoading(true)
+    const ref = db.ref('locais_entradas')
+      try {
+        await ref.orderByChild('bloco').once("value", function(snapshot) {
+          if(snapshot.val()){
+            let datalist= []
+            snapshot.forEach((e) => {
+              datalist.push({key: e.key, latitude: parseFloat(e.latitude), longitude: parseFloat(e.longitude), ...e.val()})
+            })
+            setMarcadores(datalist)
+          }
+        })
+      } catch (error) {
+        Alert.alert('Atenção', error)
+      }
+    setLoading(false)
+  }
 
 }
 
