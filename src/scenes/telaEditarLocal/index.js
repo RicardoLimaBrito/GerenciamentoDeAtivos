@@ -178,7 +178,7 @@ export default function TelaEditarLocal({ navigation, route }) {
         corDoMarkador: `${res.val().corDoMarkador}`,
       })
     } catch (error) {
-      Alert.alert('Atenção', error)
+      Alert.alert('Atenção', `${error}`)
     }
   }
 

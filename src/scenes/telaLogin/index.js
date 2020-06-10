@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator, AsyncStorage } from 'react-native';
 import Constants from 'expo-constants';
 import firebase from 'firebase'
 
@@ -25,6 +25,7 @@ export default function TelaLogin({ navigation }) {
         <TextInput
           style={{height: 40}}
           placeholder="Email"
+          value={usuario.email}
           onChangeText={texto => setUsuario({...usuario, email: texto})}
           autoCapitalize={'none'}
           keyboardType={'default'}
@@ -35,6 +36,7 @@ export default function TelaLogin({ navigation }) {
         <TextInput
           style={{height: 40}}
           placeholder="Senha"
+          value={usuario.senha}
           onChangeText={texto => setUsuario({...usuario, senha: texto})}
           autoCapitalize={'none'}
           keyboardType={'numeric'}
@@ -65,30 +67,41 @@ export default function TelaLogin({ navigation }) {
   async function metodoLogin(){
     setLoading(true)
       try {
-        let res = await ref.orderByChild('email').equalTo(`${usuario.email}`).once("value")
+        let res = await ref.orderByChild('email').equalTo(`${usuario.email}`).once("value")     
           if(res.val()){
             let datalist= []
               res.forEach((e) => {
                 datalist.push({key: e.key, ...e.val()})
               })
-            setDados(datalist)
-            console.log(dados)
-            dados.map((e, i) => (
-              setUsuarioParaPesquisa({key: e.key, email: e.email, senha: e.senha, tipoDeColaborador: e.tipoDeColaborador})
-            ))
-            console.log(usuarioParaPesquisa.senha)
-              if(usuarioParaPesquisa.senha==usuario.senha){
-                irParaHome()
-              }else{
-                Alert.alert('Atenção', 'Senha incorreta.')  
-              }
+            await setDados(datalist)
+            verificarSenhas(dados)
           }else{
             Alert.alert('Atenção', 'Email não identificado.')
           }
       } catch (error) {
-        Alert.alert('Atenção', error)
+        console.log(error)
+        Alert.alert('Atenção', 'Clique novamente para provar que não é um robô.')
       }
     setLoading(false)
+  }
+
+  async function verificarSenhas(arrayDeDados){
+    try {
+      arrayDeDados.map((e, i) => (
+        setUsuarioParaPesquisa({key: e.key, email: e.email, senha: e.senha, tipoDeColaborador: e.tipoDeColaborador})
+      ))
+        if(usuarioParaPesquisa.senha==usuario.senha){
+          await AsyncStorage.removeItem('@usuario')
+          await AsyncStorage.setItem('@usuario', JSON.stringify(usuarioParaPesquisa))
+          let data = await AsyncStorage.getItem('@usuario')
+          irParaHome()
+        }else{
+          Alert.alert('Atenção', 'Senha incorreta.')  
+        }
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Atenção', 'Clique novamente para provar que não é um robô.')
+    }
   }
 
   function irParaHome(){

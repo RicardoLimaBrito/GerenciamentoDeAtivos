@@ -102,7 +102,7 @@ export default function TelaCadastrarAluno({ navigation }) {
         }
       })
     } catch (error) {
-      Alert.alert('Atenção', error)
+      Alert.alert('Atenção', `${error}`)
     }
     setLoading(false)
   }

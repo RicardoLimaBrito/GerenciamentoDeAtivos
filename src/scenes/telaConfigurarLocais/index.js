@@ -163,7 +163,7 @@ export default function TelaConfigurarLocais({ navigation }) {
               }
             })
           } catch (error) {
-            Alert.alert('Atenção', error)
+            Alert.alert('Atenção', `${error}`)
           }
       }
     setBloco('')
@@ -207,7 +207,7 @@ export default function TelaConfigurarLocais({ navigation }) {
             Alert.alert('Atenção', 'Não existem locais cadastrados.')
           }
       } catch (error) {
-        Alert.alert('Atenção', error)
+        Alert.alert('Atenção', `${error}`)
       }
     setLoading(false)
   }
@@ -242,7 +242,7 @@ export default function TelaConfigurarLocais({ navigation }) {
           { cancelable: true }
         )
       } catch (error) {
-        Alert.alert('Atenção', error)
+        Alert.alert('Atenção', `${error}`)
       }
     setLoading(false)
   }
