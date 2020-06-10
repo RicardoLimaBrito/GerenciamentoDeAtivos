@@ -1,27 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
+import firebase from 'firebase'
 
 export default function TelaLogin({ navigation }) {
-  const [usuario, setUsuario] = useState({email: '', senha: ''})
-  const [loading, setLoading] = useState(false)
+  const db = firebase.database()
+  const ref = db.ref('usuarios/')
 
-  function metodoLogin(){
-    setLoading(true)
-    const {email, senha} = usuario
-      if(email=='' || senha==''){
-        Alert.alert('Por favor', 'Digite os dados, por favor')
-      }else if(email == '2020' && senha == '1234'){
-        navigation.navigate('TelaAluno')
-      }else if(email == '6060' && senha == '1234'){
-        navigation.navigate('TelaProfessor')
-      }else if(email == '0000' && senha == '1234'){
-        navigation.navigate('TelaSGP')
-      }else{
-        Alert.alert('Informação', 'Usuário não identificado')
-      }
-    setLoading(false)
-  }
+  const [usuario, setUsuario] = useState({email: '', senha: ''})
+  const [usuarioParaPesquisa, setUsuarioParaPesquisa] = useState({key: '',email: '', senha: '', tipoDeColaborador: '',})
+  const [dados, setDados] = useState([])
+  const [loading, setLoading] = useState(false)
 
   return (
     <View style={Styles.containerPrincipal}>
@@ -71,7 +60,58 @@ export default function TelaLogin({ navigation }) {
       </View>
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
     </View>
-  );
+  )
+
+  async function metodoLogin(){
+    setLoading(true)
+      try {
+        let res = await ref.orderByChild('email').equalTo(`${usuario.email}`).once("value")
+          if(res.val()){
+            let datalist= []
+              res.forEach((e) => {
+                datalist.push({key: e.key, ...e.val()})
+              })
+            setDados(datalist)
+            console.log(dados)
+            dados.map((e, i) => (
+              setUsuarioParaPesquisa({key: e.key, email: e.email, senha: e.senha, tipoDeColaborador: e.tipoDeColaborador})
+            ))
+            console.log(usuarioParaPesquisa.senha)
+              if(usuarioParaPesquisa.senha==usuario.senha){
+                irParaHome()
+              }else{
+                Alert.alert('Atenção', 'Senha incorreta.')  
+              }
+          }else{
+            Alert.alert('Atenção', 'Email não identificado.')
+          }
+      } catch (error) {
+        Alert.alert('Atenção', error)
+      }
+    setLoading(false)
+  }
+
+  function irParaHome(){
+    if(usuarioParaPesquisa.tipoDeColaborador=='Aluno'){
+      limparDados()
+      navigation.navigate('TelaAluno')
+    }else if(usuarioParaPesquisa.tipoDeColaborador=='Professor'){
+      limparDados()
+      navigation.navigate('TelaProfessor')
+    }else if(usuarioParaPesquisa.tipoDeColaborador=='SGP'){
+      limparDados()
+      navigation.navigate('TelaSGP')
+    }else{
+      limparDados()
+      Alert.alert('Atenção', 'Tipo de usuário não identicado')
+    }
+  }
+
+  function limparDados(){
+    setUsuario({email: '', senha: ''})
+    setDados({email: '', senha: '', tipoDeColaborador: ''})
+  }
+
 }
 
 const Styles = StyleSheet.create({
