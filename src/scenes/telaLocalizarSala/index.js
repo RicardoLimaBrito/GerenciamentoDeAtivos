@@ -9,8 +9,8 @@ export default function TelaLocalizarSala({ navigation }) {
   const db = firebase.database()
 
   const [currentlyLocation, setCurrentlyLocation] = useState({
-    latitude: -3.742580,
-    longitude: -38.501530
+    latitude: -3.742175,
+    longitude: -38.501920,
   })
   const initial = {
     latitude: -3.742147,
@@ -80,7 +80,7 @@ export default function TelaLocalizarSala({ navigation }) {
               renderItem={({ item }) => (
                 <View>
                   <TouchableOpacity onPress={()=>marcarNoMapa(item.key)} style={Styles.containerBotaoFlatList}>
-                    <Text>Local: {item.nomeLocal}</Text>
+                    <Text style={Styles.textoDadosFlatList}>Local: {item.nomeLocal}</Text>
                   </TouchableOpacity>
                 </View>
               )}
@@ -95,9 +95,16 @@ export default function TelaLocalizarSala({ navigation }) {
         showsUserLocation={true}
         followUserLocation={true}
       >
+        <Marker
+          key={0}
+          coordinate={{latitude: parseFloat(currentlyLocation.latitude), longitude: parseFloat(currentlyLocation.longitude)}}
+          title={'Eu'}
+          description={'Estou aqui nesse momento'}
+          pinColor={'turquoise'}
+        />
         {marcadores.map((e, i) => (
           <Marker
-            key={i}
+            key={i+1}
             coordinate={{latitude: parseFloat(e.latitude), longitude: parseFloat(e.longitude)}}
             title={e.nomeLocal}
             description={e.descricao}
@@ -113,7 +120,7 @@ export default function TelaLocalizarSala({ navigation }) {
           />}
         {procurando && <Polyline
           coordinates={[
-            { latitude: currentlyLocation.latitude, longitude: currentlyLocation.longitude },
+            {latitude: parseFloat(currentlyLocation.latitude), longitude: parseFloat(currentlyLocation.longitude)},
             {latitude: parseFloat(marcadorPesquisado.latitude), longitude: parseFloat(marcadorPesquisado.longitude)}
           ]}
           strokeColor='#000'
@@ -121,15 +128,12 @@ export default function TelaLocalizarSala({ navigation }) {
         />}
       </MapView>
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
-      {procurando && <TouchableOpacity onPress={()=>setProcurando(false)} style={Styles.containerBotaoPararProcura}>
-        <MaterialCommunityIcons name="map-minus" size={50} color="#f01818" />
-      </TouchableOpacity>}
       <TouchableOpacity onPress={()=>setModalPrincipalVisible(true)} style={Styles.containerBotaoProcurarSalas}>
         <MaterialCommunityIcons name="map-search" size={50} color="#3498DB" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>null} style={Styles.containerBotaoCentralizar}>
-        <MaterialCommunityIcons name="map-marker-circle" size={50} color="#3498DB" />
-      </TouchableOpacity>
+      {procurando && <TouchableOpacity onPress={()=>setProcurando(false)} style={Styles.containerBotaoPararProcura}>
+        <MaterialCommunityIcons name="map-minus" size={50} color="#f01818" />
+      </TouchableOpacity>}
       <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.goBack()}>
         <Text style={Styles.textoBotaoSair}>Voltar</Text>
       </TouchableOpacity>
@@ -245,16 +249,6 @@ const Styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
   },
-  containerBotaoCentralizar: {
-    width: 50,
-    height: 50,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    right: '5%',
-    top: '75%', 
-  },
   containerBotaoProcurarSalas: {
     width: 50,
     height: 50,
@@ -262,8 +256,8 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: '20%',
-    top: '75%',
+    right: 20,
+    bottom: '25%',
   },
   containerBotaoPararProcura: {
     width: 50,
@@ -272,8 +266,8 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: '35%',
-    top: '75%',
+    right: 20,
+    bottom: '34%',
   },
   containerModal: {
     flex:1,
@@ -311,7 +305,7 @@ const Styles = StyleSheet.create({
   },
   containerBotaoFlatList: {
     width: 200,
-    height: 50,
+    height: 80,
     borderRadius: 15,
     backgroundColor: '#f6f6f6',
     justifyContent: 'center',
@@ -357,6 +351,10 @@ const Styles = StyleSheet.create({
   textoBotaoSair: {
     fontSize: 20,
     color: 'white',
+    fontWeight: 'bold',
+  },
+  textoDadosFlatList: {
+    fontSize: 15,
     fontWeight: 'bold',
   },
   botaoDeSair: {
