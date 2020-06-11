@@ -257,7 +257,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: 20,
-    bottom: '25%',
+    bottom: 180,
   },
   containerBotaoPararProcura: {
     width: 50,
@@ -267,7 +267,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: 20,
-    bottom: '34%',
+    bottom: 230,
   },
   containerModal: {
     flex:1,
