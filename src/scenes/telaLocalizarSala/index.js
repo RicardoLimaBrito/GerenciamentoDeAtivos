@@ -26,17 +26,12 @@ export default function TelaLocalizarSala({ navigation }) {
     longitude: '',
     corDoMarkador: '',
   })
-  const [marcadores, setMarcadores] = useState([])
   const [dados, setDados] = useState([])
   const [loading, setLoading] = useState(false)
   const [procurando, setProcurando] = useState(false)
   const [referencia, setReferencia] = useState('')
   const [modalPrincipalVisible, setModalPrincipalVisible] = useState(false)
   const [modalDeLocalVisible, setModalDeLocalVisible] = useState(false)
-
-  useEffect(() => {
-    getMarkeres()
-  }, []);
 
   return (
     <View style={Styles.containerPrincipal}>
@@ -102,30 +97,25 @@ export default function TelaLocalizarSala({ navigation }) {
           description={'Estou aqui nesse momento'}
           pinColor={'turquoise'}
         />
-        {marcadores.map((e, i) => (
+        {procurando && 
           <Marker
-            key={i+1}
-            coordinate={{latitude: parseFloat(e.latitude), longitude: parseFloat(e.longitude)}}
-            title={e.nomeLocal}
-            description={e.descricao}
-            pinColor={e.corDoMarkador || '#ed242a'}
-          />
-        ))}
-        {procurando && <Marker
             key={marcadorPesquisado.key}
             coordinate={{latitude: parseFloat(marcadorPesquisado.latitude), longitude: parseFloat(marcadorPesquisado.longitude)}}
             title={marcadorPesquisado.nomeLocal}
             description={marcadorPesquisado.descricao}
             pinColor={marcadorPesquisado.corDoMarkador || '#ed242a'}
-          />}
-        {procurando && <Polyline
-          coordinates={[
-            {latitude: parseFloat(currentlyLocation.latitude), longitude: parseFloat(currentlyLocation.longitude)},
-            {latitude: parseFloat(marcadorPesquisado.latitude), longitude: parseFloat(marcadorPesquisado.longitude)}
-          ]}
-          strokeColor='#000'
-          strokeWidth={3}
-        />}
+          />
+        }
+        {procurando &&
+          <Polyline
+            coordinates={[
+              {latitude: parseFloat(currentlyLocation.latitude), longitude: parseFloat(currentlyLocation.longitude)},
+              {latitude: parseFloat(marcadorPesquisado.latitude), longitude: parseFloat(marcadorPesquisado.longitude)}
+            ]}
+            strokeColor='#000'
+            strokeWidth={3}
+          />
+        }
       </MapView>
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <TouchableOpacity onPress={()=>setModalPrincipalVisible(true)} style={Styles.containerBotaoProcurarSalas}>
@@ -179,7 +169,7 @@ export default function TelaLocalizarSala({ navigation }) {
     setReferencia(refer)
     const ref = db.ref(`${refer}`)
       try {
-        let res = await ref.once('value')
+        let res = await ref.orderByChild('nomeLocal').once('value')
           if(res.val()){
             let datalist= []
             res.forEach((e) => {
@@ -190,30 +180,6 @@ export default function TelaLocalizarSala({ navigation }) {
           }else{
             Alert.alert('Atenção', 'Não existem locais cadastrados.')
           }
-      } catch (error) {
-        Alert.alert('Atenção', `${error}`)
-      }
-    setLoading(false)
-  }
-
-  function getMarkeres() {
-    setMarcadores([])
-    getEntradas()
-  }
-
-  async function getEntradas(){
-    setLoading(true)
-    const ref = db.ref('locais_entradas')
-      try {
-        await ref.orderByChild('bloco').once("value", function(snapshot) {
-          if(snapshot.val()){
-            let datalist= []
-            snapshot.forEach((e) => {
-              datalist.push({key: e.key, latitude: parseFloat(e.latitude), longitude: parseFloat(e.longitude), ...e.val()})
-            })
-            setMarcadores(datalist)
-          }
-        })
       } catch (error) {
         Alert.alert('Atenção', `${error}`)
       }
