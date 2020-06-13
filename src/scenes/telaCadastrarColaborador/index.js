@@ -108,24 +108,45 @@ export default function TelaCadastrarColaborador({ navigation }) {
         if(snapshot.val()){
           Alert.alert('Atenção', 'Email já cadastrado.')
         }else{
-          try {
-            const res = ref.push({
-              tipoDeColaborador: usuario.tipoDeColaborador,
-              nome: usuario.nome,
-              email: usuario.email,
-              senha: usuario.senha
-            })
-              Alert.alert('Sucesso', 'Cadastro efetuado com sucesso.')
-              navigation.navigate('TelaLogin')
-          } catch (error) {
-            Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
-          }
+          cadastrarNoFirebaseAuth()
         }
       })
-    } catch (error) {
-      Alert.alert('Atenção', `${error}`)
+    }catch{
+      console.log(error)
+      Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
     }
     setLoading(false)
+  }
+
+  async function cadastrarNoFirebaseAuth(){
+    const {email, senha} = usuario
+    let uid = ''
+      await firebase.auth().createUserWithEmailAndPassword(`${email}`, `${senha}`)
+          .then(function(res){
+            uid = res.user.uid
+          })
+      if(uid==''){
+        Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
+      }else{
+        cadastrarNoRealtimeDatabase(uid)
+      }
+  }
+
+  async function cadastrarNoRealtimeDatabase(uid){
+    const {tipoDeColaborador, nome, email, senha} = usuario
+      await ref.child(uid).push({
+        tipoDeColaborador: tipoDeColaborador,
+        nome: nome,
+        email: email,
+        senha: senha,
+      })
+      .then(function(res){
+        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso.')
+        navigation.navigate('TelaSGP')
+      })
+      .catch(function(error){
+        Alert.alert('Falha no sistema', 'Erro ao inserir novo usuário.')
+      })
   }
 
 }
