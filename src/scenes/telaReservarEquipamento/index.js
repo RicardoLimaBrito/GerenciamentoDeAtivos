@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import { View, ScrollView, Alert, Switch, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { View, ScrollView, Alert, Switch, StyleSheet, TouchableOpacity, Text, ActivityIndicator, AsyncStorage } from 'react-native'
 import Constants from 'expo-constants';
 import DatePicker from 'react-native-datepicker'
 import firebase from 'firebase'
@@ -11,6 +11,7 @@ export default function TelaReservarEquipamento({ navigation }){
     const [reserva, setReserva] = useState({
         tipoDeReserva: 'Equipamento',
         situacao: 'Em análise',
+        solicitante: '',
         dataRetirada: '',
         horaRetirada: '',
         adaptadorMacbook: false,
@@ -23,9 +24,9 @@ export default function TelaReservarEquipamento({ navigation }){
     })
     const [loading, setLoading] = useState(false)
 
-    function alterarValor(nome) {
-        setReserva({ ...reserva, [nome]: !reserva[nome] })
-    }
+    useEffect(() =>{
+        getEmail()
+    },[])
 
     return(
         <View style={Styles.containerPrincipal}>
@@ -134,7 +135,7 @@ export default function TelaReservarEquipamento({ navigation }){
                 </View>
             </ScrollView>
             <View style={Styles.botaoContainer}>
-                <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>navigation.navigate('TelaSolicitacaoReservas')}>
+                <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>navigation.goBack()}>
                 <Text style={Styles.textoBotaoCadastrar}>RETORNAR</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>inserirNovaReserva()}>
@@ -144,6 +145,22 @@ export default function TelaReservarEquipamento({ navigation }){
             {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
         </View>
     )
+
+    function alterarValor(nome) {
+        setReserva({ ...reserva, [nome]: !reserva[nome] })
+    }
+
+    async function getEmail(){
+        let email = ''
+            try {
+               email = await AsyncStorage.getItem('@usuario')
+            } catch (error) {
+                console.log(error)
+                Alert.alert('Atenção', 'Erro ao pegar o email do colaborador')
+                navigation.goBack()
+            }
+        setReserva({ ...reserva, solicitante: `${email}` })
+    }
 
     function inserirNovaReserva() {
         if(reserva.dataRetirada==''){
@@ -162,6 +179,7 @@ export default function TelaReservarEquipamento({ navigation }){
         setLoading(true)
         const res = await ref.push({
             tipoDeReserva: reserva.tipoDeReserva,
+            solicitante: reserva.solicitante,
             situacao: reserva.situacao,
             dataRetirada: reserva.dataRetirada,
             horaRetirada: reserva.horaRetirada,
@@ -175,7 +193,7 @@ export default function TelaReservarEquipamento({ navigation }){
           })
           .then((res) => {
             Alert.alert('Sucesso', 'Solicitação para reservar efetuada com sucesso.')
-            navigation.navigate('TelaSolicitacaoReservas')
+            navigation.goBack()
           })
           .catch((err) => {
             console.log(err)

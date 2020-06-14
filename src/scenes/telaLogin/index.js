@@ -109,14 +109,33 @@ export default function TelaLogin({ navigation }) {
   function metodoLoginFake(){
     const {email, senha} = usuario
       if(email=='admin@gmail.com' && senha=='123456'){
+        guardarNoAsync(email)
         irParaHome('SGP')
       }else if(email=='aluno@gmail.com' && senha=='123456'){
+        guardarNoAsync(email)
         irParaHome('Aluno')
       }else if(email=='professor@gmail.com' && senha=='123456'){
+        guardarNoAsync(email)
         irParaHome('Professor')
       }else{
         Alert.alert('Atenção', 'Dados não estão corretos')
       }
+  }
+
+  async function guardarNoAsync(email){
+    try {
+      await AsyncStorage.removeItem('@usuario')
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Atenção', 'Erro ao remover o email do colaborador')
+    }
+
+    try {
+      await AsyncStorage.setItem('@usuario',email)
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Atenção', 'Erro ao salvar o email do colaborador')
+    }
   }
 
   function irParaHome(tipoDeColaborador){

@@ -5,7 +5,7 @@ import firebase from 'firebase'
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-export default function TelaSolicitacaoReservas({ navigation }) {
+export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
   const db = firebase.database()
   const ref = db.ref(`reserva/`)
 
@@ -24,8 +24,11 @@ export default function TelaSolicitacaoReservas({ navigation }) {
           <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>null}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <FontAwesome name="building" size={35} color="#000000" />
-              <Text style ={{margin: 5}}>Ir para salas</Text>
+              <Text style ={{margin: 5}}>Salas</Text>
             </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getReservas()}>
+            <FontAwesome name="refresh" size={35} color="#0d0da3" />
           </TouchableOpacity>
           <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaReservarEquipamento')}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -43,13 +46,27 @@ export default function TelaSolicitacaoReservas({ navigation }) {
                 <Text style={{fontSize: 17, fontWeight: 'bold', marginLeft: 10, margin: 5}}>
                   Tipo: {item.tipoDeReserva}
                 </Text>
-                <Text style={{fontSize: 17, marginLeft: 10, marginBottom: 5}}>
-                  Situação: {item.situacao}
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
+                    Situação:
+                  </Text>
+                  <Text style={{fontSize: 15, marginLeft: 10, marginBottom: 5}}>
+                    {item.situacao}
+                  </Text>
+                </View>
+                <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
+                  Solicitante:
                 </Text>
-                <Text style={{fontSize: 17, marginLeft: 10}}>
-                  Para o dia {item.dataRetirada} às {item.horaRetirada}
+                <Text style={{fontSize: 15, marginLeft: 10, marginBottom: 5}}>
+                  {item.solicitante}
                 </Text>
-                <Text style={{fontSize: 17, marginLeft: 10}}>
+                <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
+                  Período:
+                </Text>
+                <Text style={{fontSize: 15, marginLeft: 10, marginBottom: 5}}>
+                  {item.dataRetirada} às {item.horaRetirada}
+                </Text>
+                <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
                   Solicitações:
                 </Text>
                 <View style={{maxHeight: 300, maxWidth: 300, margin: 10}}>
@@ -202,6 +219,9 @@ const Styles = StyleSheet.create({
     margin: 5,
     marginRight: 20,
   },
+  containerBotaoRefresh: {
+    marginTop: 10,
+  },
   containerBotaoAdicionar: {
     width: 130,
     height: 50,
@@ -230,15 +250,15 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    maxWidth: '90%',
+    maxWidth: '95%',
     maxHeight: '70%'
   },
   containerSalas:{
     flexDirection: 'row',
     margin: 5,
     backgroundColor: '#ffffff',
-    width: 300,
-    height: 460,
+    width: 320,
+    height: 480,
     justifyContent: 'center',
     borderRadius: 15,
     borderColor: 'black',
@@ -247,7 +267,7 @@ const Styles = StyleSheet.create({
   },
   containerSwitch: {
     flexDirection: 'row',
-    margin: 10,
+    margin: 5,
     alignItems: 'center',
   },
   botaoContainer: {

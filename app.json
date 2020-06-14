@@ -21,6 +21,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "O projeto tem foco na geolocalização da Estácio da unidade Moreira Campos, Fortaleza/CE, entretanto, outros detalhes também foram implementados, para engrandecer o mesmo."
   }
 }

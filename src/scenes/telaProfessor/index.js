@@ -37,7 +37,7 @@ export default function TelaProfessor({ navigation }) {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaLocalizarSala')}>
           <Text style={Styles.textoBotoesSuperiores}>Localizar sala</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaSolicitacaoReservas')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaSolicitacaoReservasEquipamentos')}>
           <Text style={Styles.textoBotoesSuperiores}>Reservas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
