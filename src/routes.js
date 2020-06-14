@@ -11,7 +11,9 @@ import TelaResetarSenha from './scenes/telaResetarSenha'
 import TelaAluno from './scenes/telaAluno'
 import TelaProfessor from './scenes/telaProfessor'
 import TelaSolicitacaoReservasEquipamentos from './scenes/telaSolicitacaoReservasEquipamentos'
+import TelaSolicitacaoReservasSalas from './scenes/telaSolicitacaoReservasSalas'
 import TelaReservarEquipamento from './scenes/telaReservarEquipamento'
+import TelaReservarSala from './scenes/telaReservarSala'
 import TelaSGP from './scenes/telaSGP'
 import TelaCadastrarColaborador from './scenes/telaCadastrarColaborador'
 import TelaVerificarReservas from './scenes/telaVerificarReservas'
@@ -30,7 +32,9 @@ export function Route(props){
                 <Stack.Screen name="TelaAluno" component={TelaAluno} />
                 <Stack.Screen name="TelaProfessor" component={TelaProfessor} />
                 <Stack.Screen name="TelaSolicitacaoReservasEquipamentos" component={TelaSolicitacaoReservasEquipamentos} />
+                <Stack.Screen name="TelaSolicitacaoReservasSalas" component={TelaSolicitacaoReservasSalas} />
                 <Stack.Screen name="TelaReservarEquipamento" component={TelaReservarEquipamento} />
+                <Stack.Screen name="TelaReservarSala" component={TelaReservarSala} />
                 <Stack.Screen name="TelaSGP" component={TelaSGP} />
                 <Stack.Screen name="TelaCadastrarColaborador" component={TelaCadastrarColaborador} />
                 <Stack.Screen name="TelaVerificarReservas" component={TelaVerificarReservas} />
