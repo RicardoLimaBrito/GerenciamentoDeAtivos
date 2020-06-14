@@ -29,9 +29,6 @@ export default function TelaSGP({ navigation }) {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaCadastrarColaborador')}>
           <Text style={Styles.textoBotoesSuperiores}>Cadastrar colaboradores</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>null}>
-          <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
-        </TouchableOpacity>
       </ScrollView>
       <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaLogin')}>
         <Text style={Styles.textoBotaoSair}>Sair</Text>

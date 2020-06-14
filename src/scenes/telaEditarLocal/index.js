@@ -29,25 +29,6 @@ export default function TelaEditarLocal({ navigation, route }) {
     {value: 'E'},
     {value: 'F'},
     {value: 'G'},
-    {value: 'H'},
-    {value: 'I'},
-    {value: 'J'},
-    {value: 'K'},
-    {value: 'L'},
-    {value: 'M'},
-    {value: 'N'},
-    {value: 'O'},
-    {value: 'P'},
-    {value: 'Q'},
-    {value: 'R'},
-    {value: 'S'},
-    {value: 'T'},
-    {value: 'U'},
-    {value: 'V'},
-    {value: 'W'},
-    {value: 'X'},
-    {value: 'Y'},
-    {value: 'Z'},
   ])
   const [dadosDropDownAndares, setDadosDropDownAndares] = useState([
     {value: 'Súbsolo'},
@@ -60,7 +41,6 @@ export default function TelaEditarLocal({ navigation, route }) {
 
   useEffect(() => {
     getLocal()
-    console.log(tipoLocal)
   }, [])
 
   return (

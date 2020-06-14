@@ -9,6 +9,8 @@ import TelaLocalizarSala from './scenes/telaLocalizarSala'
 import TelaCadastrarAluno from './scenes/telaCadastrarAluno'
 import TelaResetarSenha from './scenes/telaResetarSenha'
 import TelaAluno from './scenes/telaAluno'
+import TelaCadastrarAgendaAluno from './scenes/telaCadastrarAgendaAluno'
+import TelaEditarAgendaAluno from './scenes/telaEditarAgendaAluno'
 import TelaProfessor from './scenes/telaProfessor'
 import TelaSolicitacaoReservasEquipamentos from './scenes/telaSolicitacaoReservasEquipamentos'
 import TelaSolicitacaoReservasSalas from './scenes/telaSolicitacaoReservasSalas'
@@ -18,7 +20,6 @@ import TelaSGP from './scenes/telaSGP'
 import TelaVerificarReservasEquipamentos from './scenes/telaVerificarReservasEquipamentos'
 import TelaVerificarReservasSalas from './scenes/telaVerificarReservasSalas'
 import TelaCadastrarColaborador from './scenes/telaCadastrarColaborador'
-import TelaVerificarReservas from './scenes/telaVerificarReservas'
 import TelaConfigurarLocais from './scenes/telaConfigurarLocais'
 import TelaCadastrarLocal from './scenes/telaCadastrarLocal'
 import TelaEditarLocal from './scenes/telaEditarLocal'
@@ -32,6 +33,8 @@ export function Route(props){
                 <Stack.Screen name="TelaCadastrarAluno" component={TelaCadastrarAluno} />
                 <Stack.Screen name="TelaResetarSenha" component={TelaResetarSenha} />
                 <Stack.Screen name="TelaAluno" component={TelaAluno} />
+                <Stack.Screen name="TelaCadastrarAgendaAluno" component={TelaCadastrarAgendaAluno} />
+                <Stack.Screen name="TelaEditarAgendaAluno" component={TelaEditarAgendaAluno} />
                 <Stack.Screen name="TelaProfessor" component={TelaProfessor} />
                 <Stack.Screen name="TelaSolicitacaoReservasEquipamentos" component={TelaSolicitacaoReservasEquipamentos} />
                 <Stack.Screen name="TelaSolicitacaoReservasSalas" component={TelaSolicitacaoReservasSalas} />
@@ -41,7 +44,6 @@ export function Route(props){
                 <Stack.Screen name="TelaVerificarReservasEquipamentos" component={TelaVerificarReservasEquipamentos} />
                 <Stack.Screen name="TelaVerificarReservasSalas" component={TelaVerificarReservasSalas} />
                 <Stack.Screen name="TelaCadastrarColaborador" component={TelaCadastrarColaborador} />
-                <Stack.Screen name="TelaVerificarReservas" component={TelaVerificarReservas} />
                 <Stack.Screen name="TelaConfigurarLocais" component={TelaConfigurarLocais} />
                 <Stack.Screen name="TelaCadastrarLocal" component={TelaCadastrarLocal} />
                 <Stack.Screen name="TelaEditarLocal" component={TelaEditarLocal} />
