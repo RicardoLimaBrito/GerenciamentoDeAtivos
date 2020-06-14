@@ -181,7 +181,8 @@ export default function TelaLocalizarSala({ navigation }) {
             Alert.alert('Atenção', 'Não existem locais cadastrados.')
           }
       } catch (error) {
-        Alert.alert('Atenção', `${error}`)
+        console.log(error)
+        Alert.alert('Atenção', 'Erro a carregar o local')
       }
     setLoading(false)
   }

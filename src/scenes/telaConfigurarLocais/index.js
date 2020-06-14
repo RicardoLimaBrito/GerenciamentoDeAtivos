@@ -163,7 +163,8 @@ export default function TelaConfigurarLocais({ navigation }) {
               }
             })
           } catch (error) {
-            Alert.alert('Atenção', `${error}`)
+            console.log(error)
+            Alert.alert('Atenção', 'Erro a carregar o local')
           }
       }
     setBloco('')
@@ -187,7 +188,8 @@ export default function TelaConfigurarLocais({ navigation }) {
         }
       getLocal()
     } catch (error) {
-      Alert.alert('Atenção', `${error}`)
+      console.log(error)
+      Alert.alert('Atenção', 'Erro a carregar o local')
     }
   }
 

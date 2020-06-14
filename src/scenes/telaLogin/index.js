@@ -51,7 +51,7 @@ export default function TelaLogin({ navigation }) {
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>navigation.navigate('TelaCadastrarAluno')}>
           <Text style={Styles.textoBotaoCadastrar}>Cadastrar-se</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLoginFake()}>
           <Text style={Styles.textoBotaoAcessar}>Acessar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>navigation.navigate('TelaLocalizarSala')}>
@@ -104,6 +104,19 @@ export default function TelaLogin({ navigation }) {
         //irParaHome(tipo)
       })
     
+  }
+
+  function metodoLoginFake(){
+    const {email, senha} = usuario
+      if(email=='admin@gmail.com' && senha=='123456'){
+        irParaHome('SGP')
+      }else if(email=='aluno@gmail.com' && senha=='123456'){
+        irParaHome('Aluno')
+      }else if(email=='professor@gmail.com' && senha=='123456'){
+        irParaHome('Professor')
+      }else{
+        Alert.alert('Atenção', 'Dados não estão corretos')
+      }
   }
 
   function irParaHome(tipoDeColaborador){
