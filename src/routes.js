@@ -15,6 +15,8 @@ import TelaSolicitacaoReservasSalas from './scenes/telaSolicitacaoReservasSalas'
 import TelaReservarEquipamento from './scenes/telaReservarEquipamento'
 import TelaReservarSala from './scenes/telaReservarSala'
 import TelaSGP from './scenes/telaSGP'
+import TelaVerificarReservasEquipamentos from './scenes/telaVerificarReservasEquipamentos'
+import TelaVerificarReservasSalas from './scenes/telaVerificarReservasSalas'
 import TelaCadastrarColaborador from './scenes/telaCadastrarColaborador'
 import TelaVerificarReservas from './scenes/telaVerificarReservas'
 import TelaConfigurarLocais from './scenes/telaConfigurarLocais'
@@ -36,6 +38,8 @@ export function Route(props){
                 <Stack.Screen name="TelaReservarEquipamento" component={TelaReservarEquipamento} />
                 <Stack.Screen name="TelaReservarSala" component={TelaReservarSala} />
                 <Stack.Screen name="TelaSGP" component={TelaSGP} />
+                <Stack.Screen name="TelaVerificarReservasEquipamentos" component={TelaVerificarReservasEquipamentos} />
+                <Stack.Screen name="TelaVerificarReservasSalas" component={TelaVerificarReservasSalas} />
                 <Stack.Screen name="TelaCadastrarColaborador" component={TelaCadastrarColaborador} />
                 <Stack.Screen name="TelaVerificarReservas" component={TelaVerificarReservas} />
                 <Stack.Screen name="TelaConfigurarLocais" component={TelaConfigurarLocais} />

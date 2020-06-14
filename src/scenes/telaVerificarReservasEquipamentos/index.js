@@ -1,20 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Switch, TouchableOpacity, FlatList, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, Switch, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
 import Constants from 'expo-constants';
 import firebase from 'firebase'
 import { FontAwesome } from '@expo/vector-icons'; 
 
 
-export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
+export default function TelaVerificarReservasEquipamentos({ navigation }) {
   const db = firebase.database()
   const ref = db.ref(`reservas_equipamentos/`)
 
   const [dados, setDados] = useState([])
-  const [usuario, setUsuario] = useState({email: ''})
   const [loading, setLoading] = useState(false)
     
   useEffect(() => {
-    getEmail()
+    getReservas()
   }, [])
 
   return (
@@ -27,16 +26,10 @@ export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
       </View>
       <View style={Styles.containerDeDados}>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaSolicitacaoReservasSalas')}>
+          <TouchableOpacity style={Styles.containerBotaoEsquerdo} onPress={()=>navigation.navigate('TelaVerificarReservasSalas')}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <FontAwesome name="building" size={35} color="#000000" />
-              <Text style ={{margin: 5}}>Salas</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotaoAdicionar} onPress={()=>navigation.navigate('TelaReservarEquipamento')}>
-            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <FontAwesome name="plus" size={35} color="#337861" />
-              <Text style ={{margin: 5}}>Equipamento</Text>
+            <Text style ={{margin: 5, fontSize: 17}}>Solicitações de salas</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -53,7 +46,7 @@ export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
                   <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
                     Situação:
                   </Text>
-                  <Text style={{fontSize: 15, marginLeft: 10, marginBottom: 5}}>
+                  <Text style={{fontSize: 15, marginLeft: 5, marginBottom: 5}}>
                     {item.situacao}
                   </Text>
                 </View>
@@ -137,11 +130,14 @@ export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
                       <Text style={{fontSize: 15}}>Notebook</Text>
                   </View>
               </View>
-              </View>
-              <View>
-                <TouchableOpacity style={{margin: 10}} onPress={()=>delReserva(item.key)}>
-                  <FontAwesome name="trash" size={30} color="#FF0000" />
-                </TouchableOpacity>
+                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                  <TouchableOpacity style={Styles.containerBotaoAprovar} onPress={()=>responderSolicitacao(item.key, 'Aprovado')}>
+                    <FontAwesome name="check" size={30} color="#fff" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={Styles.containerBotaoNegar} onPress={()=>responderSolicitacao(item.key, 'Negado')}>
+                    <FontAwesome name="close" size={30} color="#fff" />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
@@ -149,7 +145,7 @@ export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
         />
       </View>
       <View>
-        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaProfessor')}>
+        <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaSGP')}>
           <Text style={Styles.textoBotaoSair}>Retornar</Text>
         </TouchableOpacity>
       </View>
@@ -157,47 +153,12 @@ export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
     </View>
   );
   
-  async function getEmail(){
-    let email = ''
-        try {
-           email = await AsyncStorage.getItem('@usuario')
-        } catch (error) {
-            console.log(error)
-            Alert.alert('Atenção', 'Erro ao pegar o email do colaborador')
-            navigation.goBack()
-        }
-    setUsuario({...usuario, email: email})
-    getReservasInitial(email)
-  }
-
-  async function getReservasInitial(email) {
-    setLoading(true)
-    let ordem = 'solicitante'
-      try {
-        let res = await ref.orderByChild(ordem).equalTo(email).once('value')
-          if(res.val()){
-            let datalist= []
-            res.forEach((e) => {
-              datalist.push({key: e.key, ...e.val()})
-            })
-            setDados([])
-            setDados(datalist)
-          }else{
-            setDados([])
-            Alert.alert('Atenção', 'Não existem reservas solicitadas.')
-          }
-      } catch (error) {
-        Alert.alert('Atenção', error)
-      }
-    setLoading(false)
-  }
-
   async function getReservas() {
     setLoading(true)
-    const {email} = usuario
-    let ordem = 'solicitante'
+    let ordem = 'situacao'
+    let tipo = 'Em análise'
       try {
-        let res = await ref.orderByChild(ordem).equalTo(email).once('value')
+        let res = await ref.orderByChild(ordem).equalTo(tipo).once('value')
           if(res.val()){
             let datalist= []
             res.forEach((e) => {
@@ -215,26 +176,21 @@ export default function TelaSolicitacaoReservasEquipamentos({ navigation }) {
     setLoading(false)
   }
 
-  async function delReserva(id){
+  async function responderSolicitacao(key, resposta){
     setLoading(true)
-      try {
-        Alert.alert('Atenção','Deseja realmente excluir está solicitação?',
-          [
-            { text: 'Cancelar' },
-            {
-              text: 'Sim',
-              onPress: () => {
-                ref.child(`${id}`).remove()
-                getReservas()
-              },
-            },
-          ],
-          { cancelable: true }
-        )
-      } catch (error) {
-        Alert.alert('Atenção', error)
-      }
-    setLoading(false)
+    let respostaInput = resposta
+    await ref.child(key).update({
+      situacao: respostaInput,
+    })
+    .then((res) => {
+      Alert.alert('Sucesso', `${respostaInput} com sucesso`)
+      getReservas()
+    })
+    .catch((err) => {
+      console.log(err)
+      Alert.alert('Falha no sistema', 'Erro ao editar local.')
+    })
+    .finally(() => setLoading(false))
   }
 
 }
@@ -246,6 +202,38 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: 'white',
+  },
+  containerBotaoAprovar: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    backgroundColor: '#5da37f',
+    margin: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  containerBotaoNegar: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    backgroundColor: '#f51300',
+    margin: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   containerBotaoPesquisar: {
     width: 50,
@@ -262,8 +250,8 @@ const Styles = StyleSheet.create({
   containerBotaoRefresh: {
     marginTop: 35,
   },
-  containerBotaoAdicionar: {
-    width: 130,
+  containerBotaoEsquerdo: {
+    width: '90%',
     height: 50,
     backgroundColor: '#dae6c2',
     alignItems: 'center',
@@ -295,10 +283,10 @@ const Styles = StyleSheet.create({
   },
   containerSalas:{
     flexDirection: 'row',
-    margin: 5,
+    margin: 10,
     backgroundColor: '#ffffff',
     width: 320,
-    height: 480,
+    height: 520,
     justifyContent: 'center',
     borderRadius: 15,
     borderColor: 'black',

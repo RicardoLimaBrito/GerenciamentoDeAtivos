@@ -23,7 +23,7 @@ export default function TelaSGP({ navigation }) {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaConfigurarLocais')}>
           <Text style={Styles.textoBotoesSuperiores}>Configurar locais</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaVerificarReservas')}>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaVerificarReservasEquipamentos')}>
           <Text style={Styles.textoBotoesSuperiores}>Verificar reservas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaCadastrarColaborador')}>
