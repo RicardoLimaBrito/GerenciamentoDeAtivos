@@ -5,9 +5,9 @@ import firebase from 'firebase'
 
 export default function TelaLogin({ navigation }) {
   const db = firebase.database()
-  const ref = db.ref('usuarios/')
+  const ref = db.ref('usuarios')
 
-  const [usuario, setUsuario] = useState({email: '', senha: ''})
+  const [usuario, setUsuario] = useState({email: '', senha: '', tipoDeColaborador: ''})
   const [loading, setLoading] = useState(false)
   const [dados, setDados] = useState([])
 
@@ -51,7 +51,7 @@ export default function TelaLogin({ navigation }) {
         <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>navigation.navigate('TelaCadastrarAluno')}>
           <Text style={Styles.textoBotaoCadastrar}>Cadastrar-se</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLoginFake()}>
+        <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>metodoLogin()}>
           <Text style={Styles.textoBotaoAcessar}>Acessar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.botaoLocalizarSala} onPress={()=>navigation.navigate('TelaLocalizarSala')}>
@@ -66,61 +66,6 @@ export default function TelaLogin({ navigation }) {
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
     </View>
   )
-
-  async function metodoLogin(){
-    setLoading(true)
-    let uid = ''
-      const {email, senha} = usuario
-      await firebase.auth().signInWithEmailAndPassword(email, senha)
-        .then(function(res){
-           uid = res.user.uid
-        })
-        .catch(function(error){
-          console.log(error)
-          Alert.alert('Atenção', 'Dados inválidos')
-        })
-      if(uid!=''){
-        getTipoDeColaborador(uid)
-      }
-    setLoading(false)
-  }
-
-  async function getTipoDeColaborador(uid){
-    await ref.child(uid).once("value")
-      .then(function(res){
-        let datalist= []
-          res.forEach((e) => {
-            datalist.push({uid: uid, key: e.key, ...e.val()})
-          })
-          setDados(datalist)
-          console.log(datalist.find('tipoDeColaborador'))
-      })
-      .catch(function(error){
-        console.log(error)
-        Alert.alert('Atenção', 'Erro ao capturar o tipo de colaborador')
-      })
-      .finally(function(){
-        console.log(dados)
-        //irParaHome(tipo)
-      })
-    
-  }
-
-  function metodoLoginFake(){
-    const {email, senha} = usuario
-      if(email=='admin@gmail.com' && senha=='123456'){
-        guardarNoAsync(email)
-        irParaHome('SGP')
-      }else if(email=='aluno@gmail.com' && senha=='123456'){
-        guardarNoAsync(email)
-        irParaHome('Aluno')
-      }else if(email=='professor@gmail.com' && senha=='123456'){
-        guardarNoAsync(email)
-        irParaHome('Professor')
-      }else{
-        Alert.alert('Atenção', 'Dados não estão corretos')
-      }
-  }
 
   async function guardarNoAsync(email){
     try {
@@ -138,21 +83,53 @@ export default function TelaLogin({ navigation }) {
     }
   }
 
+  async function metodoLogin(){
+    setLoading(true)
+    let uid = ''
+    const {email, senha} = usuario
+    await firebase.auth().signInWithEmailAndPassword(email, senha)
+      .then(function(res){
+          uid = res.user.uid
+      })
+      .catch(function(error){
+        console.log(error)
+        Alert.alert('Atenção', 'Dados inválidos')
+      })
+    getTipoDeColaborador(uid)
+  }
+
+  async function getTipoDeColaborador(uid){
+    let datalist= []
+    let res = await ref.child(uid).once("value")
+      if(res.val()){
+        res.forEach((e) => {
+          datalist.push({key: e.key, ...e.val()})
+        })
+        irParaHome(datalist[0].tipoDeColaborador)
+      }else{
+        datalist = []
+        Alert.alert('Atenção', 'Erro ao descobrir o tipo de colaborador')
+      }
+  }
+
   function irParaHome(tipoDeColaborador){
-    if(tipoDeColaborador=='Aluno'){
-      navigation.navigate('TelaAluno')
-    }else if(tipoDeColaborador=='Professor'){
-      navigation.navigate('TelaProfessor')
-    }else if(tipoDeColaborador=='SGP'){
-      navigation.navigate('TelaSGP')
-    }else{
-      limparDados()
-      Alert.alert('Atenção', 'Tipo de usuário não identicado')
-    }
+    guardarNoAsync()
+      if(tipoDeColaborador=='Aluno'){
+        navigation.navigate('TelaAluno')
+      }else if(tipoDeColaborador=='Professor'){
+        navigation.navigate('TelaProfessor')
+      }else if(tipoDeColaborador=='SGP'){
+        navigation.navigate('TelaSGP')
+      }else{
+        limparDados()
+        Alert.alert('Atenção', 'Tipo de usuário não identicado')
+      }
+    setLoading(false)
   }
 
   function limparDados(){
     setUsuario({email: '', senha: ''})
+    setLoading(false)
   }
 
 }
