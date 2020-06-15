@@ -16,11 +16,12 @@ export default function TelaCadastrarAgendaAluno({ navigation }) {
 
   useEffect(()=> {
     getSalas()
+    getEmail()
   }, [])
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Text style={Styles.titulo}>Nova disciplina</Text>
+      <Text style={Styles.titulo}>Nova anotação</Text>
       <ScrollView style={{maxHeight: 310, margin:30}}>
         <View style={{margin: 5, alignSelf: 'center'}}>
             <DatePicker
@@ -53,7 +54,7 @@ export default function TelaCadastrarAgendaAluno({ navigation }) {
             placeholder="Disciplina"
             onChangeText={texto => setAgenda({...agenda, disciplina: texto})}
             autoCapitalize={'sentences'}
-            maxLength={25}
+            maxLength={50}
           />
         </View>
         <View style={Styles.containerDropDown}>
@@ -125,6 +126,7 @@ export default function TelaCadastrarAgendaAluno({ navigation }) {
     const {dono, disciplina, sala, professor, horario, dias} = agenda
     if(dono==''){
       getEmail()
+      inserirNovaAgenda()
     }else{
       if(disciplina=='' || sala=='' || professor=='' || horario=='', dias==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')

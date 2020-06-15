@@ -6,25 +6,24 @@ import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
 
 
-export default function TelaEditarAgendaAluno({ navigation, route }) {
+export default function TelaCadastrarAgendaAluno({ navigation }) {
   const db = firebase.database()
   const ref = db.ref('agendas')
-  const { key } = route.params;
 
-  const [agenda, setAgenda] = useState({dono: '', disciplina: '', sala: '', professor: '', dias: '', horario: ''})
+  const [agenda, setAgenda] = useState({dono: '', disciplina: '', sala: '',dias: '', horario: ''})
   const [loading, setLoading] = useState(false)
   const [dadosDropDownSalas, setDadosDropDownSalas] = useState([])
 
   useEffect(()=> {
     getSalas()
-    getAgenda()
+    getEmail()
   }, [])
 
   return (
     <View style={Styles.containerPrincipal}>
-      <Text style={Styles.titulo}>Editar anotação</Text>
-      <ScrollView style={{maxHeight: 310, margin:30}}>
-      <View style={{margin: 5, alignSelf: 'center'}}>
+      <Text style={Styles.titulo}>Nova anotação</Text>
+      <ScrollView style={{maxHeight: 250, margin:30}}>
+        <View style={{margin: 5, alignSelf: 'center'}}>
             <DatePicker
                 style={{width: 200}}
                 date={agenda.horario}
@@ -65,23 +64,13 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
             onChangeText={texto => setAgenda({...agenda, sala: texto})}
           />
         </View>
-        <View style={Styles.containerDosDados}>
-          <TextInput
-            style={{height: 40}}
-            value={agenda.professor}
-            placeholder="Professor"
-            onChangeText={texto => setAgenda({...agenda, professor: texto})}
-            autoCapitalize={'sentences'}
-            maxLength={20}
-          />
-        </View>
       </ScrollView>
       <View style={Styles.botaoContainer}>
         <TouchableOpacity style={Styles.botaoAcessar} onPress={()=>navigation.goBack()}>
           <Text style={Styles.textoBotaoAcessar}>Retornar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>editarAnotacao()}>
-          <Text style={Styles.textoBotaoCadastrar}>Editar</Text>
+        <TouchableOpacity style={Styles.botaoCadastrar} onPress={()=>inserirNovaAgenda()}>
+          <Text style={Styles.textoBotaoCadastrar}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
       {loading && <ActivityIndicator animating={loading} size="large" color="#0000ff" />}
@@ -111,25 +100,6 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
       }
   }
 
-  async function getAgenda(){
-    let res = await ref.child(key).once('value')
-    let dono = res.val().dono
-    let disciplina = res.val().disciplina
-    let sala = res.val().sala
-    let professor = res.val().professor
-    let dias = res.val().dias
-    let horario = res.val().horario
-      setAgenda({
-        ...agenda, 
-        dono: dono,
-        disciplina: disciplina,
-        sala: sala,
-        professor: professor,
-        dias: dias,
-        horario: horario,
-      })
-  }
-
   async function getEmail(){
     let email = ''
         try {
@@ -142,37 +112,36 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
     setAgenda({...agenda, dono: email})
   }
 
-  function editarAnotacao() {
-    const {dono, disciplina, sala, professor, horario, dias} = agenda
+  function inserirNovaAgenda() {
+    const {dono, disciplina, sala, horario, dias} = agenda
     if(dono==''){
       getEmail()
-      editarAnotacao()
+      inserirNovaAgenda()
     }else{
-      if(disciplina=='' || sala=='' || professor=='' || horario=='', dias==''){
+      if(disciplina=='' || sala==''|| horario=='', dias==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
       }else{
-        metodoEditar()
+        metodoInserir()
       } 
     }
   }
 
-  async function metodoEditar(){
+  async function metodoInserir(){
     setLoading(true)
-    const {dono, disciplina, sala, professor, horario, dias} = agenda
-      await ref.child(key).update({
+    const {dono, disciplina, sala, horario, dias} = agenda
+      await ref.push({
         dono: dono,
         disciplina: disciplina,
         sala: sala,
-        professor: professor,
         horario: horario,
         dias: dias,
       })
       .then(function(res){
-        Alert.alert('Sucesso', 'Editado com sucesso.')
+        Alert.alert('Sucesso', 'Cadastro efetuado com sucesso.')
         navigation.goBack()
       })
       .catch(function(error){
-        Alert.alert('Falha no sistema', 'Erro ao editar anotação.')
+        Alert.alert('Falha no sistema', 'Erro ao inserir nova disciplina.')
       })
       .finally(setLoading(false))
   }

@@ -38,22 +38,18 @@ export default function TelaAluno({ navigation }) {
               data={dados}
               renderItem={({ item }) => (
                 <View style={Styles.containerInternoFlatList}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={{fontSize: 17, fontWeight: 'bold', marginLeft: 10, margin: 5}}>
-                      Disciplina:
-                    </Text>
-                    <Text style={{fontSize: 17, marginTop: 5}}>
-                      {item.disciplina}
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
-                      Dias:
-                    </Text>
-                    <Text style={{fontSize: 15, marginLeft: 5, marginBottom: 5}}>
-                      {item.dias}
-                    </Text>
-                  </View>
+                  <Text style={{fontSize: 17, fontWeight: 'bold', marginLeft: 10, marginTop: 5}}>
+                    Disciplina:
+                  </Text>
+                  <Text style={{fontSize: 17, marginLeft: 10,}}>
+                    {item.disciplina}
+                  </Text>
+                  <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
+                    Dias:
+                  </Text>
+                  <Text style={{fontSize: 15, marginLeft: 10, marginBottom: 5}}>
+                    {item.dias}
+                  </Text>
                   <View style={{flexDirection: 'row'}}>
                     <Text style={{fontSize: 15,fontWeight: 'bold', marginLeft: 10}}>
                       Horário:
@@ -260,7 +256,7 @@ const Styles = StyleSheet.create({
   },
   containerInternoFlatList: {
     width: 250,
-    height: 250,
+    height: 300,
     borderRadius: 15,
     backgroundColor: '#f6f6f6',
     justifyContent: 'center',

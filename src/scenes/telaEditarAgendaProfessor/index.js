@@ -11,7 +11,7 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
   const ref = db.ref('agendas')
   const { key } = route.params;
 
-  const [agenda, setAgenda] = useState({dono: '', disciplina: '', sala: '', professor: '', dias: '', horario: ''})
+  const [agenda, setAgenda] = useState({dono: '', disciplina: '', sala: '', dias: '', horario: ''})
   const [loading, setLoading] = useState(false)
   const [dadosDropDownSalas, setDadosDropDownSalas] = useState([])
 
@@ -23,7 +23,7 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
   return (
     <View style={Styles.containerPrincipal}>
       <Text style={Styles.titulo}>Editar anotação</Text>
-      <ScrollView style={{maxHeight: 310, margin:30}}>
+      <ScrollView style={{maxHeight: 250, margin:30}}>
       <View style={{margin: 5, alignSelf: 'center'}}>
             <DatePicker
                 style={{width: 200}}
@@ -63,16 +63,6 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
             label='Sala'
             data={dadosDropDownSalas}
             onChangeText={texto => setAgenda({...agenda, sala: texto})}
-          />
-        </View>
-        <View style={Styles.containerDosDados}>
-          <TextInput
-            style={{height: 40}}
-            value={agenda.professor}
-            placeholder="Professor"
-            onChangeText={texto => setAgenda({...agenda, professor: texto})}
-            autoCapitalize={'sentences'}
-            maxLength={20}
           />
         </View>
       </ScrollView>
@@ -116,7 +106,6 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
     let dono = res.val().dono
     let disciplina = res.val().disciplina
     let sala = res.val().sala
-    let professor = res.val().professor
     let dias = res.val().dias
     let horario = res.val().horario
       setAgenda({
@@ -124,7 +113,6 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
         dono: dono,
         disciplina: disciplina,
         sala: sala,
-        professor: professor,
         dias: dias,
         horario: horario,
       })
@@ -143,12 +131,12 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
   }
 
   function editarAnotacao() {
-    const {dono, disciplina, sala, professor, horario, dias} = agenda
+    const {dono, disciplina, sala, horario, dias} = agenda
     if(dono==''){
       getEmail()
       editarAnotacao()
     }else{
-      if(disciplina=='' || sala=='' || professor=='' || horario=='', dias==''){
+      if(disciplina=='' || sala==''|| horario=='', dias==''){
         Alert.alert('Atenção', 'Você precisa preencher todos os campos.')
       }else{
         metodoEditar()
@@ -158,12 +146,11 @@ export default function TelaEditarAgendaAluno({ navigation, route }) {
 
   async function metodoEditar(){
     setLoading(true)
-    const {dono, disciplina, sala, professor, horario, dias} = agenda
+    const {dono, disciplina, sala, horario, dias} = agenda
       await ref.child(key).update({
         dono: dono,
         disciplina: disciplina,
         sala: sala,
-        professor: professor,
         horario: horario,
         dias: dias,
       })

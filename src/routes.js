@@ -12,6 +12,8 @@ import TelaAluno from './scenes/telaAluno'
 import TelaCadastrarAgendaAluno from './scenes/telaCadastrarAgendaAluno'
 import TelaEditarAgendaAluno from './scenes/telaEditarAgendaAluno'
 import TelaProfessor from './scenes/telaProfessor'
+import TelaCadastrarAgendaProfessor from './scenes/telaCadastrarAgendaProfessor'
+import TelaEditarAgendaProfessor from './scenes/telaEditarAgendaProfessor'
 import TelaSolicitacaoReservasEquipamentos from './scenes/telaSolicitacaoReservasEquipamentos'
 import TelaSolicitacaoReservasSalas from './scenes/telaSolicitacaoReservasSalas'
 import TelaReservarEquipamento from './scenes/telaReservarEquipamento'
@@ -36,6 +38,8 @@ export function Route(props){
                 <Stack.Screen name="TelaCadastrarAgendaAluno" component={TelaCadastrarAgendaAluno} />
                 <Stack.Screen name="TelaEditarAgendaAluno" component={TelaEditarAgendaAluno} />
                 <Stack.Screen name="TelaProfessor" component={TelaProfessor} />
+                <Stack.Screen name="TelaCadastrarAgendaProfessor" component={TelaCadastrarAgendaProfessor} />
+                <Stack.Screen name="TelaEditarAgendaProfessor" component={TelaEditarAgendaProfessor} />
                 <Stack.Screen name="TelaSolicitacaoReservasEquipamentos" component={TelaSolicitacaoReservasEquipamentos} />
                 <Stack.Screen name="TelaSolicitacaoReservasSalas" component={TelaSolicitacaoReservasSalas} />
                 <Stack.Screen name="TelaReservarEquipamento" component={TelaReservarEquipamento} />
