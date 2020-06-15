@@ -9,7 +9,6 @@ export default function TelaLogin({ navigation }) {
 
   const [usuario, setUsuario] = useState({email: '', senha: '', tipoDeColaborador: ''})
   const [loading, setLoading] = useState(false)
-  const [dados, setDados] = useState([])
 
   useEffect(() => {
     limparDados()
@@ -93,7 +92,7 @@ export default function TelaLogin({ navigation }) {
       })
       .catch(function(error){
         console.log(error)
-        Alert.alert('Atenção', 'Dados inválidos')
+        Alert.alert('Atenção', 'Usuário não encontrado')
       })
     getTipoDeColaborador(uid)
   }
@@ -108,7 +107,8 @@ export default function TelaLogin({ navigation }) {
         irParaHome(datalist[0].tipoDeColaborador)
       }else{
         datalist = []
-        Alert.alert('Atenção', 'Erro ao descobrir o tipo de colaborador')
+        limparDados()
+        Alert.alert('Atenção', 'Tipo de colaborador não identificado')
       }
   }
 
@@ -121,9 +121,9 @@ export default function TelaLogin({ navigation }) {
       }else if(tipoDeColaborador=='SGP'){
         navigation.navigate('TelaSGP')
       }else{
-        limparDados()
         Alert.alert('Atenção', 'Tipo de usuário não identicado')
       }
+    limparDados()
     setLoading(false)
   }
 

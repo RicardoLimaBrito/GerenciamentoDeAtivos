@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import Constants from 'expo-constants';
 
 
@@ -29,6 +29,9 @@ export default function TelaSGP({ navigation }) {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaCadastrarColaborador')}>
           <Text style={Styles.textoBotoesSuperiores}>Cadastrar colaboradores</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Alert.alert('Atenção','Em construção, volte mês que vem!')}>
+        <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
+        </TouchableOpacity>
       </ScrollView>
       <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaLogin')}>
         <Text style={Styles.textoBotaoSair}>Sair</Text>
@@ -51,8 +54,8 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   botaoContainer: {
-    margin: 15,
-    maxHeight: '45%',
+    margin: 10,
+    maxHeight: 360,
   },
   redimensionarLogo: {
       width: 120,

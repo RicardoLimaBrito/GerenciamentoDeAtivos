@@ -104,6 +104,9 @@ export default function TelaProfessor({ navigation }) {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaSolicitacaoReservasEquipamentos')}>
           <Text style={Styles.textoBotoesSuperiores}>Reservas</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Alert.alert('Atenção','Em construção, volte mês que vem!')}>
+          <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
+          </TouchableOpacity>
       </ScrollView>
       <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaLogin')}>
         <Text style={Styles.textoBotaoSair}>Sair</Text>
@@ -358,8 +361,8 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   botaoContainer: {
-    margin: 15,
-    maxHeight: 270,
+    margin: 10,
+    maxHeight: 350,
   },
   redimensionarLogo: {
       width: 120,

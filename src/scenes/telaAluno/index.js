@@ -109,6 +109,9 @@ export default function TelaAluno({ navigation }) {
         <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>navigation.navigate('TelaLocalizarSala')}>
           <Text style={Styles.textoBotoesSuperiores}>Localizar sala</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={Styles.botoesSuperiores} onPress={()=>Alert.alert('Atenção','Em construção, volte mês que vem!')}>
+          <Text style={Styles.textoBotoesSuperiores}>Chat</Text>
+        </TouchableOpacity>
       </ScrollView>
       <TouchableOpacity style={Styles.botaoDeSair} onPress={()=>navigation.navigate('TelaLogin')}>
         <Text style={Styles.textoBotaoSair}>Sair</Text>
@@ -370,7 +373,7 @@ const Styles = StyleSheet.create({
   },
   botaoContainer: {
     margin: 15,
-    maxHeight: 180,
+    maxHeight: 270,
   },
   redimensionarLogo: {
     width: 120,
