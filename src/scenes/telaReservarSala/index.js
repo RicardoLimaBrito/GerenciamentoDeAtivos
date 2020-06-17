@@ -10,7 +10,7 @@ export default function TelaReservarSalas({ navigation }){
     const refer = db.ref('locais_salas/')
 
     const [reserva, setReserva] = useState({
-        tipoDeReserva: 'Equipamento',
+        tipoDeReserva: 'Sala',
         situacao: 'Em análise',
         motivo: '',
         solicitante: '',

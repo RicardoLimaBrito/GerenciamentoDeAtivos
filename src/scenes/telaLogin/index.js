@@ -66,7 +66,9 @@ export default function TelaLogin({ navigation }) {
     </View>
   )
 
-  async function guardarNoAsync(email){
+  async function guardarNoAsync(){
+    const {email} = usuario
+
     try {
       await AsyncStorage.removeItem('@usuario')
     } catch (error) {
@@ -84,17 +86,21 @@ export default function TelaLogin({ navigation }) {
 
   async function metodoLogin(){
     setLoading(true)
+    cadastrarNoAuth()
+  }
+
+  async function cadastrarNoAuth(){
     let uid = ''
     const {email, senha} = usuario
     await firebase.auth().signInWithEmailAndPassword(email, senha)
       .then(function(res){
           uid = res.user.uid
+          getTipoDeColaborador(uid)
       })
       .catch(function(error){
         console.log(error)
         Alert.alert('Atenção', 'Usuário não encontrado')
       })
-    getTipoDeColaborador(uid)
   }
 
   async function getTipoDeColaborador(uid){
@@ -129,7 +135,6 @@ export default function TelaLogin({ navigation }) {
 
   function limparDados(){
     setUsuario({email: '', senha: ''})
-    setLoading(false)
   }
 
 }
