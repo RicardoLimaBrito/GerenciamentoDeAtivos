@@ -25,7 +25,7 @@ export default function TelaConfigurarLocais({ navigation }) {
   const [loading, setLoading] = useState(false)
   
   useEffect(() => {
-    getLocal()
+    getLocalInitial()
   }, [])
 
   
@@ -55,16 +55,16 @@ export default function TelaConfigurarLocais({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Estacionamentos')}>
+        <TouchableOpacity onPress={()=>mudarReferencia('Estacionamentos', 'Estacionamento', 'locais_estacionamentos')} style={Styles.containerBotoesLocais}>
             <FontAwesome5 name="parking" size={35} color="#000000" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Serviços')}>
+          <TouchableOpacity onPress={()=>mudarReferencia('Serviços', 'Serviços', 'locais_servicos')} style={Styles.containerBotoesLocais}>
             <FontAwesome name="bullhorn" size={35} color="#919492" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Entradas')}>
+          <TouchableOpacity onPress={()=>mudarReferencia('Entradas', 'Entradas', 'locais_entradas')} style={Styles.containerBotoesLocais}>
             <FontAwesome name="arrow-circle-up" size={35} color="#6cb7f5" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.containerBotoesLocais} onPress={()=>mudarReferencia('Sala multiuso')}>
+          <TouchableOpacity onPress={()=>mudarReferencia('Salas multiuso', 'Sala multiuso', 'locais_salas')} style={Styles.containerBotoesLocais}>
             <MaterialCommunityIcons name="google-classroom" size={35} color="#edc453" />
           </TouchableOpacity>
         </View>
@@ -126,13 +126,13 @@ export default function TelaConfigurarLocais({ navigation }) {
 
   function pesquisarPorBloco(blocoParaPesquisa){
     setLoading(true)
-      if(bloco==''){
+      if(blocoParaPesquisa==''){
         Alert.alert('Atenção', 'Selecione algum bloco.')
       }else{
         setDados([])
         const ref = db.ref(`${local.referencia}`)
           try {
-            ref.orderByChild('bloco').equalTo(`${bloco}`).once("value", function(snapshot) {
+            ref.orderByChild('bloco').equalTo(`${blocoParaPesquisa}`).once("value", function(snapshot) {
               if(snapshot.val()){
                 let datalist= []
                 snapshot.forEach((e) => {
@@ -152,29 +152,39 @@ export default function TelaConfigurarLocais({ navigation }) {
     setLoading(false)
   }
 
-  function mudarReferencia(tipo){
-    try {
-      setLocal({})
-        if(tipo=='Sala multiuso'){
-          setLocal({titulo: 'Salas multiuso', tipoLocal: `${tipo}`, referencia: 'locais_salas'})
-        }else if(tipo=='Serviços'){
-          setLocal({titulo: 'Locais dos serviços', tipoLocal: `${tipo}`, referencia: 'locais_servicos'})
-        }else if(tipo=='Estacionamentos'){
-          setLocal({titulo: 'Estacionamentos', tipoLocal: `${tipo}`, referencia: 'locais_estacionamentos'})
-        }else if(tipo=='Entradas'){
-          setLocal({titulo: 'Entradas', tipoLocal: `${tipo}`, referencia: 'locais_entradas'})
-        }else{
-          setLocal({titulo: 'Salas multiuso', tipoLocal: `${tipo}`, referencia: 'locais_salas'})
-          Alert.alert('Atenção', 'Tipo não reconhecido.')
-        }
-      getLocal()
-    } catch (error) {
-      console.log(error)
-      Alert.alert('Atenção', 'Erro a carregar o local')
-    }
+  function mudarReferencia(titulo, tipo, refer){
+    setLocal({})  
+      try {
+        setLocal({titulo: titulo, tipoLocal: tipo, referencia: refer})
+      } catch (error) {
+        console.log(error)
+        Alert.alert('Atenção', 'Erro a carregar o local')
+      }
+    getLocalAfter(refer)
   }
 
-  async function getLocal() {
+  async function getLocalAfter(refer) {
+    setLoading(true)
+    setDados([])
+    const ref = db.ref(`${refer}`)
+      try {
+        let res = await ref.orderByChild('bloco').once('value')
+          if(res.val()){
+            let datalist= []
+            res.forEach((e) => {
+              datalist.push({key: e.key, ...e.val()})
+            })
+            setDados(datalist)
+          }else{
+            Alert.alert('Atenção', 'Não existem locais cadastrados.')
+          }
+      } catch (error) {
+        Alert.alert('Atenção', `${error}`)
+      }
+    setLoading(false)
+  }
+
+  async function getLocalInitial() {
     setLoading(true)
     setDados([])
     const ref = db.ref(`${local.referencia}`)
