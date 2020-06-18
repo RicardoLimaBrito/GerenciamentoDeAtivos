@@ -120,7 +120,7 @@ export default function TelaConfigurarLocais({ navigation }) {
   );
 
   function refresh(){
-    getLocal()
+    getLocalInitial()
     setBloco('')
   }
 
@@ -228,7 +228,7 @@ export default function TelaConfigurarLocais({ navigation }) {
               text: 'Sim',
               onPress: () => {
                 ref.child(`${id}`).remove()
-                getLocal()
+                getLocalInitial()
               },
             },
           ],

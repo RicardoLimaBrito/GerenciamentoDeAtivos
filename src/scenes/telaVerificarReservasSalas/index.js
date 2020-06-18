@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Alert, TextInput } from 'react-native';
 import Constants from 'expo-constants';
 import firebase from 'firebase'
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -9,9 +9,10 @@ export default function TelaVerificarReservasSalas({ navigation }) {
   const db = firebase.database()
   const ref = db.ref(`reservas_salas/`)
 
-  const [usuario, setUsuario] = useState({email: ''})
   const [dados, setDados] = useState([])
   const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [visualizacao, setVisualizacao] = useState({titulo: 'espera', tipo: 'Em análise', icone: 'eye-slash'})
     
   useEffect(() => {
     getReservas()
@@ -21,16 +22,38 @@ export default function TelaVerificarReservasSalas({ navigation }) {
     <View style={Styles.containerPrincipal}>
       <View style={{flexDirection: 'row'}}>
         <Text style={Styles.titulo}>Reservas</Text>
-        <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>getReservas()}>
+        <TouchableOpacity style={Styles.containerBotaoRefresh} onPress={()=>refresh(visualizacao.tipo)}>
           <FontAwesome name="refresh" size={35} color="#0d0da3" />
         </TouchableOpacity>
       </View>
       <View style={Styles.containerDeDados}>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={Styles.containerBotaoEsquerdo} onPress={()=>navigation.navigate('TelaVerificarReservasEquipamentos')}>
+          <View style={Styles.containerDosDados}>          
+            <TextInput
+              style={{height: 40}}
+              placeholder="Email"
+              value={email}
+              onChangeText={texto => setEmail(texto)}
+              autoCapitalize={'none'}
+            />
+          </View>
+          <TouchableOpacity onPress={()=>pesquisarPorBloco(email)} style={Styles.containerBotaoPesquisar}>
+            <FontAwesome name="search" size={35} color="#000000" />
+          </TouchableOpacity>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={()=>navigation.navigate('TelaVerificarReservasEquipamentos')} style={Styles.containerBotaoEsquerdo}>
+              <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+              <MaterialCommunityIcons name="projector" size={35} color="#000000" />
+              <Text style ={{margin: 5, fontSize: 17}}>Equipamentos</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={()=>mudarVisualizacao(visualizacao.tipo)} style={Styles.containerBotaoTudo}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <MaterialCommunityIcons name="projector" size={35} color="#337861" />
-              <Text style ={{margin: 5, fontSize: 17}}>Solicitações dos equipamentos</Text>
+              <FontAwesome name={visualizacao.icone} size={35} color="#000000" />
+              <Text style ={{margin: 5, fontSize: 17}}>{visualizacao.titulo}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -102,12 +125,28 @@ export default function TelaVerificarReservasSalas({ navigation }) {
     </View>
   )
 
-  async function getReservas() {
+  function refresh(tipo){
+    if(tipo=='Em análise'){
+      getReservas()
+    }else{
+      getReservasTudo()
+    }
+  }
+
+  async function pesquisarPorBloco(emailParaPesquisa){
     setLoading(true)
-    let ordem = 'situacao'
-    let tipo = 'Em análise'
-      try {
-        let res = await ref.orderByChild(ordem).equalTo(tipo).once('value')
+      if(emailParaPesquisa==''){
+        Alert.alert('Atenção', 'Digite algum email.')
+      }else{
+        let res
+        let ordem = 'solicitante'
+        let email = `${emailParaPesquisa}`
+          try {
+            res = await ref.orderByChild(ordem).equalTo(email).once('value')
+          } catch (error) {
+            Alert.alert('Atenção', error)
+          }
+
           if(res.val()){
             let datalist= []
             res.forEach((e) => {
@@ -117,10 +156,69 @@ export default function TelaVerificarReservasSalas({ navigation }) {
             setDados(datalist)
           }else{
             setDados([])
-            Alert.alert('Atenção', 'Não existem reservas solicitadas.')
-          }
+            Alert.alert('Atenção', 'Não existem reservas nesse email.')
+          }    
+      }
+    setEmail('')
+    setLoading(false)
+  }
+
+  function mudarVisualizacao(tipo){
+    if(tipo=='Em análise'){
+      setVisualizacao({titulo: 'Tudo', tipo: 'Tudo', icone: 'eye'})
+      refresh('Tudo')
+    }else{
+      setVisualizacao({titulo: 'Normal', tipo: 'Em análise', icone: 'eye-slash'})
+      refresh('Em análise')
+    }
+  }
+
+  async function getReservas() {
+    setLoading(true)
+    let ordem = 'situacao'
+    let tipo = 'Em análise'
+    let res
+      try {
+        res = await ref.orderByChild(ordem).equalTo(tipo).once('value')
       } catch (error) {
         Alert.alert('Atenção', error)
+      }
+
+      if(res.val()){
+        let datalist= []
+        res.forEach((e) => {
+          datalist.push({key: e.key, ...e.val()})
+        })
+        setDados([])
+        setDados(datalist)
+      }else{
+        setDados([])
+        Alert.alert('Atenção', 'Não existem reservas solicitadas.')
+      }
+    setLoading(false)
+  }
+
+  async function getReservasTudo() {
+    setLoading(true)
+    let ordem = 'situacao'
+    let tipo = 'Em análise'
+    let res
+      try {
+        res = await ref.orderByChild(ordem).startAt(tipo).once('value')
+      } catch (error) {
+        Alert.alert('Atenção', error)
+      }
+
+      if(res.val()){
+        let datalist= []
+        res.forEach((e) => {
+          datalist.push({key: e.key, ...e.val()})
+        })
+        setDados([])
+        setDados(datalist)
+      }else{
+        setDados([])
+        Alert.alert('Atenção', 'Não existem reservas solicitadas.')
       }
     setLoading(false)
   }
@@ -193,14 +291,25 @@ const Styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: '#284474',
     borderWidth: 1,
-    margin: 5,
-    marginRight: 20,
+    marginRight: 10,
+    marginTop: 5,
   },
   containerBotaoRefresh: {
     marginTop: 35,
   },
   containerBotaoEsquerdo: {
-    width: '90%',
+    width: 190,
+    height: 50,
+    backgroundColor: '#dae6c2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    borderColor: '#284474',
+    borderWidth: 1,
+    margin: 5,
+  },
+  containerBotaoTudo: {
+    width: 110,
     height: 50,
     backgroundColor: '#dae6c2',
     alignItems: 'center',
@@ -213,9 +322,8 @@ const Styles = StyleSheet.create({
   containerDosDados:{
     margin: 10,
     borderBottomWidth: 2,
-    width: 140,
-    borderColor: '#e0ebeb',
-    borderRadius: 10,
+    width: 240,
+    borderColor: '#000',
     alignSelf: 'center',
   },
   containerDeDados:{
@@ -227,15 +335,15 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    maxWidth: '95%',
+    maxWidth: 400,
     maxHeight: '70%'
   },
   containerSalas:{
     flexDirection: 'row',
     margin: 10,
-    backgroundColor: '#ffffff',
-    width: 300,
-    height: 300,
+    backgroundColor: '#fff',
+    width: 320,
+    height: 350,
     justifyContent: 'center',
     borderRadius: 15,
     borderColor: 'black',
